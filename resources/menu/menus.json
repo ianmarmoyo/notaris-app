@@ -1,0 +1,78 @@
+{
+  "menu": [
+    {
+      "name": "Dashboards",
+      "icon": "ti ti-smart-home",
+      "slug": "admin-dashboard",
+      "submenu": [
+        {
+          "url": "/admin/dashboard",
+          "name": "Analytics",
+          "slug": "admin-dashboard-analytics"
+        }
+      ]
+    },
+    {
+      "name": "Member",
+      "icon": "ti ti-smart-home",
+      "slug": "admin-member",
+      "submenu": [
+        {
+          "url": "/admin/member/create",
+          "name": "Add Member",
+          "slug": "admin-membercreate"
+        },
+        {
+          "url": "/admin/member",
+          "name": "List Member",
+          "slug": "admin-member"
+        }
+      ]
+    },
+    {
+      "url": "/",
+      "name": "Setting",
+      "menuHeader": "Setting",
+      "icon": "",
+      "slug": "admin-member"
+    },
+    {
+      "url": "/admin/menu",
+      "name": "Menu",
+      "icon": "ti ti-smart-home",
+      "slug": "admin-menu"
+    },
+    {
+      "url": "/admin/typesavings",
+      "name": "Type of Saving",
+      "icon": "ti ti-smart-home",
+      "slug": "admin-typesavings"
+    },
+    {
+      "url": "/admin/savings",
+      "name": "Savings",
+      "icon": "ti ti-smart-home",
+      "slug": "admin-savings",
+      "submenu": [
+        {
+          "url": "/admin/membersavings",
+          "name": "Tabungan Anggota",
+          "slug": "admin-membersavings"
+        }
+      ]
+    },
+    {
+      "url": "/admin/transaction",
+      "name": "Transaksi",
+      "icon": "ti ti-smart-home",
+      "slug": "admin-transaction",
+      "submenu": [
+        {
+          "url": "/admin/transactionsavings",
+          "name": "Tabungan",
+          "slug": "admin-transactionsavings"
+        }
+      ]
+    }
+  ]
+}

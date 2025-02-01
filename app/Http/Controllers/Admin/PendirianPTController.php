@@ -1,0 +1,96 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\PendirianPT;
+use App\Models\WorkOrderAttachment;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
+
+class PendirianPTController extends Controller
+{
+  const PATH_IMAGE = "pendirian-pt/image/";
+
+  function __construct()
+  {
+    $menu = menu_active("work-order");
+
+    if (isset($menu->menu)) {
+      View::share('menu_active', $menu->slug);
+      View::share('menu_open', $menu->menu->slug);
+    } else {
+      View::share('menu_active', $menu);
+    }
+  }
+
+  public function store(Request $request)
+  {
+    $balik_nama_waris_id = $request->balik_nama_waris_id;
+    $checklist = $request->checklist;
+    $status_pembayaran = $request->status_pembayaran;
+    $tgl_pembayaran = $request->tgl_pembayaran;
+    $catatan = $request->catatan;
+    $cek_sertifikat = $request->cek_sertifikat;
+    $no_berkas = $request->no_berkas;
+    $gambar = $request->hasFile('gambar');
+
+    $update = PendirianPT::find($balik_nama_waris_id);
+    $update->update([
+      'checklist' => $checklist ? 1 : null,
+      'catatan' => $catatan,
+    ]);
+
+    if ($gambar) {
+      if ($update->gambar && Storage::exists($update->gambar)) {
+        Storage::delete($update->gambar);
+      }
+
+      $file = $request->file('gambar');
+      $path = self::PATH_IMAGE . $balik_nama_waris_id;
+      $storage = Storage::putFileAs(
+        $path,
+        $file,
+        str_replace(' ', '-', $file->getClientOriginalName())
+      );
+      $update->update([
+        'gambar' => $storage
+      ]);
+    }
+
+    return response()->json([
+      'status' => true,
+      'message' => 'Data berhasil diupdate',
+    ]);
+  }
+
+  public function detail($work_order_assignment_id) {
+    $title = "Penugasan Pendiran PT";
+    $procedures = PendirianPT::with('work_order_assignment')->where('work_order_assignment_id', $work_order_assignment_id)->get();
+    $work_order_assignment = $procedures[0]->work_order_assignment;
+    $wo_attachment = WorkOrderAttachment::where('work_order_detail_id', $work_order_assignment->work_order_detail_id)->get();
+
+    return view('content.pendirian_pt.detail', compact(
+      'title',
+      'procedures',
+      'work_order_assignment_id',
+      'wo_attachment',
+      'work_order_assignment'
+    ));
+  }
+
+  public function form($work_order_assignment_id) {
+    $title = "Penugasan Pendirian PT";
+    $procedures = PendirianPT::with('work_order_assignment')->where('work_order_assignment_id', $work_order_assignment_id)->get();
+    $work_order_detail_id = $procedures[0]->work_order_assignment->work_order_detail_id;
+    $wo_attachment = WorkOrderAttachment::where('work_order_detail_id', $work_order_detail_id)->get();
+    // dd($wo_attachment);
+    return view('content.pendirian_pt.form', compact(
+      'title',
+      'procedures',
+      'work_order_assignment_id',
+      'wo_attachment'
+    ));
+  }
+}

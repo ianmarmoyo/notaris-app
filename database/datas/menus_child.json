@@ -1,0 +1,62 @@
+[
+  {
+    "parent_id": "1",
+    "name": "Analytics",
+    "icon": "NULL",
+    "slug": "dashboard",
+    "is_view": "0",
+    "created_at": "2023-09-19 11:15:28",
+    "updated_at": "2023-09-19 11:15:28",
+    "sort": "0"
+  },
+  {
+    "parent_id": "2",
+    "name": "Menu",
+    "icon": "NULL",
+    "slug": "menu",
+    "is_view": "0",
+    "created_at": "2023-09-19 11:15:28",
+    "updated_at": "2023-09-19 11:15:28",
+    "sort": "0"
+  },
+  {
+    "parent_id": "2",
+    "name": "Role",
+    "icon": "NULL",
+    "slug": "accessroles",
+    "is_view": "0",
+    "created_at": "2023-09-19 11:15:28",
+    "updated_at": "2023-09-19 11:15:28",
+    "sort": "0"
+  },
+  {
+    "parent_id": "2",
+    "name": "Permissions",
+    "icon": "NULL",
+    "slug": "accessPermission",
+    "is_view": "0",
+    "created_at": "2023-09-19 11:15:28",
+    "updated_at": "2023-09-19 11:15:28",
+    "sort": "0"
+  },
+  {
+    "parent_id": "2",
+    "name": "User",
+    "icon": "NULL",
+    "slug": "user",
+    "is_view": "0",
+    "created_at": "2023-09-19 11:15:28",
+    "updated_at": "2023-09-19 11:15:28",
+    "sort": "0"
+  },
+  {
+    "parent_id": "2",
+    "name": "App",
+    "icon": "NULL",
+    "slug": "myapp",
+    "is_view": "0",
+    "created_at": "2023-09-19 11:15:28",
+    "updated_at": "2023-09-19 11:15:28",
+    "sort": "0"
+  }
+]

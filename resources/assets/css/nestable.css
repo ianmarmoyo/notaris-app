@@ -1,0 +1,25 @@
+.overlay-wrapper {
+  position: relative;
+}
+.dd-handle {
+  display: block;
+  height: 40px;
+  padding: 8px 10px;
+  text-decoration: none;
+  font-weight: 500;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+.dd-handle span {
+  font-weight: 500;
+}
+.dd-item > button {
+  margin: 10px 0;
+}
+.item_actions {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+}
