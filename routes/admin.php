@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\MasterWorkOrderController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\MyAppController;
+use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PemecahSertifikatController;
 use App\Http\Controllers\Admin\PendirianPTController;
 use App\Http\Controllers\Admin\ProfileController;
@@ -152,6 +153,7 @@ Route::middleware(
     Route::get('/', [RequestWorkOrderController::class, 'index'])->name('index');
     Route::get('/create', [RequestWorkOrderController::class, 'create'])->name('create');
     Route::get('/data', [RequestWorkOrderController::class, 'data'])->name('data');
+    Route::get('/select', [RequestWorkOrderController::class, 'select'])->name('select');
     Route::post('/store', [RequestWorkOrderController::class, 'store'])->name('store');
     Route::get('/edit/{id}', [RequestWorkOrderController::class, 'edit'])->name('edit');
     Route::get('/detail/{id}', [RequestWorkOrderController::class, 'detail'])->name('detail');
@@ -253,5 +255,19 @@ Route::middleware(
     Route::post('/store', [BalikNamaSertifikatController::class, 'store'])->name('store');
     Route::get('/work-order-assignment/{work_order_assignment_id}', [BalikNamaSertifikatController::class, 'detail']);
     Route::get('/work-order-assignment/{work_order_assignment_id}/form', [BalikNamaSertifikatController::class, 'form']);
+  });
+
+  /**
+   * Payment
+   */
+  Route::group(['prefix' => 'payment', 'as' => 'payment-'], function () {
+    Route::get('/', [PaymentController::class, 'index'])->name('index');
+    Route::get('/data', [PaymentController::class, 'data'])->name('data');
+    Route::get('/select-request-work-order', [PaymentController::class, 'selectRequestWorkOrder'])->name('selectRequestWorkOrder');
+    Route::get('/create', [PaymentController::class, 'create'])->name('create');
+    Route::get('/detail/{id}', [PaymentController::class, 'detail'])->name('detail');
+    Route::post('/store', [PaymentController::class, 'store'])->name('store');
+    Route::get('/get-workorder-payment', [PaymentController::class, 'getworkorderpayment'])->name('getworkorderpayment');
+    Route::post('/delete', [PaymentController::class, 'delete']);
   });
 });

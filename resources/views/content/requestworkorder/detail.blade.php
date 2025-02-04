@@ -11,6 +11,59 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/app-academy-details.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/@form-validation/umd/styles/index.min.css') }}" />
+    <style>
+        label:has(+ input[required])::after {
+            content: '*';
+            color: red;
+            margin-left: 3px;
+            font-weight: bolder;
+        }
+
+        .client-card {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: baseline;
+            text-transform: capitalize;
+        }
+
+        .form-group-payment {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: baseline;
+            text-transform: capitalize;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #666;
+        }
+
+        .value {
+            color: #333;
+        }
+
+        .address {
+            line-height: 1.5;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
 @endsection
 
 @section('vendor-script')
@@ -47,20 +100,21 @@
                 <div class="card academy-content shadow-none border">
                     <div class="card-body">
                         <h5>Klien</h5>
-                        <div class="d-flex flex-wrap">
-                            <div class="me-5">
-                                <p class="text-nowrap">
-                                    Nama : {{ $work_order->nama }}
-                                </p>
-                                <p class="text-nowrap">
-                                    No Telepon : {{ $work_order->no_telp }}
-                                </p>
-                                <p class="text-nowrap">
-                                    Alamat : {{ $work_order->alamat }}
-                                </p>
+                        <div>
+                            <div class="form-group">
+                                <div class="label">Nama</div>
+                                <div class="value no_pembayaran">{{ $work_order->nama }}</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="label">Nomor Telepon</div>
+                                <div class="value no_pembayaran">{{ $work_order->no_telp }}</div>
+                            </div>
+                            <div class="form-group">
+                                <div class="label">Alamat</div>
+                                <div class="value no_pembayaran">{{ $work_order->alamat }}</div>
                             </div>
                         </div>
-                        <hr class="mb-4 mt-2">
+                        <hr class="mb-4">
                         <h5>Keperluan</h5>
                         <div class="d-flex justify-content-start user-name">
                             <div class="list-group" style="width: 100%">
@@ -86,23 +140,38 @@
                                         @endif
                                     </div>
                                 @endforeach
+                                <div class="list-group-item text-bg-light d-flex justify-content-between align-items-center list-group-item-action">
+                                    <div>
+                                        TOTAL
+                                    </div>
+                                    {{ formatRupiah($work_order->work_order_details->sum('harga')) }}
+                                </div>
                             </div>
                         </div>
-                        <hr class="mb-4 mt-2">
-                        <h5>Pembayaran</h5>
-                        <div class="d-flex flex-wrap">
-                            <div class="me-5">
-                                <p class="text-nowrap">
-                                    Tanggal Pembayaran : {{ tglIndo($work_order->tgl_pembayaran, '%A %d %B %Y') }}
-                                </p>
-                                <p class="text-nowrap">
-                                    Status Pembayaran : {{ $work_order->status_pembayaran }}
-                                </p>
-                                <p class="text-nowrap">
-                                    Total Pembayaran : Rp.
-                                    {{ formatRupiah($work_order->work_order_details->sum('harga')) }}
-                                </p>
-                            </div>
+                        <hr class="mb-4">
+                        <h5>Pembayaran | <span
+                                class="text-capitalize badge bg-label-{{ $work_order->status_pembayaran == 'lunas' ? 'success' : 'danger' }}">{{ $work_order->status_pembayaran }}</span>
+                        </h5>
+                        <div class="" id="detail_pembayaran">
+                            @foreach ($work_order->work_order_payments as $key => $row)
+                                <div class="form-group-payment">
+                                    <div class="label">No. Pembayaran</div>
+                                    <div class="value no_pembayaran">{{ $row->no_pembayaran }}</div>
+                                </div>
+
+                                <div class="form-group-payment">
+                                    <div class="label">Tgl. Pembayaran</div>
+                                    <div class="value no_pembayaran">{{ tglIndo($row->tgl_bayar) }}</div>
+                                </div>
+
+                                <div class="form-group-payment">
+                                    <div class="label">Nominal Pembayaran</div>
+                                    <div class="value nominal_pembayaran">
+                                        {{ formatRupiah($row->nominal) }}
+                                    </div>
+                                </div>
+                                <hr>
+                            @endforeach
                         </div>
                     </div>
                 </div>

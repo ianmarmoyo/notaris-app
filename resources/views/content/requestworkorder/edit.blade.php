@@ -125,16 +125,6 @@
                             </div>
                         @endforeach
                     </div>
-                    <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label" for="status_pembayaran">Status Pembayaran</label>
-                        <div class="col-sm-9">
-                            <select id="status_pembayaran" name="status_pembayaran" class="select2 form-select"
-                                placeholder="Status Pembayaran..." data-allow-clear="true">
-                                <option value="lunas" selected>Lunas</option>
-                                <option value="belum lunas">Belum Lunas</option>
-                            </select>
-                        </div>
-                    </div>
                     <div class="pt-4">
                         <div class="row justify-content-end">
                             <div class="col-sm-9">

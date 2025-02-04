@@ -75,7 +75,7 @@ class BalikNamaWarisController extends Controller
     $work_order_detail_id = $procedures[0]->work_order_assignment->work_order_detail_id;
     $wo_attachment = WorkOrderAttachment::where('work_order_detail_id', $work_order_detail_id)->get();
     // dd($wo_attachment);
-    return view('content.balikNamaWaris.form', compact(
+    return view('content.baliknamawaris.form', compact(
       'title',
       'procedures',
       'work_order_assignment_id',
@@ -90,7 +90,7 @@ class BalikNamaWarisController extends Controller
     $work_order_assignment = $procedures[0]->work_order_assignment;
     $wo_attachment = WorkOrderAttachment::where('work_order_detail_id', $work_order_assignment->work_order_detail_id)->get();
 
-    return view('content.balikNamaWaris.detail', compact(
+    return view('content.baliknamawaris.detail', compact(
       'title',
       'procedures',
       'work_order_assignment_id',

@@ -277,9 +277,6 @@
             let id = e.value;
             let status = e.checked;
             let label = $(e).closest('.switch').find('.switch-label');
-            console.log({
-                status
-            });
 
             if (status) {
                 label.text('Selesai');

@@ -58,5 +58,15 @@ class WorkOrder extends Model
   {
       return $this->hasMany(WorkOrderDetail::class);
   }
+
+  /**
+   * Get all of the work_order_payments for the WorkOrderPayment
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\HasMany
+   */
+  public function work_order_payments(): HasMany
+  {
+    return $this->hasMany(WorkOrderPayment::class, 'work_order_id');
+  }
 }
 

@@ -84,6 +84,25 @@ class RequestWorkOrderController extends Controller
     ], 200);
   }
 
+  public function select(Request $request)
+  {
+    $start = $request->page ? $request->page - 1 : 0;
+    $length = $request->limit;
+    $search = strtoupper($request->name) ?? '';
+
+    $data = WorkOrder::with('work_order_details')->when($search, function ($query, $search) {
+      return $query->where('nama', 'like', '%' . $search . '%');
+    })
+      ->paginate(10, ['*'], 'page', $start);
+
+    return response()->json([
+      'results' => $data->items(),
+      'pagination' => [
+        'more' => $data->hasMorePages()
+      ],
+    ]);
+  }
+
   public function create()
   {
     $title = "Pengajuan Keperluan";
@@ -101,7 +120,7 @@ class RequestWorkOrderController extends Controller
         'status_wo' => $request->status_wo,
         'tgl_pengajuan' => $request->tgl_pengajuan,
         'tgl_pembayaran' => $request->tgl_pembayaran,
-        'status_pembayaran' => $request->status_pembayaran,
+        'status_pembayaran' => 'belum lunas',
       ]);
 
       $route_redirect = route('admin-requestworkorder-index');
@@ -183,7 +202,8 @@ class RequestWorkOrderController extends Controller
       'admin',
       'work_order_details.master_work_order',
       'work_order_details.work_order_attachments',
-    )->find($id);
+      'work_order_payments'
+    )->findOrFail($id);
 
     $query = Admin::select('admins.*');
     $query->whereNot('email', 'development@anta.com');
@@ -203,7 +223,6 @@ class RequestWorkOrderController extends Controller
         'status_wo' => $request->status_wo,
         'tgl_pengajuan' => $request->tgl_pengajuan,
         'tgl_pembayaran' => $request->tgl_pembayaran,
-        'status_pembayaran' => $request->status_pembayaran,
       ]);
 
       $route_redirect = route('admin-requestworkorder-index');
