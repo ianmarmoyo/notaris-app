@@ -255,12 +255,12 @@
                             <div class="form-group">
                                 <div class="label">Nama Klien</div>
                                 <div class="value no_pembayaran">
-                                    {{ $work_order_assignment->work_order_detail->work_order->nama }}</div>
+                                    {{ $work_order_assignment->work_order_detail->work_order->client->nama }}</div>
                             </div>
                             <div class="form-group">
                                 <div class="label">Telp Klien</div>
                                 <div class="value no_pembayaran">
-                                    {{ $work_order_assignment->work_order_detail->work_order->no_telp }}</div>
+                                    {{ $work_order_assignment->work_order_detail->work_order->client->no_telp }}</div>
                             </div>
                         </div>
                     </div>

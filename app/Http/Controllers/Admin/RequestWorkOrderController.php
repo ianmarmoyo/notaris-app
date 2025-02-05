@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Helpers\PersyaratanWorkOrderHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\Client;
 use App\Models\MasterWorkOrder;
 use App\Models\WorkOrder;
 use App\Models\WorkOrderAttachment;
@@ -52,23 +53,26 @@ class RequestWorkOrderController extends Controller
     $search = $request->search['value'];
 
     $query = WorkOrder::select('id');
+    $query->leftJoin('clients', 'clients.id', '=', 'work_orders.client_id');
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(
-          UPPER(work_orders.nama) like '%" . $search . "%'
+          UPPER(clients.nama) like '%" . $search ."%'
           OR
-          UPPER(work_orders.no_telp) like '%" . $search . "%'
+          UPPER(clients.no_telp) like '%" . $search . "%'
       )");
     });
     $totals = $query->count();
 
     $query = WorkOrder::select(
-      'work_orders.*'
+      'work_orders.*',
+      'clients.nama',
     );
+    $query->leftJoin('clients', 'clients.id', '=', 'work_orders.client_id');
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(
-          UPPER(work_orders.nama) like '%" . $search . "%'
+          UPPER(clients.nama) like '%" . $search ."%'
           OR
-          UPPER(work_orders.no_telp) like '%" . $search . "%'
+          UPPER(clients.no_telp) like '%" . $search . "%'
       )");
     });
     $query->offset($start);
@@ -106,17 +110,15 @@ class RequestWorkOrderController extends Controller
   public function create()
   {
     $title = "Pengajuan Keperluan";
-    return view('content.requestworkorder.create', compact('title'));
+    $clients = Client::get();
+    return view('content.requestworkorder.create', compact('title', 'clients'));
   }
 
   public function store(Request $request)
   {
     try {
       DB::beginTransaction();
-      $wo = WorkOrder::create([
-        'nama' => $request->nama,
-        'no_telp' => $request->no_telp,
-        'alamat' => $request->alamat,
+      $wo = WorkOrder::create(['client_id' => $request->client_id,
         'status_wo' => $request->status_wo,
         'tgl_pengajuan' => $request->tgl_pengajuan,
         'tgl_pembayaran' => $request->tgl_pembayaran,

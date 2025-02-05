@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\Auth;
 
 class WorkOrder extends Model
 {
-    use HasFactory;
-    protected $guarded = [];
+  use HasFactory;
+  protected $guarded = [];
+  protected $with = ['client'];
 
   protected static function boot(): void
   {
@@ -46,7 +47,7 @@ class WorkOrder extends Model
    */
   public function admin(): BelongsTo
   {
-      return $this->belongsTo(Admin::class, 'created_user');
+    return $this->belongsTo(Admin::class, 'created_user');
   }
 
   /**
@@ -56,7 +57,7 @@ class WorkOrder extends Model
    */
   public function work_order_details(): HasMany
   {
-      return $this->hasMany(WorkOrderDetail::class);
+    return $this->hasMany(WorkOrderDetail::class);
   }
 
   /**
@@ -68,5 +69,14 @@ class WorkOrder extends Model
   {
     return $this->hasMany(WorkOrderPayment::class, 'work_order_id');
   }
-}
 
+  /**
+   * Get the client that owns the WorkOrder
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function client(): BelongsTo
+  {
+    return $this->belongsTo(Client::class);
+  }
+}

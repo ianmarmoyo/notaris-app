@@ -53,23 +53,22 @@
                     @csrf
                     <h6>1. Detail Klien</h6>
                     <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label" for="nama">Nama</label>
+                        <label class="col-sm-3 col-form-label" for="nama">Nama Klien</label>
                         <div class="col-sm-9">
-                            <input type="text" id="" name="nama" class="form-control"
-                                placeholder="Masukan Nama..." required />
+                            <select name="client_id" id="client" class="form-control select2"></select>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label" for="no_telp">No Telepon</label>
                         <div class="col-sm-9">
                             <input type="number" id="" name="no_telp" class="form-control"
-                                placeholder="Masukan No Telepon..." required />
+                                placeholder="Masukan No Telepon..." disabled />
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label" for="no_telp">Alamat</label>
                         <div class="col-sm-9">
-                            <textarea name="alamat" class="form-control" id="" cols="30" rows="5"></textarea>
+                            <textarea name="alamat" class="form-control" id="" cols="30" rows="5" disabled></textarea>
                         </div>
                     </div>
                     <hr class="my-4 mx-n4" />
@@ -137,6 +136,52 @@
 
     <script>
         $(document).ready(function() {
+            $('select#client').select2({
+                allowClear: true,
+                placeholder: 'Pilih Klien...',
+                escapeMarkup: function(markup) {
+                    return markup;
+                },
+                ajax: {
+                    url: "{{ route('admin-client-select') }}",
+                    type: 'get',
+                    dataType: 'json',
+                    data: function(params) {
+                        return {
+                            name: params.term,
+                            page: params.page,
+                            limit: 30,
+                        };
+                    },
+                    processResults: function(data, params) {
+                        var option = [];
+                        params.page = params.page || 1;
+                        $.each(data.results, function(index, item) {
+                            option.push({
+                                id: item.id,
+                                text: item.nama,
+                                no_telp: item.no_telp,
+                                alamat: item.alamat
+                            });
+                        });
+                        return {
+                            results: option,
+                            pagination: {
+                                more: (params.page * 30) < data.recorsTotal
+                            }
+                        };
+                    },
+                },
+            }).on('select2:select', function(e) {
+                var data = e.params.data;
+                $('input[name=no_telp]').val(data.no_telp);
+                $('textarea[name=alamat]').val(data.alamat);
+            }).on('select2:unselect', function(e) {
+                var data = e.params.data;
+                  $('input[name=no_telp]').val('');
+                $('textarea[name=alamat]').val('');
+            });
+
             $('select#work_order').select2({
                 multiple: true,
                 allowClear: true,
@@ -189,24 +234,10 @@
                     validating: 'glyphicon glyphicon-refresh'
                 },
                 fields: {
-                    nama: {
+                    client_id: {
                         validators: {
                             notEmpty: {
-                                message: 'Masukan nama klien.'
-                            }
-                        }
-                    },
-                    no_telp: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Masukan nomor klien.'
-                            }
-                        }
-                    },
-                    alamat: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Masukan alamat klien.'
+                                message: 'Klien belum dipilih.'
                             }
                         }
                     },

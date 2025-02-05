@@ -59,11 +59,12 @@ class WorkOrderController extends Controller
       'work_order_assignments.work_order_detail_id',
       'work_order_details.id'
     );
+    $query->leftJoin('clients', 'work_orders.client_id', 'clients.id');
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(
-          UPPER(work_orders.nama) like '%" . $search . "%'
+          UPPER(clients.nama) like '%" . $search . "%'
           OR
-          UPPER(work_orders.no_telp) like '%" . $search . "%'
+          UPPER(clients.no_telp) like '%" . $search . "%'
           OR
           UPPER(work_order_details.keperluan) like '%" . $search . "%'
           OR
@@ -78,7 +79,7 @@ class WorkOrderController extends Controller
     $query = WorkOrderAssignment::select(
       'work_order_assignments.*',
       'work_orders.no_wo',
-      'work_orders.nama AS nama_klien',
+      'clients.nama AS nama_klien',
       'work_orders.tgl_pengajuan',
       'work_orders.status_wo',
       'admins.name as nama_admin',
@@ -89,6 +90,7 @@ class WorkOrderController extends Controller
       'work_order_assignments.work_order_id',
       'work_orders.id'
     );
+    $query->leftJoin('clients', 'work_orders.client_id', 'clients.id');
     $query->leftJoin(
       'admins',
       'work_order_assignments.user_admin_id',
@@ -101,9 +103,9 @@ class WorkOrderController extends Controller
     );
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(
-          UPPER(work_orders.nama) like '%" . $search . "%'
+          UPPER(clients.nama) like '%" . $search ."%'
           OR
-          UPPER(work_orders.no_telp) like '%" . $search . "%'
+          UPPER(clients.no_telp) like '%" . $search . "%'
           OR
           UPPER(work_order_details.keperluan) like '%" . $search . "%'
           OR

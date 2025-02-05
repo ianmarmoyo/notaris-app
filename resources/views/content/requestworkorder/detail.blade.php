@@ -103,15 +103,15 @@
                         <div>
                             <div class="form-group">
                                 <div class="label">Nama</div>
-                                <div class="value no_pembayaran">{{ $work_order->nama }}</div>
+                                <div class="value no_pembayaran">{{ $work_order->client->nama }}</div>
                             </div>
                             <div class="form-group">
                                 <div class="label">Nomor Telepon</div>
-                                <div class="value no_pembayaran">{{ $work_order->no_telp }}</div>
+                                <div class="value no_pembayaran">{{ $work_order->client->no_telp }}</div>
                             </div>
                             <div class="form-group">
                                 <div class="label">Alamat</div>
-                                <div class="value no_pembayaran">{{ $work_order->alamat }}</div>
+                                <div class="value no_pembayaran">{{ $work_order->client->alamat }}</div>
                             </div>
                         </div>
                         <hr class="mb-4">

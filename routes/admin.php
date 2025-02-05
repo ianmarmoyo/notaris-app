@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\BalikNamaSertifikatController;
 use App\Http\Controllers\Admin\BalikNamaWarisController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\KlienController;
 use App\Http\Controllers\Admin\MasterWorkOrderController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\MyAppController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PemecahSertifikatController;
 use App\Http\Controllers\Admin\PendirianPTController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\ReportFinanceController;
 use App\Http\Controllers\Admin\RequestWorkOrderController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserAdminController;
@@ -83,6 +85,18 @@ Route::middleware(
     Route::post('/store', [AccessPermissionController::class, 'store'])->name('store');
     Route::post('/update', [AccessPermissionController::class, 'update'])->name('update');
     Route::post('/delete', [AccessPermissionController::class, 'delete']);
+  });
+
+  /**
+   * Klien
+   */
+  Route::group(['prefix' => 'client', 'as' => 'client-'], function () {
+    Route::get('/', [KlienController::class, 'index'])->name('index');
+    Route::get('/read', [KlienController::class, 'read'])->name('read');
+    Route::get('/select', [KlienController::class, 'select'])->name('select');
+    Route::post('/store', [KlienController::class, 'store'])->name('store');
+    Route::post('/update', [KlienController::class, 'update'])->name('update');
+    Route::delete('/delete/{id}', [KlienController::class, 'delete']);
   });
 
   /**
@@ -270,5 +284,13 @@ Route::middleware(
     Route::post('/store', [PaymentController::class, 'store'])->name('store');
     Route::get('/get-workorder-payment', [PaymentController::class, 'getworkorderpayment'])->name('getworkorderpayment');
     Route::post('/delete', [PaymentController::class, 'delete']);
+  });
+
+  /**
+   * Laporan Keuangan
+   */
+  Route::group(['prefix' => 'reportfinance', 'as' => 'reportfinance-'], function () {
+    Route::get('/', [ReportFinanceController::class, 'index'])->name('index');
+    Route::get('/data', [ReportFinanceController::class, 'data'])->name('data');
   });
 });

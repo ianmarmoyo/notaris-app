@@ -41,11 +41,13 @@ class PaymentController extends Controller
     $search = $request->search['value'];
 
     $query = WorkOrderPayment::select('id');
+    $query->leftJoin('work_orders', 'work_order_payments.work_order_id', 'work_orders.id');
+    $query->leftJoin('clients', 'work_orders.client_id', 'clients.id');
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(
-          UPPER(work_orders.nama) like '%" . $search . "%'
+          UPPER(clients.nama) like '%" . $search ."%'
           OR
-          UPPER(work_orders.no_telp) like '%" . $search . "%'
+          UPPER(clients.no_telp) like '%" . $search . "%'
       )");
     });
     $totals = $query->count();
@@ -53,15 +55,16 @@ class PaymentController extends Controller
     $query = WorkOrderPayment::select(
       'work_order_payments.*',
       'work_orders.no_wo',
-      'work_orders.nama as nama_klien',
-      'work_orders.no_telp as no_telp_klien',
+      'clients.nama as nama_klien',
+      'clients.no_telp as no_telp_klien',
     );
     $query->leftJoin('work_orders', 'work_order_payments.work_order_id', 'work_orders.id');
+    $query->leftJoin('clients', 'work_orders.client_id', 'clients.id');
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(
-          UPPER(work_orders.nama) like '%" . $search . "%'
+          UPPER(clients.nama) like '%" . $search ."%'
           OR
-          UPPER(work_orders.no_telp) like '%" . $search . "%'
+          UPPER(clients.no_telp) like '%" . $search . "%'
       )");
     });
     $query->offset($start);
@@ -83,9 +86,12 @@ class PaymentController extends Controller
     $length = $request->limit;
     $search = strtoupper($request->name) ?? '';
 
-    $data = WorkOrder::with('work_order_details')->when($search, function ($query, $search) {
+    $data = WorkOrder::with('work_order_details')
+    ->select('work_orders.*', 'clients.nama', 'clients.no_telp')
+    ->when($search, function ($query, $search) {
       return $query->where('nama', 'like', '%' . $search . '%');
     })
+      ->leftJoin('clients', 'work_orders.client_id', 'clients.id')
       ->where('status_wo', 'ready_to_work')
       ->paginate(10, ['*'], 'page', $start);
 

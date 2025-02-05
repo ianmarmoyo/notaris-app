@@ -58,20 +58,20 @@
                         <label class="col-sm-3 col-form-label" for="nama">Nama</label>
                         <div class="col-sm-9">
                             <input type="text" id="" name="nama" class="form-control"
-                                placeholder="Masukan Nama..." value="{{ $work_order->nama }}" required />
+                                placeholder="Masukan Nama..." value="{{ $work_order->client->nama }}" disabled />
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label" for="no_telp">No Telepon</label>
                         <div class="col-sm-9">
                             <input type="number" id="" name="no_telp" class="form-control"
-                                placeholder="Masukan No Telepon..." value="{{ $work_order->no_telp }}" required />
+                                placeholder="Masukan No Telepon..." value="{{ $work_order->client->no_telp }}" disabled />
                         </div>
                     </div>
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label" for="no_telp">Alamat</label>
                         <div class="col-sm-9">
-                            <textarea name="alamat" class="form-control" id="" cols="30" rows="5">{{ $work_order->alamat }}</textarea>
+                            <textarea name="alamat" class="form-control" id="" cols="30" rows="5" disabled>{{ $work_order->client->alamat }}</textarea>
                         </div>
                     </div>
                     <hr class="my-4 mx-n4" />
