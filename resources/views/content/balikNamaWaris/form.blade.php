@@ -59,6 +59,7 @@
             text-align: center;
         }
     </style>
+
 @endsection
 
 @section('vendor-script')

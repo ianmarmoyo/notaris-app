@@ -268,6 +268,7 @@
             </div>
         </div>
     </div>
+
     <div class="fade" id="navs-wo-attachment">
         <div class="row">
             <div class="col-md-6">
