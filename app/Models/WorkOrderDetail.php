@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class WorkOrderDetail extends Model
 {
@@ -46,5 +47,15 @@ class WorkOrderDetail extends Model
   public function work_order(): BelongsTo
   {
       return $this->belongsTo(WorkOrder::class);
+  }
+
+  /**
+   * Get the work_order_assignment associated with the WorkOrderDetail
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\HasOne
+   */
+  public function work_order_assignment(): HasOne
+  {
+    return $this->hasOne(WorkOrderAssignment::class, 'work_order_detail_id');
   }
 }

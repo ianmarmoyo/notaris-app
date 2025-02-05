@@ -92,9 +92,9 @@
                         <p class="mb-1">Dibuat oleh. <span class="fw-medium"> {{ $work_order->admin->name }} </span></p>
                     </div>
                     <div class="d-flex align-items-center">
-                        <span class="badge bg-label-danger">UI/UX</span>
+                        {{-- <span class="badge bg-label-danger">UI/UX</span>
                         <i class='ti ti-share ti-sm mx-4'></i>
-                        <i class='ti ti-bookmarks ti-sm'></i>
+                        <i class='ti ti-bookmarks ti-sm'></i> --}}
                     </div>
                 </div>
                 <div class="card academy-content shadow-none border">
@@ -134,13 +134,26 @@
                                                 Penugasan
                                             </button>
                                         @elseif($detail->status == 'selesai')
-                                            <span class="badge bg-success">Selesai</span>
+                                            <div>
+                                                <span class="badge bg-label-success">Selesai</span>
+                                                <a href="{{ url('admin/work-order/detail/' . $detail->work_order_assignment->id) }}"
+                                                    target="_blank">
+                                                    <span class="badge bg-info bg-glow">Lihat</span>
+                                                </a>
+                                            </div>
                                         @else
-                                            <span class="badge bg-primary">Dalam Proses</span>
+                                            <div>
+                                              <span class="badge bg-label-primary">Dalam Proses</span>
+                                              <a href="{{ url('admin/work-order/detail/' . $detail->work_order_assignment->id) }}"
+                                                  target="_blank">
+                                                  <span class="badge bg-info bg-glow">Lihat</span>
+                                              </a>
+                                            </div>
                                         @endif
                                     </div>
                                 @endforeach
-                                <div class="list-group-item text-bg-light d-flex justify-content-between align-items-center list-group-item-action">
+                                <div
+                                    class="list-group-item text-bg-light d-flex justify-content-between align-items-center list-group-item-action">
                                     <div>
                                         TOTAL
                                     </div>
@@ -209,6 +222,17 @@
                                             </label>
                                         </div>
                                     @endforeach
+                                </div>
+                                <hr>
+                                <div class="form-catatan-persyaratan px-3 py-2">
+                                    <div class="mb-6">
+                                        <label class="form-label" for="basic-default-message">Catatan</label>
+                                        <textarea name="catatan_persyaratan" id="catatan_persyaratan" class="form-control" rows="6"
+                                            placeholder="Catatan Persyaratan...">{{ $row->catatan_persyaratan }}</textarea>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-primary waves-effect waves-light mt-2"
+                                        data-work_order_detail_id="{{ $row->id }}"
+                                        onclick="updateCatatanPersyaratan(this)">Simpan</button>
                                 </div>
                             </div>
                         </div>
@@ -346,6 +370,40 @@
                 })
             });
         });
+
+        function updateCatatanPersyaratan(el) {
+            let work_order_detail_id = $(el).data('work_order_detail_id');
+            $.ajax({
+                url: "{{ url('admin/request-workorder/update-workorder-detail') }}/" + work_order_detail_id,
+                method: 'post',
+                data: {
+                    _token: $('input[name=_token]').val(),
+                    _method: 'put',
+                    work_order_detail_id: work_order_detail_id,
+                    catatan_persyaratan: $(el).closest('.form-catatan-persyaratan').find(
+                        'textarea#catatan_persyaratan').val()
+                },
+                dataType: 'json',
+                beforeSend: function() {
+                    sectionBlock('.modal-dialog');
+                }
+            }).done(function(response) {
+                sectionUnBlock('.modal-dialog')
+                if (response.status) {
+                    toastr.success(response.message, 'Success', 1000);
+                } else {
+                    toastr.warning(response.message, 'Warning', 1000);
+                }
+                return;
+            }).fail(function(response) {
+                const {
+                    status,
+                    message
+                } = response.responseJSON
+                sectionUnBlock('.modal-dialog')
+                toastr.warning(message, 'Warning', 1000);
+            })
+        }
 
         function checkListPesyaratan(e) {
             let work_order_attachments_id = $(e).val();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\BalikAPHB;
 use App\Models\WorkOrderAttachment;
+use App\Models\WorkOrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
@@ -75,12 +76,14 @@ class BalikAPHBController extends Controller
     $procedures = BalikAPHB::with('work_order_assignment')->where('work_order_assignment_id', $work_order_assignment_id)->get();
     $work_order_detail_id = $procedures[0]->work_order_assignment->work_order_detail_id;
     $wo_attachment = WorkOrderAttachment::where('work_order_detail_id', $work_order_detail_id)->get();
+    $catatan_pesyaratan = WorkOrderDetail::find($work_order_detail_id)->catatan_persyaratan;
     // dd($wo_attachment);
     return view('content.balik_aphb.form', compact(
       'title',
       'procedures',
       'work_order_assignment_id',
-      'wo_attachment'
+      'wo_attachment',
+      'catatan_pesyaratan'
     ));
   }
 
@@ -90,13 +93,15 @@ class BalikAPHBController extends Controller
     $procedures = BalikAPHB::with('work_order_assignment')->where('work_order_assignment_id', $work_order_assignment_id)->get();
     $work_order_assignment = $procedures[0]->work_order_assignment;
     $wo_attachment = WorkOrderAttachment::where('work_order_detail_id', $work_order_assignment->work_order_detail_id)->get();
+    $catatan_pesyaratan = WorkOrderDetail::find($work_order_assignment->work_order_detail_id)->catatan_persyaratan;
 
     return view('content.balik_aphb.detail', compact(
       'title',
       'procedures',
       'work_order_assignment_id',
       'wo_attachment',
-      'work_order_assignment'
+      'work_order_assignment',
+      'catatan_pesyaratan'
     ));
   }
 }

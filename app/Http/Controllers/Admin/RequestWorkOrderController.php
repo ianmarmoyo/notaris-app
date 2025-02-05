@@ -202,6 +202,7 @@ class RequestWorkOrderController extends Controller
       'admin',
       'work_order_details.master_work_order',
       'work_order_details.work_order_attachments',
+      'work_order_details.work_order_assignment',
       'work_order_payments'
     )->findOrFail($id);
 
@@ -298,6 +299,19 @@ class RequestWorkOrderController extends Controller
         'error' => $e->getMessage()
       ], 500);
     }
+  }
+
+  public function updateWorkOrderDetail(Request $request, $work_order_detail_id)
+  {
+    $update = WorkOrderDetail::find($work_order_detail_id);
+    $update->update([
+      'catatan_persyaratan' => $request->catatan_persyaratan
+    ]);
+
+    return response()->json([
+      'status' => true,
+      'message' => 'Data Berhasil Diubah'
+    ]);
   }
 
   public function delete($id)

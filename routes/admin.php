@@ -159,6 +159,7 @@ Route::middleware(
     Route::get('/detail/{id}', [RequestWorkOrderController::class, 'detail'])->name('detail');
     Route::put('/update/{id}', [RequestWorkOrderController::class, 'update'])->name('update');
     Route::post('/update-workorder-attachment', [RequestWorkOrderController::class, 'updateWorkOrderAttachment'])->name('updateWorkOrderAttachment');
+    Route::PUT('/update-workorder-detail/{work_order_detail_id}', [RequestWorkOrderController::class, 'updateWorkOrderDetail'])->name('updateWorkOrderDetail');
     Route::delete('/delete/{id}', [RequestWorkOrderController::class, 'delete'])->name('delete');
   });
 

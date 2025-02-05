@@ -13,6 +13,52 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/app-academy-details.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/@form-validation/umd/styles/index.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
+    <style>
+        .client-card {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: baseline;
+            text-transform: capitalize;
+        }
+
+        .form-group-payment {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+            align-items: baseline;
+            text-transform: capitalize;
+        }
+
+        .label {
+            font-weight: bold;
+            color: #666;
+        }
+
+        .value {
+            color: #333;
+        }
+
+        .address {
+            line-height: 1.5;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    </style>
 @endsection
 
 @section('vendor-script')
@@ -156,43 +202,55 @@
     </div>
     <div class="fade" id="navs-wo-attachment">
         <div class="row">
-            <div class="accordion stick-top accordion-bordered" id="workOrderAttachment">
-                <div class="accordion-item active mb-0">
-                    <div class="accordion-header" id="headingOne">
-                        <button type="button" class="accordion-button bg-lighter rounded-0" data-bs-toggle="collapse"
-                            data-bs-target="#chapter_1" aria-expanded="true" aria-controls="chapter_1">
-                            <span class="d-flex flex-column">
-                                <span class="h5 mb-1">{{ $page_title }}</span>
-                                <span class="fw-normal text-body">Persyaratan Berkas</span>
-                            </span>
-                        </button>
+            <div class="col-md-6">
+                <div class="accordion stick-top accordion-bordered" id="workOrderAttachment">
+                    <div class="accordion-item active mb-0">
+                        <div class="accordion-header" id="headingOne">
+                            <button type="button" class="accordion-button bg-lighter rounded-0"
+                                data-bs-toggle="collapse" data-bs-target="#chapter_1" aria-expanded="true"
+                                aria-controls="chapter_1">
+                                <span class="d-flex flex-column">
+                                    <span class="h5 mb-1">{{ $page_title }}</span>
+                                    <span class="fw-normal text-body">Persyaratan Berkas</span>
+                                </span>
+                            </button>
+                        </div>
+                        <div id="chapter_1" class="accordion-collapse collapse show"
+                            data-bs-parent="#workOrderAttachment">
+                            <div class="accordion-body py-3 border-top text-capitalize">
+                                @foreach ($wo_attachment as $key => $value)
+                                    <div class="form-check d-flex align-items-center mb-3">
+                                        @if ($value->checklist == 'yes')
+                                            <span class="badge badge-center rounded-pill bg-success bg-glow">
+                                                <i class="ti ti-check"></i>
+                                            </span>
+                                        @else
+                                            <span class="badge badge-center rounded-pill bg-danger bg-glow">
+                                                <i class="ti ti-x"></i>
+                                            </span>
+                                        @endif
+                                        <label for="checklist" class="form-check-label ms-3">
+                                            <span class="mb-0 h6">{{ $key + 1 }}.
+                                                {{ $value->nama_lampiran }}</span>
+                                            <span class="text-muted d-block">
+                                                {{ $value->jenis_berkas }}
+                                            </span>
+                                        </label>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
-                    <div id="chapter_1" class="accordion-collapse collapse show" data-bs-parent="#workOrderAttachment">
-                        <div class="accordion-body py-3 border-top text-capitalize">
-                            @foreach ($wo_attachment as $key => $value)
-                                <div class="form-check d-flex align-items-center mb-3">
-                                    @if ($value->checklist == 'yes')
-                                        <span class="badge badge-center rounded-pill bg-success bg-glow">
-                                            <i class="ti ti-check"></i>
-                                        </span>
-                                    @else
-                                        <span class="badge badge-center rounded-pill bg-danger bg-glow">
-                                            <i class="ti ti-x"></i>
-                                        </span>
-                                    @endif
-                                    {{-- <input class="form-check-input" type="checkbox" value="{{ $value->id }}"
-                                        onclick="checkListPesyaratan(this)" id="checklist"
-                                        @if ($value->checklist == 'yes') checked @endif
-                                        @if (!auth()->user()->can('checklist berkas pengajuan')) disabled @endif /> --}}
-                                    <label for="checklist" class="form-check-label ms-3">
-                                        <span class="mb-0 h6">{{ $key + 1 }}.
-                                            {{ $value->nama_lampiran }}</span>
-                                        <span class="text-muted d-block">
-                                            {{ $value->jenis_berkas }}
-                                        </span>
-                                    </label>
-                                </div>
-                            @endforeach
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <div class="form-group">
+                                <div class="label">Catatan</div>
+                                <div class="value no_pembayaran"> {{ $catatan_pesyaratan }}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
