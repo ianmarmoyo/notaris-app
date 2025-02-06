@@ -159,6 +159,9 @@
                             return (`
                               <a href="javascript:;" class="text-body dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ti ti-dots-vertical ti-sm mx-1"></i></a>
                                 <div class="dropdown-menu dropdown-menu-end m-0">
+                                  <a href="{{ url('admin/client/detail') }}/${data}" class="dropdown-item">
+                                    <i class="ti ti-eye me-1"></i> Detail
+                                  </a>
                                   <a href="javascript:;" class="dropdown-item btn_edit"
                                     data-id="${data}"
                                     data-nama="${row.nama}"

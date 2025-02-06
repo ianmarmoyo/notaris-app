@@ -94,6 +94,7 @@ Route::middleware(
     Route::get('/', [KlienController::class, 'index'])->name('index');
     Route::get('/read', [KlienController::class, 'read'])->name('read');
     Route::get('/select', [KlienController::class, 'select'])->name('select');
+    Route::get('/detail/{id}', [KlienController::class, 'detail'])->name('detail');
     Route::post('/store', [KlienController::class, 'store'])->name('store');
     Route::post('/update', [KlienController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [KlienController::class, 'delete']);

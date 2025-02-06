@@ -39,13 +39,19 @@ class PaymentController extends Controller
     $sort = $request->columns[$request->order[0]['column']]['data'];
     $dir = $request->order[0]['dir'];
     $search = $request->search['value'];
+    $client_id = $request->client_id;
 
     $query = WorkOrderPayment::select('id');
     $query->leftJoin('work_orders', 'work_order_payments.work_order_id', 'work_orders.id');
     $query->leftJoin('clients', 'work_orders.client_id', 'clients.id');
+    $query->when($client_id, function ($q) use ($client_id) {
+      $q->whereHas('work_order', function ($q) use ($client_id) {
+        $q->where('client_id', $client_id);
+      });
+    });
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(
-          UPPER(clients.nama) like '%" . $search ."%'
+          UPPER(clients.nama) like '%" . $search . "%'
           OR
           UPPER(clients.no_telp) like '%" . $search . "%'
       )");
@@ -60,9 +66,14 @@ class PaymentController extends Controller
     );
     $query->leftJoin('work_orders', 'work_order_payments.work_order_id', 'work_orders.id');
     $query->leftJoin('clients', 'work_orders.client_id', 'clients.id');
+    $query->when($client_id, function ($q) use ($client_id) {
+      $q->whereHas('work_order', function ($q) use ($client_id) {
+        $q->where('client_id', $client_id);
+      });
+    });
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(
-          UPPER(clients.nama) like '%" . $search ."%'
+          UPPER(clients.nama) like '%" . $search . "%'
           OR
           UPPER(clients.no_telp) like '%" . $search . "%'
       )");
@@ -87,10 +98,10 @@ class PaymentController extends Controller
     $search = strtoupper($request->name) ?? '';
 
     $data = WorkOrder::with('work_order_details')
-    ->select('work_orders.*', 'clients.nama', 'clients.no_telp')
-    ->when($search, function ($query, $search) {
-      return $query->where('nama', 'like', '%' . $search . '%');
-    })
+      ->select('work_orders.*', 'clients.nama', 'clients.no_telp')
+      ->when($search, function ($query, $search) {
+        return $query->where('nama', 'like', '%' . $search . '%');
+      })
       ->leftJoin('clients', 'work_orders.client_id', 'clients.id')
       ->where('status_wo', 'ready_to_work')
       ->paginate(10, ['*'], 'page', $start);

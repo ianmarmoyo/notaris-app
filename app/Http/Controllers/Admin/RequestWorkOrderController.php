@@ -51,15 +51,19 @@ class RequestWorkOrderController extends Controller
     $sort = $request->columns[$request->order[0]['column']]['data'];
     $dir = $request->order[0]['dir'];
     $search = $request->search['value'];
+    $client_id = $request->client_id;
 
     $query = WorkOrder::select('id');
     $query->leftJoin('clients', 'clients.id', '=', 'work_orders.client_id');
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(
-          UPPER(clients.nama) like '%" . $search ."%'
+          UPPER(clients.nama) like '%" . $search . "%'
           OR
           UPPER(clients.no_telp) like '%" . $search . "%'
       )");
+    });
+    $query->when($client_id, function ($q) use ($client_id) {
+      $q->where('clients.id', $client_id);
     });
     $totals = $query->count();
 
@@ -70,10 +74,13 @@ class RequestWorkOrderController extends Controller
     $query->leftJoin('clients', 'clients.id', '=', 'work_orders.client_id');
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(
-          UPPER(clients.nama) like '%" . $search ."%'
+          UPPER(clients.nama) like '%" . $search . "%'
           OR
           UPPER(clients.no_telp) like '%" . $search . "%'
       )");
+    });
+    $query->when($client_id, function ($q) use ($client_id) {
+      $q->where('clients.id', $client_id);
     });
     $query->offset($start);
     $query->limit($length);
@@ -118,7 +125,8 @@ class RequestWorkOrderController extends Controller
   {
     try {
       DB::beginTransaction();
-      $wo = WorkOrder::create(['client_id' => $request->client_id,
+      $wo = WorkOrder::create([
+        'client_id' => $request->client_id,
         'status_wo' => $request->status_wo,
         'tgl_pengajuan' => $request->tgl_pengajuan,
         'tgl_pembayaran' => $request->tgl_pembayaran,

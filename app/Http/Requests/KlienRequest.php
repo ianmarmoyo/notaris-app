@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 
-class SiswaRequest extends FormRequest
+class KlienRequest extends FormRequest
 {
   /**
    * Determine if the user is authorized to make this request.
@@ -25,19 +25,12 @@ class SiswaRequest extends FormRequest
   public function rules(): array
   {
     return [
-      'nisn' => [
-        'required',
-        'numeric',
-        'digits:10',
-        Rule::unique('siswas', 'nisn')->ignore($this->id),
-      ],
-      'phone' => [
+      'no_telp' => [
         'required',
         'numeric',
         'digits:12',
-        Rule::unique('siswas', 'no_telp')->ignore($this->id),
+        Rule::unique('clients', 'no_telp')->ignore($this->id),
       ],
-
     ];
   }
 
@@ -52,15 +45,10 @@ class SiswaRequest extends FormRequest
   public function messages(): array
   {
     return [
-      'nisn.required' => 'NISN wajib diisi.',
-      'nisn.numeric' => 'NISN harus berupa angka.',
-      'nisn.digits' => 'NISN harus terdiri dari 10 digit.',
-      'nisn.unique' => 'NISN sudah terdaftar di database siswa.',
-
-      'phone.required' => 'Nomor telepon wajib diisi.',
-      'phone.numeric' => 'Nomor telepon harus berupa angka.',
-      'phone.digits' => 'Nomor telepon harus terdiri dari 12 digit.',
-      'phone.unique' => 'Nomor telepon sudah terdaftar di database siswa.',
+      'no_telp.required' => 'Nomor telepon wajib diisi.',
+      'no_telp.numeric' => 'Nomor telepon harus berupa angka.',
+      'no_telp.digits' => 'Nomor telepon harus terdiri dari 12 digit.',
+      'no_telp.unique' => 'Nomor telepon sudah terdaftar.',
     ];
   }
 }

@@ -42,6 +42,7 @@ class WorkOrderController extends Controller
     $dir = $request->order[0]['dir'];
     $search = $request->search['value'];
     $user_admin_id = in_array('notaris', rolesUser()->toArray()) ? auth()->user()->id : false;
+    $client_id = $request->client_id;
 
     $query = WorkOrderAssignment::select('id');
     $query->leftJoin(
@@ -70,6 +71,9 @@ class WorkOrderController extends Controller
           OR
           UPPER(admins.name) like '%" . $search . "%'
       )");
+    });
+    $query->when($client_id, function ($q) use ($client_id) {
+      $q->where('clients.id', $client_id);
     });
     $query->when($user_admin_id, function ($q) use ($user_admin_id) {
       $q->where('work_order_assignments.user_admin_id', $user_admin_id);
@@ -103,7 +107,7 @@ class WorkOrderController extends Controller
     );
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(
-          UPPER(clients.nama) like '%" . $search ."%'
+          UPPER(clients.nama) like '%" . $search . "%'
           OR
           UPPER(clients.no_telp) like '%" . $search . "%'
           OR
@@ -111,6 +115,9 @@ class WorkOrderController extends Controller
           OR
           UPPER(admins.name) like '%" . $search . "%'
       )");
+    });
+    $query->when($client_id, function ($q) use ($client_id) {
+      $q->where('clients.id', $client_id);
     });
     $query->when($user_admin_id, function ($q) use ($user_admin_id) {
       $q->where('work_order_assignments.user_admin_id', $user_admin_id);

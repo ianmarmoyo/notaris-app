@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\KlienRequest;
 use App\Models\Client;
 use Exception;
 use Illuminate\Http\Request;
@@ -84,7 +85,7 @@ class KlienController extends Controller
     ], 200);
   }
 
-  public function store(Request $request)
+  public function store(KlienRequest $request)
   {
     try {
       $data = $request->except('_token');
@@ -103,7 +104,14 @@ class KlienController extends Controller
     ]);
   }
 
-  public function update(Request $request)
+  public function detail($id)
+  {
+    $title = "Detail Klien";
+    $client = Client::find($id);
+    return view('content.klien.detail', compact('title', 'client'));
+  }
+
+  public function update(KlienRequest $request)
   {
     try {
       $data = $request->except('_token');
