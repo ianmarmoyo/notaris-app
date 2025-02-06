@@ -148,7 +148,7 @@
                                                                 </label>
                                                                 <input type="text" id="" name=""
                                                                     class="form-control"
-                                                                    value="{{ $procedure->tgl_checklist ? tglIndo($procedure->tgl_checklist, '%A, %d %B %Y') : null }}"
+                                                                    value="{{ $procedure->tgl_checklist ? tglIndo($procedure->tgl_checklist, 'l, d F Y') : null }}"
                                                                     readonly />
                                                             </div>
                                                             @if ($procedure->proses === 'Penyerahan')

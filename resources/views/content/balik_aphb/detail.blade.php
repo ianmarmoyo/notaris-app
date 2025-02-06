@@ -147,7 +147,7 @@
                                                                 </label>
                                                                 <input type="text" id="" name=""
                                                                     class="form-control"
-                                                                    value="{{ $procedure->tgl_checklist ? tglIndo($procedure->tgl_checklist, '%A, %d %B %Y') : null }}"
+                                                                    value="{{ $procedure->tgl_checklist ? tglIndo($procedure->tgl_checklist, 'l, d F Y') : null }}"
                                                                     readonly />
                                                             </div>
                                                             @if ($procedure->proses == 'Pembayaran dan Validasi Pajak Waris')
@@ -169,7 +169,7 @@
                                                                         name="tgl_pembayaran"
                                                                         class="form-control dob-picker"
                                                                         placeholder="YYYY-MM-DD"
-                                                                        value="{{ $procedure->tgl_bayar ? tglIndo($procedure->tgl_bayar, '%A, %d %B %Y') : null }}"
+                                                                        value="{{ $procedure->tgl_bayar ? tglIndo($procedure->tgl_bayar, 'l, d F Y') : null }}"
                                                                         readonly />
                                                                 </div>
                                                                 <div class="col-md-6 mb-3">
