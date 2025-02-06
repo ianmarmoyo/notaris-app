@@ -45,24 +45,22 @@
     <div class="">
         <div class="card">
             <div class="card-header header-elements">
-                <span class="me-2">
-                    <h5 class="mb-0">{{ $title }}</h5>
-                </span>
+                <h5>{{ $title }}</h5>
 
                 <div class="card-header-elements ms-auto">
-                    {{-- <a href="{{ route('admin-payment-create') }}" class="btn btn-primary"><span
-                            class="tf-icon ti ti-plus ti-xs me-1"></span>Buat Pembayaran</a> --}}
+
                 </div>
             </div>
             <div class="card-datatable table-responsive">
-                <table class="table datatable table-hover">
+                <table class="table datatable">
                     <thead>
                         <tr>
                             <th width="10">#</th>
-                            <th width="400">No Pengajuan</th>
-                            <th width="400">Nama Pengaju</th>
-                            <th width="350">Keperluan</th>
-                            <th width="250">Nominal</th>
+                            <th width="400">Invoice</th>
+                            <th width="300">Nama</th>
+                            <th width="300">Tanggal Pengajuan</th>
+                            <th width="300">Status Keperluan</th>
+                            <th width="40">Aksi</th>
                         </tr>
                     </thead>
                 </table>
@@ -74,8 +72,6 @@
 @section('page-script')
     <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
     {{-- <script src="{{ asset('assets/js/tables-datatables-basic.js') }}"></script> --}}
-    <script src="{{ asset('assets/vendor/libs/accounting/accounting.min.js') }}"></script>
-
     <script>
         function modalFilter() {
             $('#modalFilter').modal('show');
@@ -92,10 +88,10 @@
                 lengthChange: true,
                 responsive: true,
                 order: [
-                    [2, "desc"]
+                    [1, "desc"]
                 ],
                 ajax: {
-                    url: "{{ route('admin-reportfinance-data') }}",
+                    url: "{{ route('admin-reportworkorder-data') }}",
                     type: "GET",
                     data: function(data) {
 
@@ -110,26 +106,67 @@
                         targets: [0]
                     },
                     {
-                        targets: 3,
-                        render: function(data, type, full, meta) {
-                            let html = '';
-                            full.work_order_details.forEach((wo, index) => {
-                                html += `
-                                  <span class="badge rounded-pill bg-label-primary">${wo.keperluan}</span>
-                                `;
-                            });
-
-                          return `
-                            <div class="d-flex gap-2 flex-column text-capitalize">
-                              ${html}
-                            </div>
-                          `;
-                        }
+                      targets: 3,
+                      render: function(data, type, full, meta) {
+                        return moment(data).format('LL');
+                      }
                     },
                     {
-                        targets: [4],
+                      targets: 4,
+                      render: function(data, type, full, meta) {
+                        switch (data) {
+                          case 'ready_to_work':
+                              return 'Siap Dikerjaan';
+                              break;
+                            break;
+                            case 'draft':
+                              return 'Draft';
+                              break;
+                          default:
+                            break;
+                        }
+                      }
+                    },
+                    {
+
+                        targets: 5,
+                        title: 'Aksi',
+                        orderable: false,
+                        searchable: false,
                         render: function(data, type, full, meta) {
-                            return accounting.formatMoney(data, "", 0, ".", ",");
+                            let btn_detail = `
+                              @can('detail pengajuan')
+                                <a href="{{ url('admin/request-workorder/detail') }}/${data}" class="dropdown-item"><i class="ti ti-eye me-1"></i>Detail</a>
+                              @endcan
+                            `;
+                            let btn_edit = `
+                              @can('ubah pengajuan')
+                                <a href="{{ url('admin/request-workorder/edit') }}/${data}" class="dropdown-item item-edit"><i class="ti ti-pencil me-1"></i>Edit</a>
+                              @endcan
+                            `;
+                            let btn_delete = `
+                              @can('hapus pengajuan')
+                                <a href="javascript:;" class="dropdown-item text-danger delete-record" data-id="${data}"><i class="ti ti-trash me-1"></i>Hapus</a>
+                              @endcan
+                            `;
+
+                            if (full.status_wo == 'ready_to_work') {
+                              btn_edit = '';
+                              btn_delete = '';
+                            } else {
+                              btn_detail = '';
+                            }
+
+                            return (`
+                                <div class="d-inline-block">
+                                    <a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="text-primary ti ti-dots-vertical"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end m-0">
+                                        ${btn_detail}
+                                    </div>
+                                </div>
+                            `);
                         }
                     }
                 ],
@@ -143,20 +180,19 @@
                         }
                     },
                     {
-                        "orderable": false,
-                        "searchable": false,
                         data: "no_wo"
                     },
                     {
-                        data: "nama_klien"
+                        data: "nama"
                     },
                     {
-                        data: "nama_klien"
+                        data: "tgl_pengajuan"
                     },
                     {
-                        "orderable": false,
-                        "searchable": false,
-                        data: "nominal"
+                        data: "status_wo"
+                    },
+                    {
+                        data: "id"
                     }
                 ]
             });
@@ -180,7 +216,7 @@
             }).then(function(result) {
                 if (result.value) {
                     $.ajax({
-                        url: "{{ url('/admin/employee/delete') }}/" + id,
+                        url: "{{ url('/admin/request-workorder/delete') }}/" + id,
                         method: 'DELETE',
                         data: {
                             "_token": "{{ csrf_token() }}",

@@ -7,11 +7,11 @@ use App\Models\WorkOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
-class ReportFinanceController extends Controller
+class ReportWorkOrderController extends Controller
 {
   function __construct()
   {
-    $menu = menu_active("reportfinance");
+    $menu = menu_active("reportworkorder");
 
     if (isset($menu->menu)) {
       View::share('menu_active', $menu->slug);
@@ -23,8 +23,8 @@ class ReportFinanceController extends Controller
 
   public function index()
   {
-    $title = "Laporan Keuangan";
-    return view('content.report_finance.index', compact('title'));
+    $title = "Laporan Keperluan";
+    return view('content.report_workorder.index', compact('title'));
   }
 
   public function data(Request $request)
@@ -35,39 +35,46 @@ class ReportFinanceController extends Controller
     $sort = $request->columns[$request->order[0]['column']]['data'];
     $dir = $request->order[0]['dir'];
     $search = $request->search['value'];
+    $client_id = $request->client_id;
 
     $query = WorkOrder::select('id');
-    $query->leftJoin('clients', 'work_orders.client_id', 'clients.id');
-    $query->leftJoin('work_order_payments', 'work_orders.id', 'work_order_payments.work_order_id');
+    $query->leftJoin('clients', 'clients.id', '=', 'work_orders.client_id');
+    $query->whereDoesntHave('work_order_details', function ($q) {
+      $q->where('status', 'proses')->orWhere('status', 'pending');
+    });
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(
-            UPPER(clients.nama) like '%" . $search . "%'
+          UPPER(clients.nama) like '%" . $search . "%'
           OR
           UPPER(clients.no_telp) like '%" . $search . "%'
       )");
+    });
+    $query->when($client_id, function ($q) use ($client_id) {
+      $q->where('clients.id', $client_id);
     });
     $totals = $query->count();
 
     $query = WorkOrder::select(
       'work_orders.*',
-      'clients.nama AS nama_klien',
-      'work_order_payments.no_pembayaran',
-      'work_order_payments.nominal',
-      'work_order_payments.tgl_bayar',
+      'clients.nama',
     );
-    $query->with('work_order_details');
-    $query->leftJoin('clients', 'work_orders.client_id', 'clients.id');
-    $query->leftJoin('work_order_payments', 'work_orders.id', 'work_order_payments.work_order_id');
+    $query->leftJoin('clients', 'clients.id', '=', 'work_orders.client_id');
+    $query->whereDoesntHave('work_order_details', function ($q) {
+      $q->where('status', 'proses')->orWhere('status', 'pending');
+    });
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(
-          UPPER(clients.nama) like '%" . $search ."%'
+          UPPER(clients.nama) like '%" . $search . "%'
           OR
           UPPER(clients.no_telp) like '%" . $search . "%'
       )");
     });
+    $query->when($client_id, function ($q) use ($client_id) {
+      $q->where('clients.id', $client_id);
+    });
     $query->offset($start);
     $query->limit($length);
-    // $query->orderBy($sort, $dir);
+    $query->orderBy($sort, $dir);
     $users = $query->get();
 
     return response()->json([

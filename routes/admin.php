@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\PemecahSertifikatController;
 use App\Http\Controllers\Admin\PendirianPTController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ReportFinanceController;
+use App\Http\Controllers\Admin\ReportWorkOrderController;
 use App\Http\Controllers\Admin\RequestWorkOrderController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserAdminController;
@@ -293,5 +294,13 @@ Route::middleware(
   Route::group(['prefix' => 'reportfinance', 'as' => 'reportfinance-'], function () {
     Route::get('/', [ReportFinanceController::class, 'index'])->name('index');
     Route::get('/data', [ReportFinanceController::class, 'data'])->name('data');
+  });
+
+  /**
+   * Laporan Work Order
+   */
+  Route::group(['prefix' => 'reportworkorder', 'as' => 'reportworkorder-'], function () {
+    Route::get('/', [ReportWorkOrderController::class, 'index'])->name('index');
+    Route::get('/data', [ReportWorkOrderController::class, 'data'])->name('data');
   });
 });
