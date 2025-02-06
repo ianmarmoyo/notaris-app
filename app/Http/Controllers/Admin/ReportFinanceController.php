@@ -39,9 +39,7 @@ class ReportFinanceController extends Controller
     $query = WorkOrder::select('id');
     $query->leftJoin('clients', 'work_orders.client_id', 'clients.id');
     $query->leftJoin('work_order_payments', 'work_orders.id', 'work_order_payments.work_order_id');
-    $query->whereDoesntHave('work_order_details', function ($q) {
-      $q->where('status', 'proses')->orWhere('status', 'pending');
-    });
+    $query->where('work_orders.status_wo', 'ready_to_work');
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(
             UPPER(clients.nama) like '%" . $search . "%'
@@ -61,9 +59,7 @@ class ReportFinanceController extends Controller
     $query->with('work_order_details');
     $query->leftJoin('clients', 'work_orders.client_id', 'clients.id');
     $query->leftJoin('work_order_payments', 'work_orders.id', 'work_order_payments.work_order_id');
-    $query->whereDoesntHave('work_order_details', function ($q) {
-      $q->where('status', 'proses')->orWhere('status', 'pending');
-    });
+    $query->where('work_orders.status_wo', 'ready_to_work');
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(
           UPPER(clients.nama) like '%" . $search ."%'
