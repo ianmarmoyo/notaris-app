@@ -134,13 +134,9 @@ if (!function_exists('formatRupiah')) {
 }
 
 if (!function_exists('tglIndo')) {
-  function tglIndo($date, $format = '%A %d %B %Y %H:%M')
+  function tglIndo($date, $format = 'l, d F Y H:i')
   {
-    // \Carbon\Carbon::setLocale('id');
-    setlocale(LC_ALL, 'IND');
-    $tanggal = Carbon::parse($date)->formatLocalized($format);
-
-    return $tanggal;
+    return Carbon::parse($date)->locale('id')->translatedFormat($format);
   }
 }
 
