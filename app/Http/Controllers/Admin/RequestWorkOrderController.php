@@ -228,9 +228,6 @@ class RequestWorkOrderController extends Controller
       DB::beginTransaction();
       $wo = WorkOrder::find($id);
       $wo->update([
-        'nama' => $request->nama,
-        'no_telp' => $request->no_telp,
-        'alamat' => $request->alamat,
         'status_wo' => $request->status_wo,
         'tgl_pengajuan' => $request->tgl_pengajuan,
         'tgl_pembayaran' => $request->tgl_pembayaran,

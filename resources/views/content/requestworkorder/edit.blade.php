@@ -50,7 +50,8 @@
         <div class="col-xxl">
             <div class="card mb-4">
                 <h5 class="card-header">Form Pengajuan Keperluan</h5>
-                <form id="form" action="{{ route('admin-requestworkorder-update', $work_order->id) }}" class="card-body">
+                <form id="form" action="{{ route('admin-requestworkorder-update', $work_order->id) }}"
+                    class="card-body">
                     @csrf
                     @method('put')
                     <h6>1. Detail Klien</h6>
@@ -81,16 +82,21 @@
                         <div class="col-sm-9">
                             <select id="multicol-country" name="status_wo" class="select2 form-select"
                                 placeholder="Status Keperluan..." data-allow-clear="true">
-                                <option value="draft" selected>Draft</option>
+                                <option value="draft" @if ($work_order->status_wo == 'draft') selected @endif>Draft</option>
                                 <option value="ready_to_work">Siap Dikerjakan</option>
                             </select>
+
+                            <div class="alert alert-dark mb-0 mt-2" role="alert">
+                                jika status keperluan <b>DRAFT</b>, maka pengajuan masih dalam tahap pengajuan dan masih
+                                bisa diubah atau dihapus
+                            </div>
                         </div>
                     </div>
                     <div class="row mb-3 select2-primary">
                         <label class="col-sm-3 col-form-label" for="work_order_id">Keperluan</label>
                         <div class="col-sm-9">
-                            @foreach($work_order->work_order_details as $key => $row)
-                              <span class="badge rounded-pill bg-primary">{{ $row->keperluan }}</span>
+                            @foreach ($work_order->work_order_details as $key => $row)
+                                <span class="badge rounded-pill bg-primary">{{ $row->keperluan }}</span>
                             @endforeach
                         </div>
                     </div>
@@ -246,5 +252,20 @@
         function sectionUnBlock() {
             $('.card').unblock();
         }
+
+        $('select[name=status_wo]').on('change', function() {
+            let value = $(this).val();
+            if (value == 'ready_to_work') {
+                $('[role="alert"]').html(
+                    'jika status keperluan <b>SIAP DIKERJAKAN</b>, maka pangajuan siap dikerjakan dan tidak bisa diubah atau dihapus.'
+                );
+                $('[role="alert"]').removeClass('alert-dark').addClass('alert-primary');
+            } else {
+                $('[role="alert"]').html(
+                    'jika status keperluan <b>DRAFT</b>, maka pengajuan masih dalam tahap pengajuan dan masih bisa diubah atau dihapus'
+                );
+                $('[role="alert"]').removeClass('alert-primary').addClass('alert-dark');
+            }
+        });
     </script>
 @endsection
