@@ -21,7 +21,7 @@ class MasterWorkOrderSeeder extends Seeder
       $wo = MasterWorkOrder::updateOrCreate([
         'slug' => isset($data->slug) ? $data->slug : Str::slug(strtolower($data->nama), '_')
       ], [
-        'nama' => $data->nama,
+        'nama' => ucfirst($data->nama),
         'slug' => isset($data->slug) ? $data->slug : Str::slug(strtolower($data->nama), '_')
       ]);
       if (!$wo) {

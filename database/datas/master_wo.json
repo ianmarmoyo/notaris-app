@@ -20,5 +20,17 @@
   {
     "nama" : "Pendirian Perseroan Terbatas (PT)",
     "slug" : "pendirian_pt"
+  },
+  {
+    "nama" : "Peningkatan Hak",
+    "slug" : "peningkatan_hak"
+  },
+  {
+    "nama" : "penurunan Hak",
+    "slug" : "penurunan_hak"
+  },
+  {
+    "nama" : "penggabungan sertifikat",
+    "slug" : "penggabungan_sertifikat"
   }
 ]

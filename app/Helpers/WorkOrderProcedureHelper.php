@@ -27,6 +27,16 @@ class WorkOrderProcedureHelper
         break;
       case 'pendirian_pt':
         return self::procedurePendirianPT();
+        break;
+      case 'peningkatan_hak':
+        return self::peningkatanHak();
+        break;
+      case 'penurunan_hak':
+        return self::penurunanHak();
+        break;
+      case 'penggabungan_sertifikat':
+        return self::penggabunganSerfikat();
+        break;
       default:
         # code...
         break;
@@ -116,6 +126,37 @@ class WorkOrderProcedureHelper
       'TTD akta',
       'pengesahan',
       'penyerahan',
+    ];
+  }
+
+  public static function peningkatanHak()
+  {
+    return [
+      'Pendaftaran Loket BPN',
+      'KKPR',
+      'TTD Kakan',
+      'Penyerahan',
+    ];
+  }
+
+  public static function penurunanHak()
+  {
+    return [
+      'Pendaftaran Loket BPN',
+      'KKPR',
+      'TTD Kakan',
+      'Penyerahan',
+    ];
+  }
+
+  public static function penggabunganSerfikat()
+  {
+    return [
+      'Pengukuran',
+      'Pendaftaran Loket BPN',
+      'KKPR',
+      'TTD Kakan',
+      'Penyerahan',
     ];
   }
 }

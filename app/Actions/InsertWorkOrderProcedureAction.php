@@ -10,6 +10,9 @@ use App\Models\BalikNamaSertifikat;
 use App\Models\BalikNamaWaris;
 use App\Models\PemecahSertifikat;
 use App\Models\PendirianPT;
+use App\Models\PenggabunganSertifikat;
+use App\Models\PeningkatanHak;
+use App\Models\PenurunanHak;
 
 class InsertWorkOrderProcedureAction
 {
@@ -46,6 +49,18 @@ class InsertWorkOrderProcedureAction
         break;
       case 'balik_aphb':
         $insert_procedure = self::insertBalikAPHB($work_order_assignment_id, $procedures);
+        return $insert_procedure;
+        break;
+      case 'peningkatan_hak':
+        $insert_procedure = self::insertPeningkatanHak($work_order_assignment_id, $procedures);
+        return $insert_procedure;
+        break;
+      case 'penurunan_hak':
+        $insert_procedure = self::penurunanHak($work_order_assignment_id, $procedures);
+        return $insert_procedure;
+        break;
+      case 'penggabungan_sertifikat':
+        $insert_procedure = self::insertPenggabunganSertifikat($work_order_assignment_id, $procedures);
         return $insert_procedure;
         break;
       default:
@@ -137,6 +152,45 @@ class InsertWorkOrderProcedureAction
     $results = [];
     foreach ($procedures as $syarat) {
       $results[] = BalikNamaSertifikat::create([
+        'work_order_assignment_id' => $work_order_assignment_id,
+        'proses' => $syarat
+      ]);
+    }
+
+    return $results;
+  }
+
+  public static function insertPeningkatanHak($work_order_assignment_id, $procedures)
+  {
+    $results = [];
+    foreach ($procedures as $syarat) {
+      $results[] = PeningkatanHak::create([
+        'work_order_assignment_id' => $work_order_assignment_id,
+        'proses' => $syarat
+      ]);
+    }
+
+    return $results;
+  }
+
+  public static function penurunanHak($work_order_assignment_id, $procedures)
+  {
+    $results = [];
+    foreach ($procedures as $syarat) {
+      $results[] = PenurunanHak::create([
+        'work_order_assignment_id' => $work_order_assignment_id,
+        'proses' => $syarat
+      ]);
+    }
+
+    return $results;
+  }
+
+  public static function insertPenggabunganSertifikat($work_order_assignment_id, $procedures)
+  {
+    $results = [];
+    foreach ($procedures as $syarat) {
+      $results[] = PenggabunganSertifikat::create([
         'work_order_assignment_id' => $work_order_assignment_id,
         'proses' => $syarat
       ]);

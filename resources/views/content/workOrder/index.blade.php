@@ -45,7 +45,7 @@
     <div class="">
         <div class="card">
             <div class="card-header header-elements">
-                <span class=" me-2">{{ $title }}</span>
+                <h5 class=" me-2">{{ $title }}</h5>
 
                 <div class="card-header-elements ms-auto">
                     {{-- Button --}}

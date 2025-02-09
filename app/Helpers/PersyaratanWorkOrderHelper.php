@@ -28,6 +28,15 @@ class PersyaratanWorkOrderHelper
       case 'balik_nama_sertifikat':
         return self::rulesBalikNamaSertifikat();
         break;
+      case 'peningkatan_hak':
+        // return self::peningkatanHak();
+        break;
+      case 'penurunan_hak':
+        // return self::penurunanHak();
+        break;
+      case 'penggabungan_sertifikat':
+        // return self::penggabunganSerfikat();
+        break;
       default:
         # code...
         break;

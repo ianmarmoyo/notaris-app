@@ -12,9 +12,11 @@ return new class extends Migration
   public function up(): void
   {
     Schema::table('work_orders', function (Blueprint $table) {
-      $table->after('no_wo', function ($table) {
-        $table->foreignId('client_id')->nullable()->constrained('clients')->nullOnDelete();
-      });
+      if (!Schema::hasColumn('work_orders', 'client_id')) {
+        $table->after('no_wo', function ($table) {
+          $table->foreignId('client_id')->nullable()->constrained('clients')->nullOnDelete();
+        });
+      }
     });
   }
 

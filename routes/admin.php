@@ -15,6 +15,9 @@ use App\Http\Controllers\Admin\MyAppController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PemecahSertifikatController;
 use App\Http\Controllers\Admin\PendirianPTController;
+use App\Http\Controllers\Admin\PenggabunganSertifikatController;
+use App\Http\Controllers\Admin\PeningkatanHakController;
+use App\Http\Controllers\Admin\PenurunanHakController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ReportFinanceController;
 use App\Http\Controllers\Admin\ReportWorkOrderController;
@@ -154,6 +157,20 @@ Route::middleware(
     Route::post('/is-suspend', [UserAdminController::class, 'is_suspend']);
   });
 
+
+  /**
+   * Access Role
+   */
+  Route::group(['prefix' => 'accessroles', 'as' => 'accessroles-'], function () {
+    Route::get('/', [RoleController::class, 'index'])->name('index');
+    Route::get('/read', [RoleController::class, 'read'])->name('read');
+    Route::get('/select', [RoleController::class, 'select'])->name('select');
+    Route::get('/detail/{id}', [RoleController::class, 'detail'])->name('detail');
+    Route::post('/store', [RoleController::class, 'store'])->name('store');
+    Route::post('/updatePermissions', [RoleController::class, 'updatePermissions'])->name('updatePermissions');
+    Route::get('/testingGivePermission', [RoleController::class, 'testingGivePermission']);
+  });
+
   /**
    * Master Work Order
    */
@@ -177,19 +194,6 @@ Route::middleware(
     Route::post('/update-workorder-attachment', [RequestWorkOrderController::class, 'updateWorkOrderAttachment'])->name('updateWorkOrderAttachment');
     Route::PUT('/update-workorder-detail/{work_order_detail_id}', [RequestWorkOrderController::class, 'updateWorkOrderDetail'])->name('updateWorkOrderDetail');
     Route::delete('/delete/{id}', [RequestWorkOrderController::class, 'delete'])->name('delete');
-  });
-
-  /**
-   * Access Role
-   */
-  Route::group(['prefix' => 'accessroles', 'as' => 'accessroles-'], function () {
-    Route::get('/', [RoleController::class, 'index'])->name('index');
-    Route::get('/read', [RoleController::class, 'read'])->name('read');
-    Route::get('/select', [RoleController::class, 'select'])->name('select');
-    Route::get('/detail/{id}', [RoleController::class, 'detail'])->name('detail');
-    Route::post('/store', [RoleController::class, 'store'])->name('store');
-    Route::post('/updatePermissions', [RoleController::class, 'updatePermissions'])->name('updatePermissions');
-    Route::get('/testingGivePermission', [RoleController::class, 'testingGivePermission']);
   });
 
   /**
@@ -302,5 +306,35 @@ Route::middleware(
   Route::group(['prefix' => 'reportworkorder', 'as' => 'reportworkorder-'], function () {
     Route::get('/', [ReportWorkOrderController::class, 'index'])->name('index');
     Route::get('/data', [ReportWorkOrderController::class, 'data'])->name('data');
+  });
+
+  /**
+   * Peningkatan HAK
+   */
+  Route::group(['prefix' => 'peningkatan-hak', 'as' => 'peningkatanhak-'], function () {
+    Route::get('/', [PeningkatanHakController::class, 'index'])->name('index');
+    Route::post('/store', [PeningkatanHakController::class, 'store'])->name('store');
+    Route::get('/work-order-assignment/{work_order_assignment_id}', [PeningkatanHakController::class, 'detail']);
+    Route::get('/work-order-assignment/{work_order_assignment_id}/form', [PeningkatanHakController::class, 'form']);
+  });
+
+  /**
+   * Penurunan HAK
+   */
+  Route::group(['prefix' => 'penurunan-hak', 'as' => 'penurunanhak-'], function () {
+    Route::get('/', [PenurunanHakController::class, 'index'])->name('index');
+    Route::post('/store', [PenurunanHakController::class, 'store'])->name('store');
+    Route::get('/work-order-assignment/{work_order_assignment_id}', [PenurunanHakController::class, 'detail']);
+    Route::get('/work-order-assignment/{work_order_assignment_id}/form', [PenurunanHakController::class, 'form']);
+  });
+
+  /**
+   * Penggabungan Sertifikat
+   */
+  Route::group(['prefix' => 'penggabungan-sertifikat', 'as' => 'penggabungansertifikat-'], function () {
+    Route::get('/', [PenggabunganSertifikatController::class, 'index'])->name('index');
+    Route::post('/store', [PenggabunganSertifikatController::class, 'store'])->name('store');
+    Route::get('/work-order-assignment/{work_order_assignment_id}', [PenggabunganSertifikatController::class, 'detail']);
+    Route::get('/work-order-assignment/{work_order_assignment_id}/form', [PenggabunganSertifikatController::class, 'form']);
   });
 });
