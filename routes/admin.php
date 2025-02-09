@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AccessPermissionController;
+use App\Http\Controllers\Admin\AktaPermohonanHakController;
 use App\Http\Controllers\Admin\BalikAPHBController;
 use App\Http\Controllers\Admin\BalikNamaHibahController;
 use App\Http\Controllers\Admin\BalikNamaJualBeliController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Admin\MasterWorkOrderController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\MyAppController;
 use App\Http\Controllers\Admin\PaymentController;
+use App\Http\Controllers\Admin\PelepasanHakController;
 use App\Http\Controllers\Admin\PemecahSertifikatController;
 use App\Http\Controllers\Admin\PendirianPTController;
 use App\Http\Controllers\Admin\PenggabunganSertifikatController;
@@ -23,6 +25,7 @@ use App\Http\Controllers\Admin\ReportFinanceController;
 use App\Http\Controllers\Admin\ReportWorkOrderController;
 use App\Http\Controllers\Admin\RequestWorkOrderController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\SertifikatPermohonanHakController;
 use App\Http\Controllers\Admin\UserAdminController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WorkOrderController;
@@ -336,5 +339,35 @@ Route::middleware(
     Route::post('/store', [PenggabunganSertifikatController::class, 'store'])->name('store');
     Route::get('/work-order-assignment/{work_order_assignment_id}', [PenggabunganSertifikatController::class, 'detail']);
     Route::get('/work-order-assignment/{work_order_assignment_id}/form', [PenggabunganSertifikatController::class, 'form']);
+  });
+
+  /**
+   * pelepasan-hak
+   */
+  Route::group(['prefix' => 'pelepasan-hak', 'as' => 'pelepasanhak-'], function () {
+    Route::get('/', [PelepasanHakController::class, 'index'])->name('index');
+    Route::post('/store', [PelepasanHakController::class, 'store'])->name('store');
+    Route::get('/work-order-assignment/{work_order_assignment_id}', [PelepasanHakController::class, 'detail']);
+    Route::get('/work-order-assignment/{work_order_assignment_id}/form', [PelepasanHakController::class, 'form']);
+  });
+
+  /**
+   * Akta Permohonan Hak
+   */
+  Route::group(['prefix' => 'akta-permohonan-hak', 'as' => 'aktapermohonanhak-'], function () {
+    Route::get('/', [AktaPermohonanHakController::class, 'index'])->name('index');
+    Route::post('/store', [AktaPermohonanHakController::class, 'store'])->name('store');
+    Route::get('/work-order-assignment/{work_order_assignment_id}', [AktaPermohonanHakController::class, 'detail']);
+    Route::get('/work-order-assignment/{work_order_assignment_id}/form', [AktaPermohonanHakController::class, 'form']);
+  });
+
+  /**
+   * sertifikat-permohonan-hak
+   */
+  Route::group(['prefix' => 'sertifikat-permohonan-hak', 'as' => 'sertifikatpermohonanhak-'], function () {
+    Route::get('/', [SertifikatPermohonanHakController::class, 'index'])->name('index');
+    Route::post('/store', [SertifikatPermohonanHakController::class, 'store'])->name('store');
+    Route::get('/work-order-assignment/{work_order_assignment_id}', [SertifikatPermohonanHakController::class, 'detail']);
+    Route::get('/work-order-assignment/{work_order_assignment_id}/form', [SertifikatPermohonanHakController::class, 'form']);
   });
 });

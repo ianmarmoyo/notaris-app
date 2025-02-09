@@ -37,6 +37,15 @@ class WorkOrderProcedureHelper
       case 'penggabungan_sertifikat':
         return self::penggabunganSerfikat();
         break;
+      case 'pelepasan_hak':
+        return self::pelepasanHak();
+        break;
+      case 'akta_permohonan_hak':
+        return self::aktaPermohonanHak();
+        break;
+      case 'sertifikat_permohonan_hak':
+        return self::sertifikatPermohonanHak();
+        break;
       default:
         # code...
         break;
@@ -157,6 +166,40 @@ class WorkOrderProcedureHelper
       'KKPR',
       'TTD Kakan',
       'Penyerahan',
+    ];
+  }
+
+  public static function pelepasanHak()
+  {
+    return [
+      'Pembuatan Akta pelepasan Hak',
+      'TTD Akta pelepasan Hak',
+      'Pengehasan Notaris',
+      'Penyerahan',
+    ];
+  }
+
+  public static function aktaPermohonanHak()
+  {
+    return [
+      'Pengukuran',
+      'Daftar PBT BPN',
+      'PBT selesai',
+      'Mutasi SPPT PBB',
+      'Pengajuan Pajak',
+      'Pembayaran dan Validasi Pajak',
+    ];
+  }
+
+  public static function sertifikatPermohonanHak()
+  {
+    return [
+      'Entri Loket',
+      'IP',
+      'H2P (Cek Lapang)',
+      'H2P (Panitia)',
+      'Pengumuman',
+      'TTD Kakan',
     ];
   }
 }

@@ -150,6 +150,14 @@
                         orderable: false,
                         searchable: false,
                         render: function(data, type, full, meta) {
+
+                          let btn_edit = `
+                            <a href="{{ url('admin/work-order/form') }}/${data}" class="dropdown-item"><i class="ti ti-edit me-1"></i>Edit</a>
+                          `;
+                          if(full.status_penugasan == 'Selesai') {
+                            btn_edit = ``;
+                          }
+
                             return (`
                                 <div class="d-inline-block">
                                     <a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -157,7 +165,7 @@
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end m-0">
                                         <a href="{{ url('admin/work-order/detail') }}/${data}" class="dropdown-item"><i class="ti ti-eye me-1"></i>Detail</a>
-                                        <a href="{{ url('admin/work-order/form') }}/${data}" class="dropdown-item"><i class="ti ti-edit me-1"></i>Edit</a>
+                                        ${btn_edit}
                                     </div>
                                 </div>
                             `);

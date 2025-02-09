@@ -32,5 +32,17 @@
   {
     "nama" : "penggabungan sertifikat",
     "slug" : "penggabungan_sertifikat"
+  },
+  {
+    "nama" : "Pelepasan Hak",
+    "slug" : "pelepasan_hak"
+  },
+  {
+    "nama" : "Akta Permohonan HAK",
+    "slug" : "akta_permohonan_hak"
+  },
+  {
+    "nama" : "Sertifikat Permohonan HAK",
+    "slug" : "sertifikat_permohonan_hak"
   }
 ]

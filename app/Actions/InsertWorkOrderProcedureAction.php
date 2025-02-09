@@ -3,16 +3,19 @@
 namespace App\Actions;
 
 use App\Helpers\WorkOrderProcedureHelper;
+use App\Models\AktaPermohonanHak;
 use App\Models\BalikAPHB;
 use App\Models\BalikNamaHibah;
 use App\Models\BalikNamaJualBeli;
 use App\Models\BalikNamaSertifikat;
 use App\Models\BalikNamaWaris;
+use App\Models\PelepasanHak;
 use App\Models\PemecahSertifikat;
 use App\Models\PendirianPT;
 use App\Models\PenggabunganSertifikat;
 use App\Models\PeningkatanHak;
 use App\Models\PenurunanHak;
+use App\Models\SertifikatPermohonanHak;
 
 class InsertWorkOrderProcedureAction
 {
@@ -61,6 +64,18 @@ class InsertWorkOrderProcedureAction
         break;
       case 'penggabungan_sertifikat':
         $insert_procedure = self::insertPenggabunganSertifikat($work_order_assignment_id, $procedures);
+        return $insert_procedure;
+        break;
+      case 'pelepasan_hak':
+        $insert_procedure = self::insertPelepasanHak($work_order_assignment_id, $procedures);
+        return $insert_procedure;
+        break;
+      case 'akta_permohonan_hak':
+        $insert_procedure = self::insertAktaPermohonanHak($work_order_assignment_id, $procedures);
+        return $insert_procedure;
+        break;
+      case 'sertifikat_permohonan_hak':
+        $insert_procedure = self::insertSertifikatPermohonanHak($work_order_assignment_id, $procedures);
         return $insert_procedure;
         break;
       default:
@@ -191,6 +206,45 @@ class InsertWorkOrderProcedureAction
     $results = [];
     foreach ($procedures as $syarat) {
       $results[] = PenggabunganSertifikat::create([
+        'work_order_assignment_id' => $work_order_assignment_id,
+        'proses' => $syarat
+      ]);
+    }
+
+    return $results;
+  }
+
+  public static function insertPelepasanHak($work_order_assignment_id, $procedures)
+  {
+    $results = [];
+    foreach ($procedures as $syarat) {
+      $results[] = PelepasanHak::create([
+        'work_order_assignment_id' => $work_order_assignment_id,
+        'proses' => $syarat
+      ]);
+    }
+
+    return $results;
+  }
+
+  public static function insertAktaPermohonanHak($work_order_assignment_id, $procedures)
+  {
+    $results = [];
+    foreach ($procedures as $syarat) {
+      $results[] = AktaPermohonanHak::create([
+        'work_order_assignment_id' => $work_order_assignment_id,
+        'proses' => $syarat
+      ]);
+    }
+
+    return $results;
+  }
+
+  public static function insertSertifikatPermohonanHak($work_order_assignment_id, $procedures)
+  {
+    $results = [];
+    foreach ($procedures as $syarat) {
+      $results[] = SertifikatPermohonanHak::create([
         'work_order_assignment_id' => $work_order_assignment_id,
         'proses' => $syarat
       ]);

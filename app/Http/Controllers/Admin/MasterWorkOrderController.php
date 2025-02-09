@@ -17,7 +17,7 @@ class MasterWorkOrderController extends Controller
     $data = MasterWorkOrder::when($search, function ($query, $search) {
       return $query->where('nama', 'like', '%' . $search . '%');
     })
-      ->paginate(10, ['*'], 'page', $start);
+      ->paginate(100, ['*'], 'page', $start);
 
     return response()->json([
       'results' => $data->items(),

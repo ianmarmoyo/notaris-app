@@ -37,6 +37,15 @@ class PersyaratanWorkOrderHelper
       case 'penggabungan_sertifikat':
         // return self::penggabunganSerfikat();
         break;
+      case 'pelepasan_hak':
+        // return self::pelepasanHak();
+        break;
+      case 'akta_permohonan_hak':
+        // return self::aktaPermohonanHak();
+        break;
+      case 'sertifikat_permohonan_hak':
+        // return self::sertifikatPermohonanHak();
+        break;
       default:
         # code...
         break;
