@@ -47,4 +47,16 @@ class BalikNamaWaris extends Model
   {
       return $this->belongsTo(WorkOrderAssignment::class, 'work_order_assignment_id');
   }
+
+  public function setProsesAttribute($value)
+  {
+    // Menghapus spasi jika hanya huruf diikuti spasi tanpa huruf lain
+    $this->attributes['proses'] = preg_replace('/([A-Z])\s+$/', '$1', $value);
+  }
+
+  public function getProsesAttribute($value)
+  {
+    // Menghapus spasi jika hanya huruf diikuti spasi tanpa huruf lain
+    return preg_replace('/([A-Z])\s+$/', '$1', $value);
+  }
 }
