@@ -50,13 +50,14 @@ class BalikNamaWaris extends Model
 
   public function setProsesAttribute($value)
   {
-    // Menghapus spasi jika hanya huruf diikuti spasi tanpa huruf lain
-    $this->attributes['proses'] = preg_replace('/([A-Z])\s+$/', '$1', $value);
+    // Menghapus semua spasi di akhir string
+    $this->attributes['proses'] = preg_replace('/\s+$/', '', $value);
   }
 
   public function getProsesAttribute($value)
   {
-    // Menghapus spasi jika hanya huruf diikuti spasi tanpa huruf lain
-    return preg_replace('/([A-Z])\s+$/', '$1', $value);
+    // Menghapus semua spasi di akhir string saat mengambil data
+    return preg_replace('/\s+$/', '', $value);
   }
+
 }
