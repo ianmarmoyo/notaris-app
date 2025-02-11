@@ -217,7 +217,7 @@
                                                 placeholder="No Berkas..." value="{{ $procedure->no_berkas }}" />
                                         </div>
                                     @endif
-                                    @if (strtolower($procedure->proses) == strtolower('penyerahan'))
+                                    @if (strtolower($procedure->proses) == strtolower('Penyerahan'))
                                         <div class="col-md-6 mb-3">
                                             <label class="col-form-label" for="status_pembayaran">
                                                 Gambar
