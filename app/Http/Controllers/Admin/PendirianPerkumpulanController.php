@@ -3,16 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\BalikNamaWaris;
+use App\Models\PendirianPerkumpulan;
 use App\Models\WorkOrderAttachment;
 use App\Models\WorkOrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 
-class BalikNamaWarisController extends Controller
+class PendirianPerkumpulanController extends Controller
 {
-  const PATH_IMAGE = "balik_nama_waris/image/";
+  const PATH_IMAGE = "pendirian-perkumpulan/image/";
+
   function __construct()
   {
     $menu = menu_active("work-order");
@@ -23,13 +24,18 @@ class BalikNamaWarisController extends Controller
     } else {
       View::share('menu_active', $menu);
     }
+
+    view()->composer('content.pendirian_perkumpulan.*', function ($view) {
+      $title = "Penugasan Pendirian Perkumpulan";
+      $view->with('page_title', 'Pendirian Perkumpulan');
+      $view->with('title', $title);
+    });
   }
 
   public function store(Request $request)
   {
     $balik_nama_waris_id = $request->balik_nama_waris_id;
     $checklist = $request->checklist;
-    $tgl_checklist = $request->tgl_checklist;
     $status_pembayaran = $request->status_pembayaran;
     $tgl_pembayaran = $request->tgl_pembayaran;
     $catatan = $request->catatan;
@@ -37,15 +43,10 @@ class BalikNamaWarisController extends Controller
     $no_berkas = $request->no_berkas;
     $gambar = $request->hasFile('gambar');
 
-    $update = BalikNamaWaris::find($balik_nama_waris_id);
+    $update = PendirianPerkumpulan::find($balik_nama_waris_id);
     $update->update([
       'checklist' => $checklist ? 1 : null,
-      'tgl_checklist' => $tgl_checklist,
-      'status_pembayaran' => $status_pembayaran,
-      'no_berkas' => $no_berkas,
       'catatan' => $catatan,
-      'cek_sertifikat' => $cek_sertifikat,
-      'tgl_bayar' => $tgl_pembayaran,
     ]);
 
     if ($gambar) {
@@ -71,37 +72,37 @@ class BalikNamaWarisController extends Controller
     ]);
   }
 
-  public function form($work_order_assignment_id)
-  {
-    $title = "Penugasan Balik Nama Waris";
-    $procedures = BalikNamaWaris::with('work_order_assignment')->where('work_order_assignment_id', $work_order_assignment_id)->get();
-    $work_order_detail_id = $procedures[0]->work_order_assignment->work_order_detail_id;
-    $wo_attachment = WorkOrderAttachment::where('work_order_detail_id', $work_order_detail_id)->get();
-    $catatan_pesyaratan = WorkOrderDetail::find($work_order_detail_id)->catatan_persyaratan;
-
-    return view('content.balik_nama_waris.form', compact(
-      'title',
-      'procedures',
-      'work_order_assignment_id',
-      'wo_attachment',
-      'catatan_pesyaratan'
-    ));
-  }
-
   public function detail($work_order_assignment_id)
   {
-    $title = "Penugasan Balik Nama Waris";
-    $procedures = BalikNamaWaris::with('work_order_assignment')->where('work_order_assignment_id', $work_order_assignment_id)->get();
+    $title = "Penugasan Pendiran PT";
+    $procedures = PendirianPerkumpulan::with('work_order_assignment')->where('work_order_assignment_id', $work_order_assignment_id)->get();
     $work_order_assignment = $procedures[0]->work_order_assignment;
     $wo_attachment = WorkOrderAttachment::where('work_order_detail_id', $work_order_assignment->work_order_detail_id)->get();
     $catatan_pesyaratan = WorkOrderDetail::find($work_order_assignment->work_order_detail_id)->catatan_persyaratan;
 
-    return view('content.balik_nama_waris.detail', compact(
+    return view('content.pendirian_perkumpulan.detail', compact(
       'title',
       'procedures',
       'work_order_assignment_id',
       'wo_attachment',
       'work_order_assignment',
+      'catatan_pesyaratan'
+    ));
+  }
+
+  public function form($work_order_assignment_id)
+  {
+    $title = "Penugasan Pendirian PT";
+    $procedures = PendirianPerkumpulan::with('work_order_assignment')->where('work_order_assignment_id', $work_order_assignment_id)->get();
+    $work_order_detail_id = $procedures[0]->work_order_assignment->work_order_detail_id;
+    $wo_attachment = WorkOrderAttachment::where('work_order_detail_id', $work_order_detail_id)->get();
+    $catatan_pesyaratan = WorkOrderDetail::find($work_order_detail_id)->catatan_persyaratan;
+    // dd($wo_attachment);
+    return view('content.pendirian_perkumpulan.form', compact(
+      'title',
+      'procedures',
+      'work_order_assignment_id',
+      'wo_attachment',
       'catatan_pesyaratan'
     ));
   }

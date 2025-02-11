@@ -106,9 +106,9 @@
                             <button type="button" class="accordion-button bg-lighter rounded-0">
                                 <span class="d-flex flex-column">
                                     <span class="h5 mb-1">
-                                        Balik Nama Waris
+                                        {{ $page_title }}
 
-                                        @if (strtolower($work_order_assignment->status_penugasan) == 'selesai')
+                                        @if ($work_order_assignment->status_penugasan == 'selesai')
                                             <span class="badge bg-success bg-glow">Selesai</span>
                                         @else
                                             <span class="badge bg-info bg-glow">Dalam Proses</span>
@@ -148,7 +148,7 @@
                                                                 </label>
                                                                 <input type="text" id="" name=""
                                                                     class="form-control"
-                                                                    value="{{ $procedure->tgl_checklist ? tglIndo($procedure->tgl_checklist,'l, d F Y') : null }}"
+                                                                    value="{{ $procedure->tgl_checklist ? tglIndo($procedure->tgl_checklist, 'l, d F Y') : null }}"
                                                                     readonly />
                                                             </div>
                                                             @if ($procedure->proses == 'Pembayaran dan Validasi Pajak Waris')
@@ -178,34 +178,6 @@
                                                                         Catatan
                                                                     </label>
                                                                     <textarea name="catatan" class="form-control" id="" cols="30" rows="3" readonly>{{ $procedure->catatan }}</textarea>
-                                                                </div>
-
-                                                                <div class="col-md-12 mb-3">
-                                                                    <label class="col-form-label" for="cek_sertifikat">
-                                                                        Cek Sertifikat
-                                                                    </label>
-                                                                    <br>
-                                                                    @if ($procedure->cek_sertifikat)
-                                                                        <span
-                                                                            class="badge badge-center rounded-pill bg-success bg-glow">
-                                                                            <i class="ti ti-check"></i>
-                                                                        </span>
-                                                                    @else
-                                                                        <span
-                                                                            class="badge badge-center rounded-pill bg-danger bg-glow">
-                                                                            <i class="ti ti-x"></i>
-                                                                        </span>
-                                                                    @endif
-                                                                </div>
-                                                            @endif
-                                                            @if ($procedure->proses == 'Pendaftaran loket BPN')
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label class="col-form-label" for="status_pembayaran">
-                                                                        No Berkas
-                                                                    </label>
-                                                                    <input type="text" id="no_berkas" name="no_berkas"
-                                                                        class="form-control" placeholder="No Berkas..."
-                                                                        value="{{ $procedure->no_berkas }}" readonly />
                                                                 </div>
                                                             @endif
                                                             @if ($procedure->proses == 'Penyerahan')
@@ -268,7 +240,6 @@
             </div>
         </div>
     </div>
-
     <div class="fade" id="navs-wo-attachment">
         <div class="row">
             <div class="col-md-6">
@@ -279,7 +250,9 @@
                                 data-bs-toggle="collapse" data-bs-target="#chapter_1" aria-expanded="true"
                                 aria-controls="chapter_1">
                                 <span class="d-flex flex-column">
-                                    <span class="h5 mb-1">Balik Nama Waris</span>
+                                    <span class="h5 mb-1">
+                                        {{ $page_title }}
+                                    </span>
                                     <span class="fw-normal text-body">Persyaratan Berkas</span>
                                 </span>
                             </button>
@@ -306,7 +279,7 @@
                                             <span class="mb-0 h6">{{ $key + 1 }}.
                                                 {{ $value->nama_lampiran }}</span>
                                             <span class="text-muted d-block">
-                                                {{-- {{ $value->jenis_berkas }} --}}
+                                                {{ $value->jenis_berkas }}
                                             </span>
                                         </label>
                                     </div>
@@ -316,7 +289,7 @@
                     </div>
                 </div>
             </div>
-              <div class="col-md-6">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
                         <div>

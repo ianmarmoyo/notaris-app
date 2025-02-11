@@ -175,6 +175,21 @@
                                                 placeholder="No Berkas..." value="{{ $procedure->no_berkas }}" />
                                         </div>
                                     @endif
+                                    @if (strtolower($procedure->proses) === strtolower('penyerahan') || strtolower($procedure->proses) === strtolower('TTD akta'))
+                                        <div class="col-md-6 mb-3">
+                                            <label class="col-form-label" for="status_pembayaran">
+                                                Gambar
+                                            </label>
+                                            <input type="file" id="gambar" name="gambar" class="form-control"
+                                                placeholder="No Berkas..." value="" />
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <div class="">
+                                                <img src="{{ $procedure->view_gambar }}" class=""
+                                                    style="max-width: 200px" alt="">
+                                            </div>
+                                        </div>
+                                    @endif
                                     <div class="col-md-4 mb-3">
                                         <label class="col-form-label" for="status_pembayaran">
                                             Catatan
@@ -314,7 +329,7 @@
             }
 
             $.ajax({
-                url: "{{ route('admin-penggabungansertifikat-store') }}",
+                url: "{{ route('admin-pendirianptperorangan-store') }}",
                 method: 'POST',
                 data: formData,
                 processData: false,

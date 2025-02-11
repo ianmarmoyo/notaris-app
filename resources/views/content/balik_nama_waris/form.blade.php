@@ -138,6 +138,14 @@
                                                 @endif
                                             </span>
                                         </label>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="col-form-label" for="status_pembayaran">
+                                                Tanggal Checklist
+                                            </label>
+                                            <input type="text" id="tgl_checklist_{{ $procedure->id }}"
+                                                name="tgl_checklist" class="form-control dob-picker"
+                                                placeholder="YYYY-MM-DD" value="{{ $procedure->tgl_checklist }}" />
+                                        </div>
                                     </div>
                                     @if ($procedure->proses == 'Pembayaran dan Validasi Pajak Waris')
                                         <div class="col-md-4 mb-3">
@@ -152,8 +160,8 @@
                                                 </option>
                                                 <option value="negosiasi" @if ($procedure->status_pembayaran == 'negosiasi') selected @endif>
                                                     Negosiasi</option>
-                                                <option value="sudah" @if ($procedure->status_pembayaran == 'sudah') selected @endif>
-                                                    Sudah
+                                                <option value="sudah lunas" @if ($procedure->status_pembayaran == 'sudah lunas') selected @endif>
+                                                    Sudah Lunas
                                                 </option>
                                             </select>
                                         </div>
@@ -274,7 +282,7 @@
                                             <span class="mb-0 h6">{{ $key + 1 }}.
                                                 {{ $value->nama_lampiran }}</span>
                                             <span class="text-muted d-block">
-                                                {{ $value->jenis_berkas }}
+                                                {{-- {{ $value->jenis_berkas }} --}}
                                             </span>
                                         </label>
                                     </div>
@@ -310,6 +318,10 @@
 
     <script>
         $(document).ready(function() {
+            $('input[name=tgl_checklist]').flatpickr({
+                defaultDate: 'today',
+                monthSelectorType: 'static'
+            });
             $('input[name=tgl_pembayaran]').flatpickr({
                 monthSelectorType: 'static'
             });
@@ -340,8 +352,13 @@
 
             if (status) {
                 label.text('Selesai');
+                $(e).closest('.col-md-12').find('input[name=tgl_checklist]').flatpickr({
+                    defaultDate: 'today',
+                    monthSelectorType: 'static'
+                });
             } else {
                 label.text('Belum Selesai');
+                $(e).closest('.col-md-12').find('input[name=tgl_checklist]').val('');
             }
         }
 
@@ -349,7 +366,7 @@
             let closest = $(e).closest('.accordion-body');
             let balik_nama_waris_id = closest.find('input[name="balik_nama_waris_id"]').val();
             let formData = new FormData(closest.find('form')[0]);
-            console.log(formData);
+
             for (let pair of formData.entries()) {
                 console.log(pair[0] + ': ' + pair[1]);
             }

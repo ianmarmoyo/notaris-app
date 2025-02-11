@@ -44,6 +44,15 @@ class RouteMappingWorkOrderHelper{
       case 'sertifikat_permohonan_hak':
         return self::routeMapping($slug);
         break;
+      case 'pendirian_perkumpulan':
+        return self::routeMapping($slug);
+        break;
+      case 'pendirian_cv':
+        return self::routeMapping($slug);
+        break;
+      case 'pendirian_pt_perorangan':
+        return self::routeMapping($slug);
+        break;
       default:
         # code...
         break;
@@ -65,6 +74,9 @@ class RouteMappingWorkOrderHelper{
       'pelepasan_hak' => 'admin/pelepasan-hak/work-order-assignment',
       'akta_permohonan_hak' => 'admin/akta-permohonan-hak/work-order-assignment',
       'sertifikat_permohonan_hak' => 'admin/sertifikat-permohonan-hak/work-order-assignment',
+      'pendirian_perkumpulan' => 'admin/pendirian-perkumpulan/work-order-assignment',
+      'pendirian_cv' => 'admin/pendirian-cv/work-order-assignment',
+      'pendirian_pt_perorangan' => 'admin/pendirian-pt-perorangan/work-order-assignment',
     ];
 
     if (isset($slugMap[$slug])) {

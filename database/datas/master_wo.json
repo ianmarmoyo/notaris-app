@@ -44,5 +44,17 @@
   {
     "nama" : "Sertifikat Permohonan HAK",
     "slug" : "sertifikat_permohonan_hak"
+  },
+  {
+    "nama" : "pendirian PT perorangan",
+    "slug" : "pendirian_pt_perorangan"
+  },
+  {
+    "nama" : "pendirian CV",
+    "slug" : "pendirian_cv"
+  },
+  {
+    "nama" : "Pendirian Perkumpulan",
+    "slug" : "pendirian_perkumpulan"
   }
 ]

@@ -11,7 +11,10 @@ use App\Models\BalikNamaSertifikat;
 use App\Models\BalikNamaWaris;
 use App\Models\PelepasanHak;
 use App\Models\PemecahSertifikat;
+use App\Models\PendirianCV;
+use App\Models\PendirianPerkumpulan;
 use App\Models\PendirianPT;
+use App\Models\PendirianPTperorangan;
 use App\Models\PenggabunganSertifikat;
 use App\Models\PeningkatanHak;
 use App\Models\PenurunanHak;
@@ -76,6 +79,18 @@ class InsertWorkOrderProcedureAction
         break;
       case 'sertifikat_permohonan_hak':
         $insert_procedure = self::insertSertifikatPermohonanHak($work_order_assignment_id, $procedures);
+        return $insert_procedure;
+        break;
+      case 'pendirian_pt_perorangan':
+        $insert_procedure = self::insertPendirianPTperorangan($work_order_assignment_id, $procedures);
+        return $insert_procedure;
+        break;
+      case 'pendirian_cv':
+        $insert_procedure = self::insertPendirianCV($work_order_assignment_id, $procedures);
+        return $insert_procedure;
+        break;
+      case 'pendirian_perkumpulan':
+        $insert_procedure = self::insertPendirianPerkumpulan($work_order_assignment_id, $procedures);
         return $insert_procedure;
         break;
       default:
@@ -245,6 +260,45 @@ class InsertWorkOrderProcedureAction
     $results = [];
     foreach ($procedures as $syarat) {
       $results[] = SertifikatPermohonanHak::create([
+        'work_order_assignment_id' => $work_order_assignment_id,
+        'proses' => $syarat
+      ]);
+    }
+
+    return $results;
+  }
+
+  public static function insertPendirianPTperorangan($work_order_assignment_id, $procedures)
+  {
+    $results = [];
+    foreach ($procedures as $syarat) {
+      $results[] = PendirianPTperorangan::create([
+        'work_order_assignment_id' => $work_order_assignment_id,
+        'proses' => $syarat
+      ]);
+    }
+
+    return $results;
+  }
+
+  public static function insertPendirianCV($work_order_assignment_id, $procedures)
+  {
+    $results = [];
+    foreach ($procedures as $syarat) {
+      $results[] = PendirianCV::create([
+        'work_order_assignment_id' => $work_order_assignment_id,
+        'proses' => $syarat
+      ]);
+    }
+
+    return $results;
+  }
+
+  public static function insertPendirianPerkumpulan($work_order_assignment_id, $procedures)
+  {
+    $results = [];
+    foreach ($procedures as $syarat) {
+      $results[] = PendirianPerkumpulan::create([
         'work_order_assignment_id' => $work_order_assignment_id,
         'proses' => $syarat
       ]);

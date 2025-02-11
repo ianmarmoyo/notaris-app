@@ -7,25 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 
-class BalikNamaWaris extends Model
+class PendirianCV extends Model
 {
-    use HasFactory;
-    protected $table = 'balik_nama_waris';
-    protected $guarded = ['id'];
-    protected $appends = ['view_gambar'];
+  use HasFactory;
+  protected $table = 'pendirian_cv';
+  protected $guarded = ['id'];
+  protected $appends = ['view_gambar'];
 
   protected static function boot(): void
   {
     parent::boot();
 
-    self::creating(function ($model) {
-
-    });
+    self::creating(function ($model) {});
 
     self::updating(function ($model) {
-      $model->tgl_checklist = $model->tgl_checklist ?? date('Y-m-d');
-      $model->tgl_bayar = $model->status_pembayaran ? date('Y-m-d') : null;
-      $model->tgl_cek_sertifikat = $model->cek_sertifikat ? date('Y-m-d') : null;
+      $model->tgl_checklist = $model->checklist ? date('Y-m-d') : null;
     });
   }
 
@@ -45,6 +41,6 @@ class BalikNamaWaris extends Model
    */
   public function work_order_assignment(): BelongsTo
   {
-      return $this->belongsTo(WorkOrderAssignment::class, 'work_order_assignment_id');
+    return $this->belongsTo(WorkOrderAssignment::class, 'work_order_assignment_id');
   }
 }

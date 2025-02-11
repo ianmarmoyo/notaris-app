@@ -16,6 +16,9 @@ use App\Http\Controllers\Admin\MyAppController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PelepasanHakController;
 use App\Http\Controllers\Admin\PemecahSertifikatController;
+use App\Http\Controllers\Admin\PendiranPTperoranganController;
+use App\Http\Controllers\Admin\PendirianCvController;
+use App\Http\Controllers\Admin\PendirianPerkumpulanController;
 use App\Http\Controllers\Admin\PendirianPTController;
 use App\Http\Controllers\Admin\PenggabunganSertifikatController;
 use App\Http\Controllers\Admin\PeningkatanHakController;
@@ -369,5 +372,35 @@ Route::middleware(
     Route::post('/store', [SertifikatPermohonanHakController::class, 'store'])->name('store');
     Route::get('/work-order-assignment/{work_order_assignment_id}', [SertifikatPermohonanHakController::class, 'detail']);
     Route::get('/work-order-assignment/{work_order_assignment_id}/form', [SertifikatPermohonanHakController::class, 'form']);
+  });
+
+  /**
+   * sertifikat-permohonan-hak
+   */
+  Route::group(['prefix' => 'pendirian-pt-perorangan', 'as' => 'pendirianptperorangan-'], function () {
+    Route::get('/', [PendiranPTperoranganController::class, 'index'])->name('index');
+    Route::post('/store', [PendiranPTperoranganController::class, 'store'])->name('store');
+    Route::get('/work-order-assignment/{work_order_assignment_id}', [PendiranPTperoranganController::class, 'detail']);
+    Route::get('/work-order-assignment/{work_order_assignment_id}/form', [PendiranPTperoranganController::class, 'form']);
+  });
+
+  /**
+   * Pendiran CV
+   */
+  Route::group(['prefix' => 'pendirian-cv', 'as' => 'pendiriancv-'], function () {
+    Route::get('/', [PendirianCvController::class, 'index'])->name('index');
+    Route::post('/store', [PendirianCvController::class, 'store'])->name('store');
+    Route::get('/work-order-assignment/{work_order_assignment_id}', [PendirianCvController::class, 'detail']);
+    Route::get('/work-order-assignment/{work_order_assignment_id}/form', [PendirianCvController::class, 'form']);
+  });
+
+  /**
+   * pendirian-perkumpulan
+   */
+  Route::group(['prefix' => 'pendirian-perkumpulan', 'as' => 'pendirianperkumpulan-'], function () {
+    Route::get('/', [PendirianPerkumpulanController::class, 'index'])->name('index');
+    Route::post('/store', [PendirianPerkumpulanController::class, 'store'])->name('store');
+    Route::get('/work-order-assignment/{work_order_assignment_id}', [PendirianPerkumpulanController::class, 'detail']);
+    Route::get('/work-order-assignment/{work_order_assignment_id}/form', [PendirianPerkumpulanController::class, 'form']);
   });
 });

@@ -46,6 +46,15 @@ class WorkOrderProcedureHelper
       case 'sertifikat_permohonan_hak':
         return self::sertifikatPermohonanHak();
         break;
+      case 'pendirian_perkumpulan':
+        return self::pendirianPTperorangan();
+        break;
+      case 'pendirian_cv':
+        return self::pendirianCV();
+        break;
+      case 'pendirian_pt_perorangan':
+        return self::pendirianPTperorangan();
+        break;
       default:
         # code...
         break;
@@ -200,6 +209,42 @@ class WorkOrderProcedureHelper
       'H2P (Panitia)',
       'Pengumuman',
       'TTD Kakan',
+    ];
+  }
+
+  public static function pendirianPTperorangan()
+  {
+    return [
+      'Pesan Nama',
+      'Draft Akta',
+      'TTD Penghadap',
+      'Pengesahan Notaris',
+      'Input Data Ke AHU',
+      'Penyerahan',
+    ];
+  }
+
+  public static function pendirianCV()
+  {
+    return [
+      'Pesan Nama',
+      'Draft Akta',
+      'TTD Penghadap',
+      'Pengesahan Notaris',
+      'Input Data Ke AHU',
+      'Penyerahan',
+    ];
+  }
+
+  public static function pendirianPerkumpulan()
+  {
+    return [
+      'Pesan Nama',
+      'Draft Akta',
+      'TTD Penghadap',
+      'Pengesahan Notaris',
+      'Input Data Ke AHU',
+      'Penyerahan',
     ];
   }
 }

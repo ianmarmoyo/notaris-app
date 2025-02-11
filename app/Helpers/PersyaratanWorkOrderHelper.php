@@ -46,6 +46,15 @@ class PersyaratanWorkOrderHelper
       case 'sertifikat_permohonan_hak':
         // return self::sertifikatPermohonanHak();
         break;
+      case 'pendirian_pt_perorangan':
+        return self::rulesPendirianCV();
+        break;
+      case 'pendirian_cv':
+        return self::rulesPendirianCV();
+        break;
+      case 'pendirian_perkumpulan':
+        return self::rulesPendirianPerkumpulan();
+        break;
       default:
         # code...
         break;
@@ -138,6 +147,48 @@ class PersyaratanWorkOrderHelper
         'FC & Asli KTP KK BPJS Penerima/Pembali',
         'NPWP jika pekerjaan : PNS, TNI, POLRI, GURU'
       ]
+    ];
+    return $data;
+  }
+
+  public static function rulesPendirianPerkumpulan()
+  {
+    $data = [
+      'syarat' => [
+        'FC. KTP dan KK Seluruh Pengurus',
+        'Nama Perkumpulan',
+        'Alamat Perkumpulan',
+        'Struktur Kepengurusan',
+        'NPWP Pengurus'
+      ],
+      'pelengkap' => [
+        'Berita Acara',
+        'Surat Pernyataan Domisili Perkumpulan',
+        'Surat Pernyataan Kekayaan Perkumpulan',
+      ],
+    ];
+    return $data;
+  }
+
+  public static function rulesPendirianCV()
+  {
+    $data = [
+      'syarat' => [
+        'FC. KTP dan KK (Direktur dan Komisaris)',
+        'NPWP Direktur dan Komisaris',
+        'Nama Perseroan',
+        'Alamat Perseroan',
+        'Modal Perseroan',
+        'Pembagian Saham Pesero',
+        'Bidang Usaha (KBLI)',
+        'Jumlah Pekerja',
+      ],
+      'pelengkap' => [
+        'Berita Acara',
+        'Surat Pernyataan Domisili Perseroan',
+        'Surat Pernyataan Modal',
+        'Surat Kuasa (jika diperlukan)',
+      ],
     ];
     return $data;
   }
