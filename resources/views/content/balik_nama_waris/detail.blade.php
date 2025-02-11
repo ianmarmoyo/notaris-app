@@ -148,7 +148,7 @@
                                                                 </label>
                                                                 <input type="text" id="" name=""
                                                                     class="form-control"
-                                                                    value="{{ $procedure->tgl_checklist ? tglIndo($procedure->tgl_checklist,'l, d F Y') : null }}"
+                                                                    value="{{ $procedure->tgl_checklist ? tglIndo($procedure->tgl_checklist, 'l, d F Y') : null }}"
                                                                     readonly />
                                                             </div>
                                                             @if ($procedure->proses == 'Pembayaran dan Validasi Pajak Waris')
@@ -215,6 +215,9 @@
                                                                             class="" style="max-width: 200px"
                                                                             alt="">
                                                                     </div>
+                                                                    <button type="button" onclick="viewImage()" class="mt-2 btn btn-sm btn-primary waves-effect waves-light">
+                                                                      Lihat Gambar
+                                                                    </button>
                                                                 </div>
                                                             @endif
                                                         </div>
@@ -316,7 +319,7 @@
                     </div>
                 </div>
             </div>
-              <div class="col-md-6">
+            <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
                         <div>
@@ -360,5 +363,19 @@
                     break;
             }
         });
+
+        function viewImage() {
+            Swal.fire({
+                title: '',
+                text: '',
+                imageUrl: "{{ $procedure->view_gambar }}",
+                imageWidth: 400,
+                imageAlt: 'Custom image',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            });
+        }
     </script>
 @endsection

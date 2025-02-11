@@ -160,7 +160,8 @@
                                                 </option>
                                                 <option value="negosiasi" @if ($procedure->status_pembayaran == 'negosiasi') selected @endif>
                                                     Negosiasi</option>
-                                                <option value="sudah lunas" @if ($procedure->status_pembayaran == 'sudah lunas') selected @endif>
+                                                <option value="sudah lunas"
+                                                    @if ($procedure->status_pembayaran == 'sudah lunas') selected @endif>
                                                     Sudah Lunas
                                                 </option>
                                             </select>
@@ -229,6 +230,10 @@
                                                 <img src="{{ $procedure->view_gambar }}" class=""
                                                     style="max-width: 200px" alt="">
                                             </div>
+                                            <button type="button" onclick="viewImage()"
+                                                class="mt-2 btn btn-sm btn-primary waves-effect waves-light">
+                                                Lihat Gambar
+                                            </button>
                                         </div>
                                     @endif
                                 </div>
@@ -445,6 +450,20 @@
                     message
                 } = response.responseJSON
                 toastr.warning(message, 'Warning', 1000);
+            });
+        }
+
+        function viewImage() {
+            Swal.fire({
+                title: '',
+                text: '',
+                imageUrl: "{{ $procedure->view_gambar }}",
+                imageWidth: 400,
+                imageAlt: 'Custom image',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
             });
         }
 
