@@ -189,6 +189,14 @@
                 escapeMarkup: function(markup) {
                     return markup;
                 },
+                templateResult: function(data) {
+                  var $result = $(`
+                    <div class="text-capitalize">
+                      <span>${data.text}</span>
+                    </div>
+                  `);
+                  return $result;
+                },
                 ajax: {
                     url: "{{ route('admin-workorder-select') }}",
                     type: 'get',

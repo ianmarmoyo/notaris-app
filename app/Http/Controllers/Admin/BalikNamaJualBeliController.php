@@ -24,7 +24,7 @@ class BalikNamaJualBeliController extends Controller
       View::share('menu_active', $menu);
     }
     view()->composer('content.balik_nama_jual_beli.*', function ($view) {
-      $view->with('page_title', 'Balik Nama Jual Beli');
+      $view->with('page_title', ucwords('Balik Nama Jual Beli'));
     });
   }
 
@@ -76,7 +76,7 @@ class BalikNamaJualBeliController extends Controller
 
   public function form($work_order_assignment_id)
   {
-    $title = "Penugasan Balik Nama Jual Beli";
+    $title = ucwords("Penugasan Balik Nama Jual Beli");
     $procedures = BalikNamaJualBeli::with('work_order_assignment')->where('work_order_assignment_id', $work_order_assignment_id)->get();
     $work_order_detail_id = $procedures[0]->work_order_assignment->work_order_detail_id;
     $wo_attachment = WorkOrderAttachment::where('work_order_detail_id', $work_order_detail_id)->get();
@@ -93,7 +93,7 @@ class BalikNamaJualBeliController extends Controller
 
   public function detail($work_order_assignment_id)
   {
-    $title = "Penugasan Balik Nama Jual Beli";
+    $title = ucwords("Penugasan Balik Nama Jual Beli");
     $procedures = BalikNamaJualBeli::with('work_order_assignment')->where('work_order_assignment_id', $work_order_assignment_id)->get();
     $work_order_assignment = $procedures[0]->work_order_assignment;
     $wo_attachment = WorkOrderAttachment::where('work_order_detail_id', $work_order_assignment->work_order_detail_id)->get();

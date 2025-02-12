@@ -96,7 +96,7 @@
                         <label class="col-sm-3 col-form-label" for="work_order_id">Keperluan</label>
                         <div class="col-sm-9">
                             @foreach ($work_order->work_order_details as $key => $row)
-                                <span class="badge rounded-pill bg-primary">{{ $row->keperluan }}</span>
+                                <span class="badge rounded-pill bg-primary text-capitalize">{{ $row->keperluan }}</span>
                             @endforeach
                         </div>
                     </div>
