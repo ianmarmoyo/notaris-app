@@ -23,7 +23,7 @@ class BalikNamaWaris extends Model
     });
 
     self::updating(function ($model) {
-      $model->tgl_checklist = $model->tgl_checklist ?? date('Y-m-d');
+      // $model->tgl_checklist = $model->tgl_checklist ?? date('Y-m-d');
       $model->tgl_bayar = $model->status_pembayaran ? date('Y-m-d') : null;
       $model->tgl_cek_sertifikat = $model->cek_sertifikat ? date('Y-m-d') : null;
     });
