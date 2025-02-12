@@ -180,33 +180,6 @@
                                             </label>
                                             <textarea name="catatan" class="form-control" id="" cols="30" rows="3">{{ $procedure->catatan }}</textarea>
                                         </div>
-
-                                        <div class="col-md-12 mb-3">
-                                            <label class="col-form-label" for="cek_sertifikat">
-                                                Cek Sertifikat
-                                            </label>
-                                            <br>
-                                            <label class="switch switch-lg">
-                                                <input type="checkbox" name="cek_sertifikat" class="switch-input"
-                                                    onclick="cekSertifikat(this)" value="{{ $procedure->id }}"
-                                                    @if ($procedure->cek_sertifikat) checked @endif />
-                                                <span class="switch-toggle-slider">
-                                                    <span class="switch-on">
-                                                        <i class="ti ti-check"></i>
-                                                    </span>
-                                                    <span class="switch-off">
-                                                        <i class="ti ti-x"></i>
-                                                    </span>
-                                                </span>
-                                                <span class="switch-label">
-                                                    @if ($procedure->cek_sertifikat == 1)
-                                                        Selesai
-                                                    @else
-                                                        Belum Selesai
-                                                    @endif
-                                                </span>
-                                            </label>
-                                        </div>
                                     @endif
                                     @if ($procedure->proses == 'Pendaftaran loket BPN')
                                         <div class="col-md-6 mb-3">
