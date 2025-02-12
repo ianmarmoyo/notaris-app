@@ -187,6 +187,10 @@
                                                                             class="" style="max-width: 200px"
                                                                             alt="">
                                                                     </div>
+                                                                    <button type="button" onclick="viewImage()"
+                                                                        class="mt-2 btn btn-sm btn-primary waves-effect waves-light">
+                                                                        Lihat Gambar
+                                                                    </button>
                                                                 </div>
                                                             @endif
                                                         </div>
@@ -327,6 +331,20 @@
                     break;
                 default:
                     break;
+            }
+
+            function viewImage() {
+                Swal.fire({
+                    title: '',
+                    text: '',
+                    imageUrl: "{{ $procedure->view_gambar }}",
+                    imageWidth: 400,
+                    imageAlt: 'Custom image',
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    },
+                    buttonsStyling: false
+                });
             }
         });
     </script>

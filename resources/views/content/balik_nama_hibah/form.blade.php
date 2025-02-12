@@ -138,6 +138,14 @@
                                                 @endif
                                             </span>
                                         </label>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="col-form-label" for="status_pembayaran">
+                                                Tanggal Checklist
+                                            </label>
+                                            <input type="text" id="tgl_checklist_{{ $procedure->id }}"
+                                                name="tgl_checklist" class="form-control dob-picker"
+                                                placeholder="YYYY-MM-DD" value="{{ $procedure->tgl_checklist }}" />
+                                        </div>
                                     </div>
                                     @if ($procedure->proses == 'Pembayaran dan Validasi Pajak Waris')
                                         <div class="col-md-4 mb-3">
@@ -179,6 +187,10 @@
                                                 <img src="{{ $procedure->view_gambar }}" class=""
                                                     style="max-width: 200px" alt="">
                                             </div>
+                                            <button type="button" onclick="viewImage()"
+                                                class="mt-2 btn btn-sm btn-primary waves-effect waves-light">
+                                                Lihat Gambar
+                                            </button>
                                         </div>
                                     @endif
                                     <div class="col-md-4 mb-3">
@@ -274,10 +286,12 @@
 
     <script>
         $(document).ready(function() {
+            $('input[name=tgl_checklist]').flatpickr({
+                monthSelectorType: 'static'
+            });
             $('input[name=tgl_pembayaran]').flatpickr({
                 monthSelectorType: 'static'
             });
-            // $('button[data-bs-toggle="tab"]').trigger('click');
         });
 
         $('button[data-bs-toggle="tab"]').on('click', function(e) {
@@ -310,8 +324,13 @@
 
             if (status) {
                 label.text('Selesai');
+                $(e).closest('.col-md-12').find('input[name=tgl_checklist]').flatpickr({
+                    defaultDate: 'today',
+                    monthSelectorType: 'static'
+                });
             } else {
                 label.text('Belum Selesai');
+                $(e).closest('.col-md-12').find('input[name=tgl_checklist]').val('');
             }
         }
 
@@ -398,6 +417,20 @@
                     message
                 } = response.responseJSON
                 toastr.warning(message, 'Warning', 1000);
+            });
+        }
+
+        function viewImage() {
+            Swal.fire({
+                title: '',
+                text: '',
+                imageUrl: "{{ $procedure->view_gambar }}",
+                imageWidth: 400,
+                imageAlt: 'Custom image',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
             });
         }
 

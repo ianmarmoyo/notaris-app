@@ -21,7 +21,7 @@ class BalikNamaHibah extends Model
     self::creating(function ($model) {});
 
     self::updating(function ($model) {
-      $model->tgl_checklist = $model->checklist ? date('Y-m-d') : null;
+      $model->tgl_checklist = $model->tgl_checklist ?? date('Y-m-d');
       $model->tgl_bayar = $model->status_pembayaran ? date('Y-m-d') : null;
     });
   }
@@ -43,5 +43,17 @@ class BalikNamaHibah extends Model
   public function work_order_assignment(): BelongsTo
   {
     return $this->belongsTo(WorkOrderAssignment::class, 'work_order_assignment_id');
+  }
+
+  public function setProsesAttribute($value)
+  {
+    // Menghapus semua spasi di akhir string
+    $this->attributes['proses'] = preg_replace('/\s+$/', '', $value);
+  }
+
+  public function getProsesAttribute($value)
+  {
+    // Menghapus semua spasi di akhir string saat mengambil data
+    return preg_replace('/\s+$/', '', $value);
   }
 }

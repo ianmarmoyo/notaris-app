@@ -42,6 +42,7 @@ class BalikNamaHibahController extends Controller
     $update = BalikNamaHibah::find($balik_nama_waris_id);
     $update->update([
       'checklist' => $checklist ? 1 : null,
+      'tgl_checklist' => $request->tgl_checklist,
       'status_pembayaran' => $status_pembayaran,
       'no_berkas' => $no_berkas,
       'catatan' => $catatan,
@@ -73,7 +74,7 @@ class BalikNamaHibahController extends Controller
 
   public function form($work_order_assignment_id)
   {
-    $title = "Penugasan Balik Nama Jual Beli";
+    $title = "Penugasan Balik Nama Hibah";
     $procedures = BalikNamaHibah::with('work_order_assignment')->where('work_order_assignment_id', $work_order_assignment_id)->get();
     $work_order_detail_id = $procedures[0]->work_order_assignment->work_order_detail_id;
     $wo_attachment = WorkOrderAttachment::where('work_order_detail_id', $work_order_detail_id)->get();
@@ -90,7 +91,7 @@ class BalikNamaHibahController extends Controller
 
   public function detail($work_order_assignment_id)
   {
-    $title = "Penugasan Balik Nama Jual Beli";
+    $title = "Penugasan Balik Nama Hibah";
     $procedures = BalikNamaHibah::with('work_order_assignment')->where('work_order_assignment_id', $work_order_assignment_id)->get();
     $work_order_assignment = $procedures[0]->work_order_assignment;
     $wo_attachment = WorkOrderAttachment::where('work_order_detail_id', $work_order_assignment->work_order_detail_id)->get();
