@@ -42,6 +42,7 @@ class BalikAPHBController extends Controller
     $update = BalikAPHB::find($balik_nama_waris_id);
     $update->update([
       'checklist' => $checklist ? 1 : null,
+      'tgl_checklist' => $request->tgl_checklist,
       'status_pembayaran' => $status_pembayaran,
       'tgl_bayar' => $tgl_pembayaran,
       'catatan' => $catatan,

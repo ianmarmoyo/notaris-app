@@ -21,7 +21,7 @@ class BalikNamaHibah extends Model
     self::creating(function ($model) {});
 
     self::updating(function ($model) {
-      $model->tgl_checklist = $model->tgl_checklist ?? date('Y-m-d');
+      // $model->tgl_checklist = $model->tgl_checklist ?? date('Y-m-d');
       $model->tgl_bayar = $model->status_pembayaran ? date('Y-m-d') : null;
     });
   }
