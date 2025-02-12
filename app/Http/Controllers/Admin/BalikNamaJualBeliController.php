@@ -47,7 +47,7 @@ class BalikNamaJualBeliController extends Controller
       'status_pembayaran' => $status_pembayaran,
       'no_berkas' => $no_berkas,
       'catatan' => $catatan,
-      'cek_sertifikat' => $cek_sertifikat,
+      'cek_sertifikat' => $checklist ? 1 : null,
       'tgl_bayar' => $tgl_pembayaran,
     ]);
 

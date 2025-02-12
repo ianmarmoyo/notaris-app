@@ -117,36 +117,39 @@
                                 @csrf
                                 <input type="hidden" name="balik_nama_waris_id" value="{{ $procedure->id }}">
                                 <div class="row">
-                                    <div class="col-md-12 mb-3">
-                                        <label class="switch switch-lg">
-                                            <input type="checkbox" name="checklist" class="switch-input"
-                                                onclick="checklistProses(this)" value="{{ $procedure->id }}"
-                                                @if ($procedure->checklist) checked @endif />
-                                            <span class="switch-toggle-slider">
-                                                <span class="switch-on">
-                                                    <i class="ti ti-check"></i>
-                                                </span>
-                                                <span class="switch-off">
-                                                    <i class="ti ti-x"></i>
-                                                </span>
-                                            </span>
-                                            <span class="switch-label">
-                                                @if ($procedure->checklist == 1)
-                                                    Selesai
-                                                @else
-                                                    Belum Selesai
-                                                @endif
-                                            </span>
-                                        </label>
-                                        <div class="col-md-4 mb-3">
-                                            <label class="col-form-label" for="status_pembayaran">
-                                                Tanggal Checklist
-                                            </label>
-                                            <input type="text" id="tgl_checklist_{{ $procedure->id }}"
-                                                name="tgl_checklist" class="form-control dob-picker"
-                                                placeholder="YYYY-MM-DD" value="{{ $procedure->tgl_checklist }}" />
-                                        </div>
-                                    </div>
+                                    @if($procedure->proses == 'Pembayaran dan Validasi Pajak Waris')
+                                    @else
+                                      <div class="col-md-12 mb-3">
+                                          <label class="switch switch-lg">
+                                              <input type="checkbox" name="checklist" class="switch-input"
+                                                  onclick="checklistProses(this)" value="{{ $procedure->id }}"
+                                                  @if ($procedure->checklist) checked @endif />
+                                              <span class="switch-toggle-slider">
+                                                  <span class="switch-on">
+                                                      <i class="ti ti-check"></i>
+                                                  </span>
+                                                  <span class="switch-off">
+                                                      <i class="ti ti-x"></i>
+                                                  </span>
+                                              </span>
+                                              <span class="switch-label">
+                                                  @if ($procedure->checklist == 1)
+                                                      Selesai
+                                                  @else
+                                                      Belum Selesai
+                                                  @endif
+                                              </span>
+                                          </label>
+                                          <div class="col-md-4 mb-3">
+                                              <label class="col-form-label" for="status_pembayaran">
+                                                  Tanggal Checklist
+                                              </label>
+                                              <input type="text" id="tgl_checklist_{{ $procedure->id }}"
+                                                  name="tgl_checklist" class="form-control dob-picker"
+                                                  placeholder="YYYY-MM-DD" value="{{ $procedure->tgl_checklist }}" />
+                                          </div>
+                                      </div>
+                                    @endif
                                     @if ($procedure->proses == 'Pembayaran dan Validasi Pajak Waris')
                                         <div class="col-md-4 mb-3">
                                             <label class="col-form-label" for="status_pembayaran">
@@ -179,6 +182,41 @@
                                                 Catatan
                                             </label>
                                             <textarea name="catatan" class="form-control" id="" cols="30" rows="3">{{ $procedure->catatan }}</textarea>
+                                        </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <label class="col-form-label" for="cek_sertifikat">
+                                                Cek Sertifikat
+                                            </label>
+                                            <br>
+                                            <label class="switch switch-lg">
+                                                <input type="checkbox" name="checklist" class="switch-input"
+                                                    onclick="checklistProses(this)" value="{{ $procedure->id }}"
+                                                    @if ($procedure->checklist) checked @endif />
+                                                <span class="switch-toggle-slider">
+                                                    <span class="switch-on">
+                                                        <i class="ti ti-check"></i>
+                                                    </span>
+                                                    <span class="switch-off">
+                                                        <i class="ti ti-x"></i>
+                                                    </span>
+                                                </span>
+                                                <span class="switch-label">
+                                                    @if ($procedure->checklist == 1)
+                                                        Selesai
+                                                    @else
+                                                        Belum Selesai
+                                                    @endif
+                                                </span>
+                                            </label>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="col-form-label" for="status_pembayaran">
+                                                    Tanggal Checklist
+                                                </label>
+                                                <input type="text" id="tgl_checklist_{{ $procedure->id }}"
+                                                    name="tgl_checklist" class="form-control dob-picker"
+                                                    placeholder="YYYY-MM-DD" value="{{ $procedure->tgl_checklist }}" />
+                                            </div>
                                         </div>
                                     @endif
                                     @if ($procedure->proses == 'Pendaftaran loket BPN')
