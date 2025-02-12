@@ -59,5 +59,4 @@ class BalikNamaWaris extends Model
     // Menghapus semua spasi di akhir string saat mengambil data
     return preg_replace('/\s+$/', '', $value);
   }
-
 }

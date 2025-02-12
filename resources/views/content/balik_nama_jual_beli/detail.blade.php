@@ -215,6 +215,9 @@
                                                                             class="" style="max-width: 200px"
                                                                             alt="">
                                                                     </div>
+                                                                    <button type="button" onclick="viewImage()" class="mt-2 btn btn-sm btn-primary waves-effect waves-light">
+                                                                      Lihat Gambar
+                                                                    </button>
                                                                 </div>
                                                             @endif
                                                         </div>
@@ -307,7 +310,7 @@
                                             <span class="mb-0 h6">{{ $key + 1 }}.
                                                 {{ $value->nama_lampiran }}</span>
                                             <span class="text-muted d-block">
-                                                {{ $value->jenis_berkas }}
+                                                {{-- {{ $value->jenis_berkas }} --}}
                                             </span>
                                         </label>
                                     </div>
@@ -361,5 +364,19 @@
                     break;
             }
         });
+
+        function viewImage() {
+            Swal.fire({
+                title: '',
+                text: '',
+                imageUrl: "{{ $procedure->view_gambar }}",
+                imageWidth: 400,
+                imageAlt: 'Custom image',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            });
+        }
     </script>
 @endsection

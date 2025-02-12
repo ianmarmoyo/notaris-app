@@ -38,10 +38,12 @@ class BalikNamaJualBeliController extends Controller
     $cek_sertifikat = $request->cek_sertifikat;
     $no_berkas = $request->no_berkas;
     $gambar = $request->hasFile('gambar');
+    $tgl_checklist = $request->tgl_checklist;
 
     $update = BalikNamaJualBeli::find($balik_nama_waris_id);
     $update->update([
       'checklist' => $checklist ? 1 : null,
+      'tgl_checklist' => $tgl_checklist,
       'status_pembayaran' => $status_pembayaran,
       'no_berkas' => $no_berkas,
       'catatan' => $catatan,

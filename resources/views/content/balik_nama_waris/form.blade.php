@@ -324,7 +324,6 @@
     <script>
         $(document).ready(function() {
             $('input[name=tgl_checklist]').flatpickr({
-                defaultDate: 'today',
                 monthSelectorType: 'static'
             });
             $('input[name=tgl_pembayaran]').flatpickr({

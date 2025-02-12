@@ -43,4 +43,16 @@ class BalikNamaSertifikat extends Model
   {
     return $this->belongsTo(WorkOrderAssignment::class, 'work_order_assignment_id');
   }
+
+  public function setProsesAttribute($value)
+  {
+    // Menghapus semua spasi di akhir string
+    $this->attributes['proses'] = preg_replace('/\s+$/', '', $value);
+  }
+
+  public function getProsesAttribute($value)
+  {
+    // Menghapus semua spasi di akhir string saat mengambil data
+    return preg_replace('/\s+$/', '', $value);
+  }
 }
