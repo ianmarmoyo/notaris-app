@@ -24,7 +24,7 @@ class BalikNamaHibahController extends Controller
       View::share('menu_active', $menu);
     }
     view()->composer('content.balik_nama_hibah.*', function ($view) {
-      $view->with('page_title', 'Balik Nama hibah');
+      $view->with('page_title', ucwords('Balik Nama hibah'));
     });
   }
 
@@ -74,7 +74,7 @@ class BalikNamaHibahController extends Controller
 
   public function form($work_order_assignment_id)
   {
-    $title = "Penugasan Balik Nama Hibah";
+    $title = ucwords("Penugasan Balik Nama Hibah");
     $procedures = BalikNamaHibah::with('work_order_assignment')->where('work_order_assignment_id', $work_order_assignment_id)->get();
     $work_order_detail_id = $procedures[0]->work_order_assignment->work_order_detail_id;
     $wo_attachment = WorkOrderAttachment::where('work_order_detail_id', $work_order_detail_id)->get();
@@ -91,7 +91,7 @@ class BalikNamaHibahController extends Controller
 
   public function detail($work_order_assignment_id)
   {
-    $title = "Penugasan Balik Nama Hibah";
+    $title = ucwords("Penugasan Balik Nama Hibah");
     $procedures = BalikNamaHibah::with('work_order_assignment')->where('work_order_assignment_id', $work_order_assignment_id)->get();
     $work_order_assignment = $procedures[0]->work_order_assignment;
     $wo_attachment = WorkOrderAttachment::where('work_order_detail_id', $work_order_assignment->work_order_detail_id)->get();

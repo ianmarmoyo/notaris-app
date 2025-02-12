@@ -97,7 +97,14 @@ class PersyaratanWorkOrderHelper
   public static function conditionBalikNamaHibah(){
     $rules = [
       'syarat' => [
-
+        'setifikat asli',
+        'SPPT Tahun Berjalan & Lunas Tunggakan PBB',
+        'Share Location',
+        'Foto Lokasi',
+        'FC & Asli KTP KK Pemberi/Penjual (Kawan Kawin)',
+        'akta Nikah pemberi/penjualan',
+        'FC & Asli KTP KK BPJS Penerima/Pembali',
+        'NPWP jika pekerjaan : PNS, TNI, POLRI, GURU'
       ]
     ];
     return $rules;

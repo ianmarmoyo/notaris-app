@@ -217,7 +217,7 @@
                                                 <span class="mb-0 h6">{{ $key + 1 }}.
                                                     {{ $value->nama_lampiran }}</span>
                                                 <span class="text-muted d-block">
-                                                    {{ $value->jenis_berkas }}
+                                                    {{-- {{ $value->jenis_berkas }} --}}
                                                 </span>
                                             </label>
                                         </div>
