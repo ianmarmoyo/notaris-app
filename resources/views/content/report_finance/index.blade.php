@@ -62,6 +62,7 @@
                             <th width="400">No Pengajuan</th>
                             <th width="400">Nama Pengaju</th>
                             <th width="350">Keperluan</th>
+                            <th>tgl pembayaran</th>
                             <th width="250">Nominal</th>
                         </tr>
                     </thead>
@@ -119,7 +120,7 @@
                                 `;
                             });
 
-                          return `
+                            return `
                             <div class="d-flex gap-2 flex-column text-capitalize">
                               ${html}
                             </div>
@@ -128,6 +129,12 @@
                     },
                     {
                         targets: [4],
+                        render: function(data, type, full, meta) {
+                            return data ? moment(data).format('DD MMMM YYYY HH:mm') : '';
+                        }
+                    },
+                    {
+                        targets: [5],
                         render: function(data, type, full, meta) {
                             return accounting.formatMoney(data, "", 0, ".", ",");
                         }
@@ -152,6 +159,9 @@
                     },
                     {
                         data: "nama_klien"
+                    },
+                    {
+                        data: "tgl_bayar"
                     },
                     {
                         "orderable": false,
