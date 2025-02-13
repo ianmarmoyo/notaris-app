@@ -44,8 +44,10 @@ class BalikAPHBController extends Controller
       'checklist' => $checklist ? 1 : null,
       'tgl_checklist' => $request->tgl_checklist,
       'status_pembayaran' => $status_pembayaran,
-      'tgl_bayar' => $tgl_pembayaran,
+      'no_berkas' => $no_berkas,
       'catatan' => $catatan,
+      'cek_sertifikat' => $checklist ? 1 : null,
+      'tgl_bayar' => $tgl_pembayaran,
     ]);
 
     if ($gambar) {

@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', $title)
+@section('title', 'Academy Course Details - Apps')
 
 @section('vendor-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/plyr/plyr.css') }}" />
@@ -59,6 +59,7 @@
             text-align: center;
         }
     </style>
+
 @endsection
 
 @section('vendor-script')
@@ -116,36 +117,39 @@
                                 @csrf
                                 <input type="hidden" name="balik_nama_waris_id" value="{{ $procedure->id }}">
                                 <div class="row">
-                                    <div class="col-md-12 mb-3">
-                                        <label class="switch switch-lg">
-                                            <input type="checkbox" name="checklist" class="switch-input"
-                                                onclick="checklistProses(this)" value="{{ $procedure->id }}"
-                                                @if ($procedure->checklist) checked @endif />
-                                            <span class="switch-toggle-slider">
-                                                <span class="switch-on">
-                                                    <i class="ti ti-check"></i>
-                                                </span>
-                                                <span class="switch-off">
-                                                    <i class="ti ti-x"></i>
-                                                </span>
-                                            </span>
-                                            <span class="switch-label">
-                                                @if ($procedure->checklist == 1)
-                                                    Selesai
-                                                @else
-                                                    Belum Selesai
-                                                @endif
-                                            </span>
-                                        </label>
-                                        <div class="col-md-4 mb-3">
-                                            <label class="col-form-label" for="status_pembayaran">
-                                                Tanggal Checklist
-                                            </label>
-                                            <input type="text" id="tgl_checklist_{{ $procedure->id }}"
-                                                name="tgl_checklist" class="form-control dob-picker"
-                                                placeholder="YYYY-MM-DD" value="{{ $procedure->tgl_checklist }}" />
-                                        </div>
-                                    </div>
+                                    @if($procedure->proses == 'Pembayaran dan Validasi Pajak Waris')
+                                    @else
+                                      <div class="col-md-12 mb-3">
+                                          <label class="switch switch-lg">
+                                              <input type="checkbox" name="checklist" class="switch-input"
+                                                  onclick="checklistProses(this)" value="{{ $procedure->id }}"
+                                                  @if ($procedure->checklist) checked @endif />
+                                              <span class="switch-toggle-slider">
+                                                  <span class="switch-on">
+                                                      <i class="ti ti-check"></i>
+                                                  </span>
+                                                  <span class="switch-off">
+                                                      <i class="ti ti-x"></i>
+                                                  </span>
+                                              </span>
+                                              <span class="switch-label">
+                                                  @if ($procedure->checklist == 1)
+                                                      Selesai
+                                                  @else
+                                                      Belum Selesai
+                                                  @endif
+                                              </span>
+                                          </label>
+                                          <div class="col-md-4 mb-3">
+                                              <label class="col-form-label" for="status_pembayaran">
+                                                  Tanggal Checklist
+                                              </label>
+                                              <input type="text" id="tgl_checklist_{{ $procedure->id }}"
+                                                  name="tgl_checklist" class="form-control dob-picker"
+                                                  placeholder="YYYY-MM-DD" value="{{ $procedure->tgl_checklist }}" />
+                                          </div>
+                                      </div>
+                                    @endif
                                     @if ($procedure->proses == 'Pembayaran dan Validasi Pajak Waris')
                                         <div class="col-md-4 mb-3">
                                             <label class="col-form-label" for="status_pembayaran">
@@ -159,8 +163,9 @@
                                                 </option>
                                                 <option value="negosiasi" @if ($procedure->status_pembayaran == 'negosiasi') selected @endif>
                                                     Negosiasi</option>
-                                                <option value="sudah" @if ($procedure->status_pembayaran == 'sudah') selected @endif>
-                                                    Sudah
+                                                <option value="sudah lunas"
+                                                    @if ($procedure->status_pembayaran == 'sudah lunas') selected @endif>
+                                                    Sudah Lunas
                                                 </option>
                                             </select>
                                         </div>
@@ -172,8 +177,58 @@
                                                 name="tgl_pembayaran" class="form-control dob-picker"
                                                 placeholder="YYYY-MM-DD" value="{{ $procedure->tgl_bayar }}" />
                                         </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label class="col-form-label" for="status_pembayaran">
+                                                Catatan
+                                            </label>
+                                            <textarea name="catatan" class="form-control" id="" cols="30" rows="3">{{ $procedure->catatan }}</textarea>
+                                        </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <label class="col-form-label" for="cek_sertifikat">
+                                                Cek Sertifikat
+                                            </label>
+                                            <br>
+                                            <label class="switch switch-lg">
+                                                <input type="checkbox" name="checklist" class="switch-input"
+                                                    onclick="checklistProses(this)" value="{{ $procedure->id }}"
+                                                    @if ($procedure->checklist) checked @endif />
+                                                <span class="switch-toggle-slider">
+                                                    <span class="switch-on">
+                                                        <i class="ti ti-check"></i>
+                                                    </span>
+                                                    <span class="switch-off">
+                                                        <i class="ti ti-x"></i>
+                                                    </span>
+                                                </span>
+                                                <span class="switch-label">
+                                                    @if ($procedure->checklist == 1)
+                                                        Selesai
+                                                    @else
+                                                        Belum Selesai
+                                                    @endif
+                                                </span>
+                                            </label>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="col-form-label" for="status_pembayaran">
+                                                    Tanggal Checklist
+                                                </label>
+                                                <input type="text" id="tgl_checklist_{{ $procedure->id }}"
+                                                    name="tgl_checklist" class="form-control dob-picker"
+                                                    placeholder="YYYY-MM-DD" value="{{ $procedure->tgl_checklist }}" />
+                                            </div>
+                                        </div>
                                     @endif
-                                    @if ($procedure->proses == 'Penyerahan')
+                                    @if ($procedure->proses == 'Pendaftaran loket BPN')
+                                        <div class="col-md-6 mb-3">
+                                            <label class="col-form-label" for="status_pembayaran">
+                                                No Berkas
+                                            </label>
+                                            <input type="text" id="no_berkas" name="no_berkas" class="form-control"
+                                                placeholder="No Berkas..." value="{{ $procedure->no_berkas }}" />
+                                        </div>
+                                    @endif
+                                    @if (strtolower($procedure->proses) == strtolower('penyerahan'))
                                         <div class="col-md-6 mb-3">
                                             <label class="col-form-label" for="status_pembayaran">
                                                 Gambar
@@ -192,12 +247,6 @@
                                             </button>
                                         </div>
                                     @endif
-                                    <div class="col-md-4 mb-3">
-                                        <label class="col-form-label" for="status_pembayaran">
-                                            Catatan
-                                        </label>
-                                        <textarea name="catatan" class="form-control" id="" cols="30" rows="3">{{ $procedure->catatan }}</textarea>
-                                    </div>
                                 </div>
                             </form>
                             <button type="button" onclick="saveProcedure(this)" class="btn btn-primary">Simpan</button>
@@ -241,11 +290,15 @@
                                                 <i class="ti ti-x"></i>
                                             </span>
                                         @endif
+                                        {{-- <input class="form-check-input" type="checkbox" value="{{ $value->id }}"
+                                        onclick="checkListPesyaratan(this)" id="checklist"
+                                        @if ($value->checklist == 'yes') checked @endif
+                                        @if (!auth()->user()->can('checklist berkas pengajuan')) disabled @endif /> --}}
                                         <label for="checklist" class="form-check-label ms-3">
                                             <span class="mb-0 h6">{{ $key + 1 }}.
                                                 {{ $value->nama_lampiran }}</span>
                                             <span class="text-muted d-block">
-                                                {{ $value->jenis_berkas }}
+                                                {{-- {{ $value->jenis_berkas }} --}}
                                             </span>
                                         </label>
                                     </div>
@@ -287,13 +340,10 @@
             $('input[name=tgl_pembayaran]').flatpickr({
                 monthSelectorType: 'static'
             });
-            // $('button[data-bs-toggle="tab"]').trigger('click');
         });
 
         $('button[data-bs-toggle="tab"]').on('click', function(e) {
             let target = $(e.currentTarget).attr('data-bs-target');
-            console.log(target);
-
             switch (target) {
                 case '#navs-prodecure':
                     $('#navs-prodecure').show('fade');
@@ -314,9 +364,6 @@
             let id = e.value;
             let status = e.checked;
             let label = $(e).closest('.switch').find('.switch-label');
-            console.log({
-                status
-            });
 
             if (status) {
                 label.text('Selesai');
@@ -330,25 +377,11 @@
             }
         }
 
-        function viewImage() {
-            Swal.fire({
-                title: '',
-                text: '',
-                imageUrl: "{{ $procedure->view_gambar }}",
-                imageWidth: 400,
-                imageAlt: 'Custom image',
-                customClass: {
-                    confirmButton: 'btn btn-primary'
-                },
-                buttonsStyling: false
-            });
-        }
-
         function saveProcedure(e) {
             let closest = $(e).closest('.accordion-body');
             let balik_nama_waris_id = closest.find('input[name="balik_nama_waris_id"]').val();
             let formData = new FormData(closest.find('form')[0]);
-            console.log(formData);
+
             for (let pair of formData.entries()) {
                 console.log(pair[0] + ': ' + pair[1]);
             }
@@ -427,6 +460,20 @@
                     message
                 } = response.responseJSON
                 toastr.warning(message, 'Warning', 1000);
+            });
+        }
+
+        function viewImage() {
+            Swal.fire({
+                title: '',
+                text: '',
+                imageUrl: "{{ $procedure->view_gambar }}",
+                imageWidth: 400,
+                imageAlt: 'Custom image',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
             });
         }
 
