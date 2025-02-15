@@ -9,11 +9,12 @@ use Illuminate\Support\Facades\Storage;
 
 class Employee extends Model
 {
-    use HasFactory;
-    protected $guarded = [];
+  use HasFactory;
+  protected $guarded = [];
   protected $appends = [
     "view_foto",
   ];
+  protected $with = ['admin'];
 
   public function getViewFotoAttribute()
   {
@@ -31,6 +32,6 @@ class Employee extends Model
    */
   public function admin(): HasOne
   {
-      return $this->hasOne(Admin::class, 'employee_id');
+    return $this->hasOne(Admin::class, 'employee_id');
   }
 }

@@ -43,6 +43,8 @@ class WorkOrderController extends Controller
     $search = $request->search['value'];
     $user_admin_id = in_array('notaris', rolesUser()->toArray()) ? auth()->user()->id : false;
     $client_id = $request->client_id;
+    $employee_admin_id = $request->employee_admin_id;
+
 
     $query = WorkOrderAssignment::select('id');
     $query->leftJoin(
@@ -77,6 +79,9 @@ class WorkOrderController extends Controller
     });
     $query->when($user_admin_id, function ($q) use ($user_admin_id) {
       $q->where('work_order_assignments.user_admin_id', $user_admin_id);
+    });
+    $query->when($employee_admin_id, function ($q) use ($employee_admin_id) {
+      $q->where('work_order_assignments.user_admin_id', $employee_admin_id);
     });
     $totals = $query->count();
 
@@ -115,6 +120,9 @@ class WorkOrderController extends Controller
           OR
           UPPER(admins.name) like '%" . $search . "%'
       )");
+    });
+    $query->when($employee_admin_id, function ($q) use ($employee_admin_id) {
+      $q->where('work_order_assignments.user_admin_id', $employee_admin_id);
     });
     $query->when($client_id, function ($q) use ($client_id) {
       $q->where('clients.id', $client_id);

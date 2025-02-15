@@ -124,7 +124,8 @@
                     <div class="d-flex justify-content-around flex-wrap pt-2 pb-2 border-bottom">
                         <div class="d-flex align-items-start">
                             <div class="">
-                                <img src="{{ $employee->view_foto }}" alt="{{ $employee->nama }}" width="150" class="rounded">
+                                <img src="{{ $employee->view_foto }}" alt="{{ $employee->nama }}" width="150"
+                                    class="rounded">
                             </div>
                         </div>
                     </div>
@@ -169,37 +170,35 @@
                 <ul class="nav nav-pills mb-3 nav-fill" style="width: fit-content">
                     <li class="nav-item" role="presentation">
                         <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
-                            data-bs-target="#navs-riwayat-kelas" aria-controls="navs-riwayat-kelas" aria-selected="true"
-                            tabindex="-1"><i class="tf-icons ti ti-history ti-xs me-1"></i>
-                            Riwayat Kelas</button>
+                            data-bs-target="#navs-work-order" aria-controls="navs-work-order" aria-selected="true"
+                            tabindex="-1"><i class="tf-icons ti ti-building-bank ti-xs me-1"></i>
+                            Work Order</button>
                     </li>
-                    <li class="nav-item" role="presentation">
+                    {{-- <li class="nav-item" role="presentation">
                         <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                             data-bs-target="#navs-pindah-kelas" aria-controls="navs-pindah-kelas" aria-selected="true"
                             tabindex="-1"><i class="tf-icons ti ti-arrows-move ti-xs me-1"></i>
                             Pindah Kelas
                         </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                            data-bs-target="#navs-riwayat-rapor" aria-controls="navs-riwayat-rapor" aria-selected="true"
-                            tabindex="-1"><i class="tf-icons ti ti-history ti-xs me-1"></i>
-                            Riwayat Rapor
-                        </button>
-                    </li>
+                    </li> --}}
                 </ul>
                 <div class="tab-content">
-                    {{-- riwayat-kelas --}}
-                    <div class="tab-pane fade show active" id="navs-riwayat-kelas" role="tabpanel">
+                    {{-- work-order --}}
+                    <div class="tab-pane fade show active" id="navs-work-order" role="tabpanel">
                         {{-- <h5 class="card-header">Riwayat Kelas</h5> --}}
                         <div class="card-datatable table-responsive mb-3">
                             <table class="table table-bordered table-hover border-top" style="border: 1px solid #dbdade;"
-                                id="dt-riwayat-kelas">
+                                id="dt-work-order">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Kelas</th>
-                                        <th>Keterangan</th>
+                                        <th width="10">#</th>
+                                        <th width="400">Invoice Pengajuan</th>
+                                        <th width="300">Tgl Pengajuan</th>
+                                        <th width="700">Keperluan</th>
+                                        <th width="300">Penugasan Ke</th>
+                                        <th width="300">Tgl Penugasan</th>
+                                        <th width="400">Status Penugasan</th>
+                                        <th width="40">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -221,73 +220,132 @@
                 dateFormat: "d-m-Y",
             })
 
-            let form = document.getElementById('form-pindah-kelas');
-            const validation = FormValidation.formValidation(form, {
-                icon: {
-                    valid: 'glyphicon glyphicon-ok',
-                    invalid: 'glyphicon glyphicon-remove',
-                    validating: 'glyphicon glyphicon-refresh'
+            dataTable = $('#dt-work-order').DataTable({
+                stateSave: true,
+                processing: true,
+                serverSide: true,
+                filter: true,
+                info: false,
+                lengthChange: true,
+                responsive: true,
+                order: [
+                    [4, "desc"]
+                ],
+                ajax: {
+                    url: "{{ route('admin-workorder-data') }}",
+                    type: "GET",
+                    data: function(data) {
+                      data.employee_admin_id = "{{ $employee->admin->id }}";
+                    }
                 },
-                fields: {
-                    institution_id: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Lembaga wajib diisi.'
-                            }
+                columnDefs: [{
+                        orderable: false,
+                        targets: [0]
+                    },
+                    {
+                        className: "text-right",
+                        targets: [0]
+                    },
+                    {
+                        targets: 1,
+                        render: function(data, type, full, meta) {
+                            return `
+                          <div class="d-flex justify-content-start align-items-center user-name">
+                            <div class="d-flex flex-column">
+                              <span class="emp_name text-truncate">${full.nama_klien}</span>
+                              <small class="emp_post text-truncate text-muted">
+                                ${data}
+                              </small>
+                            </div>
+                          </div>
+                          `;
                         }
                     },
-                    next_kelas_id: {
-                        validators: {
-                            notEmpty: {
-                                message: 'Kelas wajib diisi.'
-                            }
+                    {
+                        targets: [2, 5],
+                        render: function(data, type, full, meta) {
+                            return moment(data).format('LL');
                         }
                     },
-                },
-                plugins: {
-                    trigger: new FormValidation.plugins.Trigger(),
-                    bootstrap5: new FormValidation.plugins.Bootstrap5(),
-                    autoFocus: new FormValidation.plugins.AutoFocus(),
-                    submitButton: new FormValidation.plugins.SubmitButton()
-                }
-            }).on('core.form.valid', function() {
-                $.ajax({
-                    url: $('#form-pindah-kelas').attr('action'),
-                    method: 'POST',
-                    data: new FormData($('#form-pindah-kelas')[0]),
-                    processData: false,
-                    contentType: false,
-                    dataType: 'json',
-                    beforeSend: function() {
-                        $('#nav-tabContent').block({
-                            message: '<div class="spinner-border text-primary" role="status"></div>',
-                            css: {
-                                backgroundColor: 'transparent',
-                                border: '0',
-                            },
-                            overlayCSS: {
-                                backgroundColor: '#fff',
-                                opacity: 0.8
+                    {
+                        targets: 4,
+                        render: function(data, type, full, meta) {
+                            return `
+                          <div class="d-flex justify-content-start align-items-center user-name">
+                            <div class="d-flex flex-column">
+                              <span class="emp_name text-truncate">${full.nama_admin}</span>
+                              <small class="emp_post text-truncate text-muted">
+
+                              </small>
+                            </div>
+                          </div>
+                          `;
+                        }
+                    },
+                    {
+
+                        targets: 7,
+                        title: 'Aksi',
+                        orderable: false,
+                        searchable: false,
+                        render: function(data, type, full, meta) {
+
+                            let btn_edit = `
+                            <a href="{{ url('admin/work-order/form') }}/${data}" class="dropdown-item"><i class="ti ti-edit me-1"></i>Edit</a>
+                          `;
+                            if (full.status_penugasan == 'Selesai') {
+                                btn_edit = ``;
                             }
-                        });
+
+                            return (`
+                                <div class="d-inline-block">
+                                    <a href="javascript:;" class="btn btn-sm btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="text-primary ti ti-dots-vertical"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end m-0">
+                                        <a href="{{ url('admin/work-order/detail') }}/${data}" class="dropdown-item"><i class="ti ti-eye me-1"></i>Detail</a>
+                                        ${btn_edit}
+                                    </div>
+                                </div>
+                            `);
+                        }
                     }
-                }).done(function(response) {
-                    $('#nav-tabContent').unblock();
-                    if (response.status) {
-                        location.reload();
-                        toastr.success(response.message, 'Success', 1000);
-                    } else {
-                        toastr.warning(response.message, 'Warning', 1000);
+                ],
+                columns: [{
+                        data: null,
+                        className: "dt-center",
+                        "orderable": false,
+                        "searchable": false,
+                        "render": function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        "orderable": false,
+                        "searchable": false,
+                        data: "no_wo"
+                    },
+                    {
+                        data: "tgl_pengajuan"
+                    },
+                    {
+                        data: "keperluan"
+                    },
+                    {
+                        data: "nama_admin"
+                    },
+                    {
+                        data: "tgl_penugasan"
+                    },
+                    {
+                        data: "status_penugasan"
+                    },
+                    {
+                        "orderable": false,
+                        "searchable": false,
+                        data: "id"
                     }
-                    return;
-                }).fail(function(response) {
-                    const {
-                        status,
-                        message
-                    } = response.responseJSON
-                    $('#nav-tabContent').unblock();
-                    toastr.warning(message, 'Warning', 1000);
-                });
+                ]
             });
         });
 

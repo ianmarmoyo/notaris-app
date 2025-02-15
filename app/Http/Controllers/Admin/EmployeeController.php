@@ -81,7 +81,7 @@ class EmployeeController extends Controller
     ], 200);
   }
 
-  public function store(EmployeeRequest $request)
+  public function store(Request $request)
   {
     try {
       $guru = Employee::create([
