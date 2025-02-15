@@ -53,6 +53,18 @@ class RouteMappingWorkOrderHelper{
       case 'pendirian_pt_perorangan':
         return self::routeMapping($slug);
         break;
+      case 'pendirian_yayasan':
+        return self::routeMapping($slug);
+        break;
+      case 'perjanjian_lainnya':
+        return self::routeMapping($slug);
+        break;
+      case 'warmarking':
+        return self::routeMapping($slug);
+        break;
+      case 'legalisasi':
+        return self::routeMapping($slug);
+        break;
       default:
         # code...
         break;
@@ -77,6 +89,10 @@ class RouteMappingWorkOrderHelper{
       'pendirian_perkumpulan' => 'admin/pendirian-perkumpulan/work-order-assignment',
       'pendirian_cv' => 'admin/pendirian-cv/work-order-assignment',
       'pendirian_pt_perorangan' => 'admin/pendirian-pt-perorangan/work-order-assignment',
+      'pendirian_yayasan' => 'admin/pendirian-yayasan/work-order-assignment',
+      'perjanjian_lainnya' => 'admin/perjanjian-lainnya/work-order-assignment',
+      'warmarking' => 'admin/warmarking/work-order-assignment',
+      'legalisasi' => 'admin/legalisasi/work-order-assignment',
     ];
 
     if (isset($slugMap[$slug])) {

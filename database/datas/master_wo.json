@@ -56,5 +56,21 @@
   {
     "nama" : "Pendirian Perkumpulan",
     "slug" : "pendirian_perkumpulan"
+  },
+  {
+    "nama" : "Pendirian Yayasan",
+    "slug" : "pendirian_yayasan"
+  },
+  {
+    "nama" : "Perjanjian Lainnya",
+    "slug" : "perjanjian_lainnya"
+  },
+  {
+    "nama" : "Warmarking",
+    "slug" : "warmarking"
+  },
+  {
+    "nama" : "Legalisasi",
+    "slug" : "legalisasi"
   }
 ]

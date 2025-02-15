@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\BalikNamaWarisController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\KlienController;
+use App\Http\Controllers\Admin\LegalisasiController;
 use App\Http\Controllers\Admin\MasterWorkOrderController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\MyAppController;
@@ -20,9 +21,11 @@ use App\Http\Controllers\Admin\PendiranPTperoranganController;
 use App\Http\Controllers\Admin\PendirianCvController;
 use App\Http\Controllers\Admin\PendirianPerkumpulanController;
 use App\Http\Controllers\Admin\PendirianPTController;
+use App\Http\Controllers\Admin\PendirianYayasanController;
 use App\Http\Controllers\Admin\PenggabunganSertifikatController;
 use App\Http\Controllers\Admin\PeningkatanHakController;
 use App\Http\Controllers\Admin\PenurunanHakController;
+use App\Http\Controllers\Admin\PerjanjianLainnyaController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ReportFinanceController;
 use App\Http\Controllers\Admin\ReportWorkOrderController;
@@ -31,6 +34,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SertifikatPermohonanHakController;
 use App\Http\Controllers\Admin\UserAdminController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\WarmarkingController;
 use App\Http\Controllers\Admin\WorkOrderController;
 use Illuminate\Support\Facades\Route;
 
@@ -402,5 +406,45 @@ Route::middleware(
     Route::post('/store', [PendirianPerkumpulanController::class, 'store'])->name('store');
     Route::get('/work-order-assignment/{work_order_assignment_id}', [PendirianPerkumpulanController::class, 'detail']);
     Route::get('/work-order-assignment/{work_order_assignment_id}/form', [PendirianPerkumpulanController::class, 'form']);
+  });
+
+  /**
+   * Legalisasi
+   */
+  Route::group(['prefix' => 'legalisasi', 'as' => 'legalisasi-'], function () {
+    Route::get('/', [LegalisasiController::class, 'index'])->name('index');
+    Route::post('/store', [LegalisasiController::class, 'store'])->name('store');
+    Route::get('/work-order-assignment/{work_order_assignment_id}', [LegalisasiController::class, 'detail']);
+    Route::get('/work-order-assignment/{work_order_assignment_id}/form', [LegalisasiController::class, 'form']);
+  });
+
+  /**
+   * Warmarking
+   */
+  Route::group(['prefix' => 'warmarking', 'as' => 'warmarking-'], function () {
+    Route::get('/', [WarmarkingController::class, 'index'])->name('index');
+    Route::post('/store', [WarmarkingController::class, 'store'])->name('store');
+    Route::get('/work-order-assignment/{work_order_assignment_id}', [WarmarkingController::class, 'detail']);
+    Route::get('/work-order-assignment/{work_order_assignment_id}/form', [WarmarkingController::class, 'form']);
+  });
+
+  /**
+   * Perjanjian lainnya
+   */
+  Route::group(['prefix' => 'perjanjian-lainnya', 'as' => 'perjanjianlainnya-'], function () {
+    Route::get('/', [PerjanjianLainnyaController::class, 'index'])->name('index');
+    Route::post('/store', [PerjanjianLainnyaController::class, 'store'])->name('store');
+    Route::get('/work-order-assignment/{work_order_assignment_id}', [PerjanjianLainnyaController::class, 'detail']);
+    Route::get('/work-order-assignment/{work_order_assignment_id}/form', [PerjanjianLainnyaController::class, 'form']);
+  });
+
+  /**
+   * Pendirian Yayasan
+   */
+  Route::group(['prefix' => 'pendirian-yayasan', 'as' => 'pendirianyayasan-'], function () {
+    Route::get('/', [PendirianYayasanController::class, 'index'])->name('index');
+    Route::post('/store', [PendirianYayasanController::class, 'store'])->name('store');
+    Route::get('/work-order-assignment/{work_order_assignment_id}', [PendirianYayasanController::class, 'detail']);
+    Route::get('/work-order-assignment/{work_order_assignment_id}/form', [PendirianYayasanController::class, 'form']);
   });
 });

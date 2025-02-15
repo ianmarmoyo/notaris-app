@@ -9,16 +9,20 @@ use App\Models\BalikNamaHibah;
 use App\Models\BalikNamaJualBeli;
 use App\Models\BalikNamaSertifikat;
 use App\Models\BalikNamaWaris;
+use App\Models\Legalisasi;
 use App\Models\PelepasanHak;
 use App\Models\PemecahSertifikat;
 use App\Models\PendirianCV;
 use App\Models\PendirianPerkumpulan;
 use App\Models\PendirianPT;
 use App\Models\PendirianPTperorangan;
+use App\Models\PendirianYayasan;
 use App\Models\PenggabunganSertifikat;
 use App\Models\PeningkatanHak;
 use App\Models\PenurunanHak;
+use App\Models\PerjanjianLainnya;
 use App\Models\SertifikatPermohonanHak;
+use App\Models\Warmarking;
 
 class InsertWorkOrderProcedureAction
 {
@@ -91,6 +95,22 @@ class InsertWorkOrderProcedureAction
         break;
       case 'pendirian_perkumpulan':
         $insert_procedure = self::insertPendirianPerkumpulan($work_order_assignment_id, $procedures);
+        return $insert_procedure;
+        break;
+      case 'pendirian_yayasan':
+        $insert_procedure = self::insertPendirianYayasan($work_order_assignment_id, $procedures);
+        return $insert_procedure;
+        break;
+      case 'perjanjian_lainnya':
+        $insert_procedure = self::insertPerjanjianLainnya($work_order_assignment_id, $procedures);
+        return $insert_procedure;
+        break;
+      case 'warmarking':
+        $insert_procedure = self::insertWarmarking($work_order_assignment_id, $procedures);
+        return $insert_procedure;
+        break;
+      case 'legalisasi':
+        $insert_procedure = self::insertLegalisasi($work_order_assignment_id, $procedures);
         return $insert_procedure;
         break;
       default:
@@ -299,6 +319,58 @@ class InsertWorkOrderProcedureAction
     $results = [];
     foreach ($procedures as $syarat) {
       $results[] = PendirianPerkumpulan::create([
+        'work_order_assignment_id' => $work_order_assignment_id,
+        'proses' => $syarat
+      ]);
+    }
+
+    return $results;
+  }
+
+  public static function insertPendirianYayasan($work_order_assignment_id, $procedures)
+  {
+    $results = [];
+    foreach ($procedures as $syarat) {
+      $results[] = PendirianYayasan::create([
+        'work_order_assignment_id' => $work_order_assignment_id,
+        'proses' => $syarat
+      ]);
+    }
+
+    return $results;
+  }
+
+  public static function insertPerjanjianLainnya($work_order_assignment_id, $procedures)
+  {
+    $results = [];
+    foreach ($procedures as $syarat) {
+      $results[] = PerjanjianLainnya::create([
+        'work_order_assignment_id' => $work_order_assignment_id,
+        'proses' => $syarat
+      ]);
+    }
+
+    return $results;
+  }
+
+  public static function insertWarmarking($work_order_assignment_id, $procedures)
+  {
+    $results = [];
+    foreach ($procedures as $syarat) {
+      $results[] = Warmarking::create([
+        'work_order_assignment_id' => $work_order_assignment_id,
+        'proses' => $syarat
+      ]);
+    }
+
+    return $results;
+  }
+
+  public static function insertLegalisasi($work_order_assignment_id, $procedures)
+  {
+    $results = [];
+    foreach ($procedures as $syarat) {
+      $results[] = Legalisasi::create([
         'work_order_assignment_id' => $work_order_assignment_id,
         'proses' => $syarat
       ]);

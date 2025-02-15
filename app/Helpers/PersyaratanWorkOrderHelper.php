@@ -55,6 +55,18 @@ class PersyaratanWorkOrderHelper
       case 'pendirian_perkumpulan':
         return self::rulesPendirianPerkumpulan();
         break;
+      case 'pendirian_yayasan':
+        return self::rulesPendirianYayasan();
+        break;
+      case 'perjanjian_lainnya':
+        return self::rulesPerjanjianLainnya();
+        break;
+      case 'warmarking':
+        return self::rulesWarmarking();
+        break;
+      case 'legalisasi':
+        return self::rulesLegalisasi();
+        break;
       default:
         # code...
         break;
@@ -206,4 +218,48 @@ class PersyaratanWorkOrderHelper
     ];
     return $data;
   }
+
+  public static function rulesPendirianYayasan()
+  {
+    $data = [
+      'syarat' => [
+        'FC. KTP dan KK Seluruh Pengurus',
+        'Nama Perkumpulan',
+        'Alamat Perkumpulan',
+        'Struktur Kepengurusan',
+        'NPWP Pengurus'
+      ],
+      'pelengkap' => [
+        'Berita Acara',
+        'Surat Pernyataan Domisili Perkumpulan',
+        'Surat Pernyataan Kekayaan Perkumpulan',
+      ],
+    ];
+    return $data;
+  }
+
+  public static function rulesPerjanjianLainnya()
+  {
+    $data = [
+      'syarat' => [],
+    ];
+    return $data;
+  }
+
+  public static function rulesWarmarking()
+  {
+    $data = [
+      'syarat' => [],
+    ];
+    return $data;
+  }
+
+  public static function rulesLegalisasi()
+  {
+    $data = [
+      'syarat' => [],
+    ];
+    return $data;
+  }
+
 }

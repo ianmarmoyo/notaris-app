@@ -55,6 +55,18 @@ class WorkOrderProcedureHelper
       case 'pendirian_pt_perorangan':
         return self::pendirianPTperorangan();
         break;
+      case 'pendirian_yayasan':
+        return self::pendirianYayasan();
+        break;
+      case 'perjanjian_lainnya':
+        return self::perjanjianLainnya();
+        break;
+      case 'warmarking':
+        return self::warmarking();
+        break;
+      case 'legalisasi':
+        return self::legalisasi();
+        break;
       default:
         # code...
         break;
@@ -244,6 +256,49 @@ class WorkOrderProcedureHelper
       'TTD Penghadap',
       'Pengesahan Notaris',
       'Input Data Ke AHU',
+      'Penyerahan',
+    ];
+  }
+
+  public static function pendirianYayasan()
+  {
+    return [
+      'Pesan Nama',
+      'Draft Akta',
+      'TTD Penghadap',
+      'Pengesahan Notaris',
+      'Input Data Ke AHU',
+      'Penyerahan',
+    ];
+  }
+
+  public static function perjanjianLainnya()
+  {
+    return [
+      'Penyerahan Dokumen',
+      'Draft Perjanjian',
+      'TTD Penghadap',
+      'Pengesahan Notaris',
+      'Penyerahan',
+    ];
+  }
+
+  public static function warmarking()
+  {
+    return [
+      'Menerima Dokumen',
+      'Mendaftar Buku Khusus',
+      'Pengesahan Notaris',
+      'Penyerahan',
+    ];
+  }
+
+  public static function legalisasi()
+  {
+    return [
+      'Menerima Dokumen',
+      'TTD Penghadap',
+      'Pengesahan Notaris',
       'Penyerahan',
     ];
   }
