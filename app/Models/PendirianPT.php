@@ -21,7 +21,7 @@ class PendirianPT extends Model
     self::creating(function ($model) {});
 
     self::updating(function ($model) {
-      $model->tgl_checklist = $model->checklist ? date('Y-m-d') : null;
+
     });
   }
 

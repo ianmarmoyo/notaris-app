@@ -117,27 +117,35 @@
                                 <input type="hidden" name="balik_nama_waris_id" value="{{ $procedure->id }}">
                                 <div class="row">
                                     <div class="col-md-12 mb-3">
-                                        <label class="switch switch-lg">
-                                            <input type="checkbox" name="checklist" class="switch-input"
-                                                onclick="checklistProses(this)" value="{{ $procedure->id }}"
-                                                @if ($procedure->checklist) checked @endif />
-                                            <span class="switch-toggle-slider">
-                                                <span class="switch-on">
-                                                    <i class="ti ti-check"></i>
-                                                </span>
-                                                <span class="switch-off">
-                                                    <i class="ti ti-x"></i>
-                                                </span>
-                                            </span>
-                                            <span class="switch-label">
-                                                @if ($procedure->checklist == 1)
-                                                    Selesai
-                                                @else
-                                                    Belum Selesai
-                                                @endif
-                                            </span>
-                                        </label>
-                                    </div>
+                                          <label class="switch switch-lg">
+                                              <input type="checkbox" name="checklist" class="switch-input"
+                                                  onclick="checklistProses(this)" value="{{ $procedure->id }}"
+                                                  @if ($procedure->checklist) checked @endif />
+                                              <span class="switch-toggle-slider">
+                                                  <span class="switch-on">
+                                                      <i class="ti ti-check"></i>
+                                                  </span>
+                                                  <span class="switch-off">
+                                                      <i class="ti ti-x"></i>
+                                                  </span>
+                                              </span>
+                                              <span class="switch-label">
+                                                  @if ($procedure->checklist == 1)
+                                                      Selesai
+                                                  @else
+                                                      Belum Selesai
+                                                  @endif
+                                              </span>
+                                          </label>
+                                          <div class="col-md-4 mb-3">
+                                              <label class="col-form-label" for="status_pembayaran">
+                                                  Tanggal Checklist
+                                              </label>
+                                              <input type="text" id="tgl_checklist_{{ $procedure->id }}"
+                                                  name="tgl_checklist" class="form-control dob-picker"
+                                                  placeholder="YYYY-MM-DD" value="{{ $procedure->tgl_checklist }}" />
+                                          </div>
+                                      </div>
                                     <div class="col-md-4 mb-3">
                                         <label class="col-form-label" for="status_pembayaran">
                                             Catatan
@@ -242,10 +250,12 @@
 
     <script>
         $(document).ready(function() {
+            $('input[name=tgl_checklist]').flatpickr({
+                monthSelectorType: 'static'
+            });
             $('input[name=tgl_pembayaran]').flatpickr({
                 monthSelectorType: 'static'
             });
-            // $('button[data-bs-toggle="tab"]').trigger('click');
         });
 
         $('button[data-bs-toggle="tab"]').on('click', function(e) {
@@ -278,8 +288,13 @@
 
             if (status) {
                 label.text('Selesai');
+                $(e).closest('.col-md-12').find('input[name=tgl_checklist]').flatpickr({
+                    defaultDate: 'today',
+                    monthSelectorType: 'static'
+                });
             } else {
                 label.text('Belum Selesai');
+                $(e).closest('.col-md-12').find('input[name=tgl_checklist]').val('');
             }
         }
 

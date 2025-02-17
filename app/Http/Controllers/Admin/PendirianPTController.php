@@ -40,6 +40,7 @@ class PendirianPTController extends Controller
     $update = PendirianPT::find($balik_nama_waris_id);
     $update->update([
       'checklist' => $checklist ? 1 : null,
+      'tgl_checklist' => $request->tgl_checklist,
       'catatan' => $catatan,
     ]);
 
