@@ -23,7 +23,7 @@ class PersyaratanWorkOrderHelper
         return self::procedureBalikAPHB();
         break;
       case 'pemecah_sertifikat':
-        // return self::procedurePemecahSertifikat();
+        return self::procedurePemecahSertifikat();
         break;
       case 'balik_nama_sertifikat':
         return self::rulesBalikNamaSertifikat();
@@ -133,6 +133,21 @@ class PersyaratanWorkOrderHelper
         'akta Nikah pemberi/penjualan',
         'FC & Asli KTP KK BPJS Penerima/Pembali',
         'NPWP jika pekerjaan : PNS, TNI, POLRI, GURU'
+      ]
+    ];
+    return $rules;
+  }
+
+  public static function procedurePemecahSertifikat()
+  {
+    $rules = [
+      'syarat' => [
+        'KTP & KK Penjual',
+        'KTP & KK Pembeli',
+        'NPWP Penjual',
+        'Buku Nikah Penjual',
+        'SPPT Bebas Tunggakan',
+        'Foto dan Share Lokasi',
       ]
     ];
     return $rules;
