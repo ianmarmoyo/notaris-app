@@ -43,6 +43,7 @@ class PemecahSertifikatController extends Controller
     $update->update([
       'checklist' => $checklist ? 1 : null,
       'catatan' => $catatan,
+      'tgl_checklist' => $request->tgl_checklist,
       'tgl_bayar' => $tgl_pembayaran,
     ]);
 
