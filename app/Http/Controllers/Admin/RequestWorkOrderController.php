@@ -71,6 +71,7 @@ class RequestWorkOrderController extends Controller
       'work_orders.*',
       'clients.nama',
     );
+    $query->with('work_order_details');
     $query->leftJoin('clients', 'clients.id', '=', 'work_orders.client_id');
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(

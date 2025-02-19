@@ -45,13 +45,13 @@
     <div class="">
         <div class="card">
             <div class="card-header header-elements">
-                <span class=" me-2">{{ $title }}</span>
+                <h5 class=" me-2">{{ $title }}</h5>
 
                 <div class="card-header-elements ms-auto">
-                  @can('buat pengajuan')
-                    <a href="{{ route('admin-requestworkorder-create') }}" class="btn btn-primary"><span
-                            class="tf-icon ti ti-plus ti-xs me-1"></span>Buat Keperluan</a>
-                  @endcan
+                    @can('buat pengajuan')
+                        <a href="{{ route('admin-requestworkorder-create') }}" class="btn btn-primary"><span
+                                class="tf-icon ti ti-plus ti-xs me-1"></span>Buat Keperluan</a>
+                    @endcan
                 </div>
             </div>
             <div class="card-datatable table-responsive">
@@ -61,6 +61,7 @@
                             <th width="10">#</th>
                             <th width="400">Invoice</th>
                             <th width="300">Nama</th>
+                            <th width="300">Layanan</th>
                             <th width="300">Tanggal Pengajuan</th>
                             <th width="300">Status Keperluan</th>
                             <th width="40">Aksi</th>
@@ -109,30 +110,47 @@
                         targets: [0]
                     },
                     {
-                      targets: 3,
-                      render: function(data, type, full, meta) {
-                        return moment(data).format('LL');
-                      }
+                        targets: 3,
+                        render: function(data, type, full, meta) {
+                            let html = '';
+                            full.work_order_details.forEach((wo, index) => {
+                                html += `
+                                  <span class="badge rounded-pill bg-label-primary">${wo.keperluan}</span>
+                                `;
+                            });
+
+                            return `
+                            <div class="d-flex gap-2 flex-column text-capitalize">
+                              ${html}
+                            </div>
+                          `;
+                        }
                     },
                     {
-                      targets: 4,
-                      render: function(data, type, full, meta) {
-                        switch (data) {
-                          case 'ready_to_work':
-                              return 'Siap Dikerjaan';
-                              break;
-                            break;
-                            case 'draft':
-                              return 'Draft';
-                              break;
-                          default:
-                            break;
+                        targets: 4,
+                        render: function(data, type, full, meta) {
+                            return moment(data).format('LL');
                         }
-                      }
+                    },
+                    {
+                        targets: 5,
+                        render: function(data, type, full, meta) {
+                            switch (data) {
+                                case 'ready_to_work':
+                                    return 'Siap Dikerjaan';
+                                    break;
+                                    break;
+                                case 'draft':
+                                    return 'Draft';
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
                     },
                     {
 
-                        targets: 5,
+                        targets: 6,
                         title: 'Aksi',
                         orderable: false,
                         searchable: false,
@@ -154,10 +172,10 @@
                             `;
 
                             if (full.status_wo == 'ready_to_work') {
-                              btn_edit = '';
-                              btn_delete = '';
+                                btn_edit = '';
+                                btn_delete = '';
                             } else {
-                              btn_detail = '';
+                                btn_detail = '';
                             }
 
                             return (`
@@ -188,6 +206,11 @@
                         data: "no_wo"
                     },
                     {
+                        data: "nama"
+                    },
+                    {
+                        "orderable": false,
+                        "searchable": false,
                         data: "nama"
                     },
                     {

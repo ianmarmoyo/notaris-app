@@ -229,22 +229,10 @@
                                 }
                             },
                         },
-                        // 'guru_kelases[]': {
-                        //     validators: {
-                        //         notEmpty: {
-                        //             message: 'Guru mengajar wajib diisi.'
-                        //         }
-                        //     },
-                        // },
                         phone: {
                             validators: {
                                 notEmpty: {
                                     message: 'Nomor telepon wajib diisi.'
-                                },
-                                stringLength: {
-                                    min: 11,
-                                    max: 12,
-                                    message: 'Nomor telepon minimal 11 digit dan maksimal 12 digit.'
                                 },
                             }
                         },
