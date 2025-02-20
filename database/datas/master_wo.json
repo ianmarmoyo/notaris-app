@@ -72,5 +72,17 @@
   {
     "nama" : "Legalisasi",
     "slug" : "legalisasi"
+  },
+  {
+    "nama" : "pendirian koperasi",
+    "slug" : "pendirian_koperasi"
+  },
+  {
+    "nama" : "perubahan koperasi",
+    "slug" : "perubahan_koperasi"
+  },
+  {
+    "nama" : "pembubaran koperasi",
+    "slug" : "pembubaran_koperasi"
   }
 ]

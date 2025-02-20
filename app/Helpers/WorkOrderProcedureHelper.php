@@ -67,6 +67,15 @@ class WorkOrderProcedureHelper
       case 'legalisasi':
         return self::legalisasi();
         break;
+      case 'pendirian_koperasi':
+        return self::pendirianKoperasi();
+        break;
+      case 'perubahan_koperasi':
+        return self::perubahanKoperasi();
+        break;
+      case 'pembubaran_koperasi':
+        return self::pembubaranKoperasi();
+        break;
       default:
         # code...
         break;
@@ -300,6 +309,47 @@ class WorkOrderProcedureHelper
       'TTD Penghadap',
       'Pengesahan Notaris',
       'Penyerahan',
+    ];
+  }
+
+  public static function pendirianKoperasi()
+  {
+    return [
+      'Pemohon',
+      'Konsultasi Dinas Koperasi',
+      'Rekomendasi',
+      'Pesan Nama',
+      'Draft Akta',
+      'TTD ',
+      'Pengesahan',
+      'Penyerahan ',
+    ];
+  }
+
+  public static function perubahanKoperasi()
+  {
+    return [
+      'Pemohon',
+      'Konsultasi Dinas Koperasi',
+      'Rekomendasi',
+      'Pesan Nama',
+      'Draft Akta',
+      'TTD ',
+      'Pengesahan',
+      'Penyerahan ',
+    ];
+  }
+  public static function pembubaranKoperasi()
+  {
+    return [
+      'Pemohon',
+      'Konsultasi Dinas Koperasi',
+      'Rekomendasi',
+      'Pesan Nama',
+      'Draft Akta',
+      'TTD ',
+      'Pengesahan',
+      'Penyerahan ',
     ];
   }
 }

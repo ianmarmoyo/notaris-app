@@ -67,6 +67,15 @@ class PersyaratanWorkOrderHelper
       case 'legalisasi':
         return self::rulesLegalisasi();
         break;
+      case 'pendirian_koperasi':
+        return self::rulesPendirianKoperasi();
+        break;
+      case 'perubahan_koperasi':
+        return self::rulePerubahanKoperasi();
+        break;
+      case 'pembubaran_koperasi':
+        return self::rulesPembubaranKoperasi();
+        break;
       default:
         # code...
         break;
@@ -273,6 +282,57 @@ class PersyaratanWorkOrderHelper
   {
     $data = [
       'syarat' => [],
+    ];
+    return $data;
+  }
+
+  public static function rulesPendirianKoperasi()
+  {
+    $data = [
+      'syarat' => [
+        'FC. KTP dan KK Seluruh Pengurus',
+        'Nama Koperasi',
+        'Alamat Koperasi',
+        'Struktur Kepengurusan',
+        'NPWP Pengurus',
+        'Berita Acara',
+        'Surat Pernyataan Domisili Koperasi',
+        'Surat Pernyataan Kekayaan',
+      ],
+    ];
+    return $data;
+  }
+
+  public static function rulePerubahanKoperasi()
+  {
+    $data = [
+      'syarat' => [
+        'FC. KTP dan KK Seluruh Pengurus',
+        'Nama Koperasi',
+        'Alamat Koperasi',
+        'Struktur Kepengurusan',
+        'NPWP Pengurus',
+        'Berita Acara',
+        'Surat Pernyataan Domisili Koperasi',
+        'Surat Pernyataan Kekayaan',
+      ],
+    ];
+    return $data;
+  }
+
+  public static function rulesPembubaranKoperasi()
+  {
+    $data = [
+      'syarat' => [
+        'FC. KTP dan KK Seluruh Pengurus',
+        'Nama Koperasi',
+        'Alamat Koperasi',
+        'Struktur Kepengurusan',
+        'NPWP Pengurus',
+        'Berita Acara',
+        'Surat Pernyataan Domisili Koperasi',
+        'Surat Pernyataan Kekayaan',
+      ],
     ];
     return $data;
   }

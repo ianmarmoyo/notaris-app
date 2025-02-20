@@ -11,8 +11,10 @@ use App\Models\BalikNamaSertifikat;
 use App\Models\BalikNamaWaris;
 use App\Models\Legalisasi;
 use App\Models\PelepasanHak;
+use App\Models\PembubaranKoperasi;
 use App\Models\PemecahSertifikat;
 use App\Models\PendirianCV;
+use App\Models\PendirianKoperasi;
 use App\Models\PendirianPerkumpulan;
 use App\Models\PendirianPT;
 use App\Models\PendirianPTperorangan;
@@ -21,6 +23,7 @@ use App\Models\PenggabunganSertifikat;
 use App\Models\PeningkatanHak;
 use App\Models\PenurunanHak;
 use App\Models\PerjanjianLainnya;
+use App\Models\PerubahanKoperasi;
 use App\Models\SertifikatPermohonanHak;
 use App\Models\Warmarking;
 
@@ -111,6 +114,18 @@ class InsertWorkOrderProcedureAction
         break;
       case 'legalisasi':
         $insert_procedure = self::insertLegalisasi($work_order_assignment_id, $procedures);
+        return $insert_procedure;
+        break;
+      case 'pendirian_koperasi':
+        $insert_procedure = self::insertPendirianKoperasi($work_order_assignment_id, $procedures);
+        return $insert_procedure;
+        break;
+      case 'perubahan_koperasi':
+        $insert_procedure = self::insertPerubahanKoperasi($work_order_assignment_id, $procedures);
+        return $insert_procedure;
+        break;
+      case 'pembubaran_koperasi':
+        $insert_procedure = self::insertPembubaranKoperasi($work_order_assignment_id, $procedures);
         return $insert_procedure;
         break;
       default:
@@ -371,6 +386,45 @@ class InsertWorkOrderProcedureAction
     $results = [];
     foreach ($procedures as $syarat) {
       $results[] = Legalisasi::create([
+        'work_order_assignment_id' => $work_order_assignment_id,
+        'proses' => $syarat
+      ]);
+    }
+
+    return $results;
+  }
+
+  public static function insertPendirianKoperasi($work_order_assignment_id, $procedures)
+  {
+    $results = [];
+    foreach ($procedures as $syarat) {
+      $results[] = PendirianKoperasi::create([
+        'work_order_assignment_id' => $work_order_assignment_id,
+        'proses' => $syarat
+      ]);
+    }
+
+    return $results;
+  }
+
+  public static function insertPerubahanKoperasi($work_order_assignment_id, $procedures)
+  {
+    $results = [];
+    foreach ($procedures as $syarat) {
+      $results[] = PerubahanKoperasi::create([
+        'work_order_assignment_id' => $work_order_assignment_id,
+        'proses' => $syarat
+      ]);
+    }
+
+    return $results;
+  }
+
+  public static function insertPembubaranKoperasi($work_order_assignment_id, $procedures)
+  {
+    $results = [];
+    foreach ($procedures as $syarat) {
+      $results[] = PembubaranKoperasi::create([
         'work_order_assignment_id' => $work_order_assignment_id,
         'proses' => $syarat
       ]);

@@ -151,33 +151,14 @@
                                                                     value="{{ $procedure->tgl_checklist ? tglIndo($procedure->tgl_checklist, 'l, d F Y') : null }}"
                                                                     readonly />
                                                             </div>
-                                                            @if ($procedure->proses == 'Pembayaran dan Validasi Pajak Waris')
+                                                            @if ($procedure->proses == 'Rekomendasi')
                                                                 <div class="col-md-6 mb-3">
-                                                                    <label class="col-form-label" for="status_pembayaran">
-                                                                        Status Pembayaran
+                                                                    <label class="col-form-label" for="rekomendasi">
+                                                                        Rekomendasi
                                                                     </label>
-                                                                    <input type="text" class="form-control"
-                                                                        id=""
-                                                                        value="{{ $procedure->status_pembayaran }}"
-                                                                        readonly>
-                                                                </div>
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label class="col-form-label" for="status_pembayaran">
-                                                                        Tanggal Pembayaran
-                                                                    </label>
-                                                                    <input type="text"
-                                                                        id="tgl_pembayaran_{{ $procedure->id }}"
-                                                                        name="tgl_pembayaran"
-                                                                        class="form-control dob-picker"
-                                                                        placeholder="YYYY-MM-DD"
-                                                                        value="{{ $procedure->tgl_bayar ? tglIndo($procedure->tgl_bayar, 'l, d F Y') : null }}"
-                                                                        readonly />
-                                                                </div>
-                                                                <div class="col-md-6 mb-3">
-                                                                    <label class="col-form-label" for="status_pembayaran">
-                                                                        Catatan
-                                                                    </label>
-                                                                    <textarea name="catatan" class="form-control" id="" cols="30" rows="3" readonly>{{ $procedure->catatan }}</textarea>
+                                                                    <input type="text" id="" name=""
+                                                                        class="form-control"
+                                                                        value="{{ ucfirst($procedure->rekomendasi) }}" readonly />
                                                                 </div>
                                                             @endif
                                                             @if ($procedure->proses == 'Penyerahan')
@@ -187,6 +168,10 @@
                                                                             class="" style="max-width: 200px"
                                                                             alt="">
                                                                     </div>
+                                                                    <button type="button" onclick="viewImage()"
+                                                                        class="mt-2 btn btn-sm btn-primary waves-effect waves-light">
+                                                                        Lihat Gambar
+                                                                    </button>
                                                                 </div>
                                                             @endif
                                                             <div class="col-md-12 mb-3">
@@ -277,10 +262,6 @@
                                                 <i class="ti ti-x"></i>
                                             </span>
                                         @endif
-                                        {{-- <input class="form-check-input" type="checkbox" value="{{ $value->id }}"
-                                        onclick="checkListPesyaratan(this)" id="checklist"
-                                        @if ($value->checklist == 'yes') checked @endif
-                                        @if (!auth()->user()->can('checklist berkas pengajuan')) disabled @endif /> --}}
                                         <label for="checklist" class="form-check-label ms-3">
                                             <span class="mb-0 h6">{{ $key + 1 }}.
                                                 {{ $value->nama_lampiran }}</span>
@@ -337,6 +318,20 @@
                     break;
                 default:
                     break;
+            }
+
+            function viewImage() {
+                Swal.fire({
+                    title: '',
+                    text: '',
+                    imageUrl: "{{ $procedure->view_gambar }}",
+                    imageWidth: 400,
+                    imageAlt: 'Custom image',
+                    customClass: {
+                        confirmButton: 'btn btn-primary'
+                    },
+                    buttonsStyling: false
+                });
             }
         });
     </script>

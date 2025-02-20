@@ -142,7 +142,7 @@
                                                 <div class="card shadow-none bg-transparent border border-secondary">
                                                     <div class="card-body">
                                                         <div class="row">
-                                                            <div class="col-md-6 mb-3">
+                                                            <div class="col-md-12 mb-3">
                                                                 <label class="col-form-label" for="status_pembayaran">
                                                                     Tanggal Selesai
                                                                 </label>
@@ -189,6 +189,12 @@
                                                                     </div>
                                                                 </div>
                                                             @endif
+                                                            <div class="col-md-12 mb-3">
+                                                                <label class="col-form-label" for="status_pembayaran">
+                                                                    Catatan
+                                                                </label>
+                                                                <textarea name="catatan" class="form-control" id="" cols="30" rows="3">{{ $procedure->catatan }}</textarea>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

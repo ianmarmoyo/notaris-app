@@ -16,9 +16,11 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\MyAppController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\PelepasanHakController;
+use App\Http\Controllers\Admin\PembubaranKoperasiController;
 use App\Http\Controllers\Admin\PemecahSertifikatController;
 use App\Http\Controllers\Admin\PendiranPTperoranganController;
 use App\Http\Controllers\Admin\PendirianCvController;
+use App\Http\Controllers\Admin\PendirianKoperasiController;
 use App\Http\Controllers\Admin\PendirianPerkumpulanController;
 use App\Http\Controllers\Admin\PendirianPTController;
 use App\Http\Controllers\Admin\PendirianYayasanController;
@@ -26,6 +28,7 @@ use App\Http\Controllers\Admin\PenggabunganSertifikatController;
 use App\Http\Controllers\Admin\PeningkatanHakController;
 use App\Http\Controllers\Admin\PenurunanHakController;
 use App\Http\Controllers\Admin\PerjanjianLainnyaController;
+use App\Http\Controllers\Admin\PerubahanKoperasiController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ReportFinanceController;
 use App\Http\Controllers\Admin\ReportWorkOrderController;
@@ -446,5 +449,35 @@ Route::middleware(
     Route::post('/store', [PendirianYayasanController::class, 'store'])->name('store');
     Route::get('/work-order-assignment/{work_order_assignment_id}', [PendirianYayasanController::class, 'detail']);
     Route::get('/work-order-assignment/{work_order_assignment_id}/form', [PendirianYayasanController::class, 'form']);
+  });
+
+  /**
+   * Pendirian koperasi
+   */
+  Route::group(['prefix' => 'pendirian-koperasi', 'as' => 'pendiriankoperasi-'], function () {
+    Route::get('/', [PendirianKoperasiController::class, 'index'])->name('index');
+    Route::post('/store', [PendirianKoperasiController::class, 'store'])->name('store');
+    Route::get('/work-order-assignment/{work_order_assignment_id}', [PendirianKoperasiController::class, 'detail']);
+    Route::get('/work-order-assignment/{work_order_assignment_id}/form', [PendirianKoperasiController::class, 'form']);
+  });
+
+  /**
+   * Perubahan koperasi
+   */
+  Route::group(['prefix' => 'perubahan-koperasi', 'as' => 'perubahankoperasi-'], function () {
+    Route::get('/', [PerubahanKoperasiController::class, 'index'])->name('index');
+    Route::post('/store', [PerubahanKoperasiController::class, 'store'])->name('store');
+    Route::get('/work-order-assignment/{work_order_assignment_id}', [PerubahanKoperasiController::class, 'detail']);
+    Route::get('/work-order-assignment/{work_order_assignment_id}/form', [PerubahanKoperasiController::class, 'form']);
+  });
+
+  /**
+   * Pembubaran koperasi
+   */
+  Route::group(['prefix' => 'pembubaran-koperasi', 'as' => 'pembubarankoperasi-'], function () {
+    Route::get('/', [PembubaranKoperasiController::class, 'index'])->name('index');
+    Route::post('/store', [PembubaranKoperasiController::class, 'store'])->name('store');
+    Route::get('/work-order-assignment/{work_order_assignment_id}', [PembubaranKoperasiController::class, 'detail']);
+    Route::get('/work-order-assignment/{work_order_assignment_id}/form', [PembubaranKoperasiController::class, 'form']);
   });
 });
