@@ -52,6 +52,8 @@ Route::middleware(
   # DASHBOARD
   Route::group(['prefix' => 'dashboard', 'as' => 'dashboard-'], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('analytics');
+    Route::get('/data-chart-layanan-bulanan', [DashboardController::class, 'dataChartLayananBulanan'])->name('dataChartLayananBulanan');
+    Route::get('/data-chart-layanan-tahunan', [DashboardController::class, 'dataChartLayananTahunan'])->name('dataChartLayananTahunan');
   });
 
   # MENU
