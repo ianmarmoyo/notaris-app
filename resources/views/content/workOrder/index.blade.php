@@ -56,12 +56,11 @@
                     <thead>
                         <tr>
                             <th width="10">#</th>
-                            <th width="400">Invoice Pengajuan</th>
-                            <th width="300">Tgl Pengajuan</th>
-                            <th width="700">Keperluan</th>
-                            <th width="300">Penugasan Ke</th>
-                            <th width="300">Tgl Penugasan</th>
-                            <th width="400">Status Penugasan</th>
+                            <th>Invoice</th>
+                            <th>Klien</th>
+                            <th>layanan</th>
+                            <th>Penugasan</th>
+                            <th>Status Penugasan</th>
                             <th width="40">Aksi</th>
                         </tr>
                     </thead>
@@ -113,9 +112,9 @@
                             return `
                           <div class="d-flex justify-content-start align-items-center user-name">
                             <div class="d-flex flex-column">
-                              <span class="emp_name text-truncate">${full.nama_klien}</span>
+                              <span class="emp_name text-truncate">${data}</span>
                               <small class="emp_post text-truncate text-muted">
-                                ${data}
+                                ${moment(full.tgl_pengajuan).format('LL')}
                               </small>
                             </div>
                           </div>
@@ -123,9 +122,18 @@
                         }
                     },
                     {
-                        targets: [2,5],
+                        targets: 3,
                         render: function(data, type, full, meta) {
-                            return moment(data).format('LL');
+                            return `
+                          <div class="d-flex justify-content-start align-items-center user-name">
+                            <div class="d-flex flex-column">
+                              <span class="emp_name text-truncate">${data}</span>
+                              <small class="emp_post text-truncate text-muted">
+
+                              </small>
+                            </div>
+                          </div>
+                          `;
                         }
                     },
                     {
@@ -136,7 +144,7 @@
                             <div class="d-flex flex-column">
                               <span class="emp_name text-truncate">${full.nama_admin}</span>
                               <small class="emp_post text-truncate text-muted">
-
+                                ${moment(full.tgl_penugasan).format('LL')}
                               </small>
                             </div>
                           </div>
@@ -144,19 +152,31 @@
                         }
                     },
                     {
+                        targets: 5,
+                        className: "text-center",
+                        render: function(data, type, full, meta) {
+                            let $status = `<span class="badge bg-label-warning">Belum Selesai</span>`;
+                            if (full.status_penugasan == 'Selesai') {
+                                $status = `<span class="badge bg-label-success">Selesai</span>`;
+                            }
 
-                        targets: 7,
+                            return $status;
+                        }
+                    },
+                    {
+
+                        targets: 6,
                         title: 'Aksi',
                         orderable: false,
                         searchable: false,
                         render: function(data, type, full, meta) {
 
-                          let btn_edit = `
+                            let btn_edit = `
                             <a href="{{ url('admin/work-order/form') }}/${data}" class="dropdown-item"><i class="ti ti-edit me-1"></i>Edit</a>
                           `;
-                          if(full.status_penugasan == 'Selesai') {
-                            btn_edit = ``;
-                          }
+                            if (full.status_penugasan == 'Selesai') {
+                                btn_edit = ``;
+                            }
 
                             return (`
                                 <div class="d-inline-block">
@@ -187,7 +207,7 @@
                         data: "no_wo"
                     },
                     {
-                        data: "tgl_pengajuan"
+                        data: "nama_klien"
                     },
                     {
                         data: "keperluan"
@@ -196,9 +216,8 @@
                         data: "nama_admin"
                     },
                     {
-                        data: "tgl_penugasan"
-                    },
-                    {
+                        "orderable": false,
+                        "searchable": false,
                         data: "status_penugasan"
                     },
                     {

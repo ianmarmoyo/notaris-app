@@ -55,15 +55,16 @@
                 </div>
             </div>
             <div class="card-datatable table-responsive">
-                <table class="table datatable">
+                <table class="table nowrap datatable">
                     <thead>
                         <tr>
                             <th width="10">#</th>
-                            <th width="400">Invoice</th>
-                            <th width="300">Nama</th>
-                            <th width="300">Layanan</th>
-                            <th width="300">Tanggal Pengajuan</th>
-                            <th width="300">Status Keperluan</th>
+                            <th>Invoice</th>
+                            <th width="300">Klien</th>
+                            <th width="400">Layanan</th>
+                            <th>Nominal</th>
+                            <th>terbayar</th>
+                            <th>status</th>
                             <th width="40">Aksi</th>
                         </tr>
                     </thead>
@@ -110,38 +111,59 @@
                         targets: [0]
                     },
                     {
+                        targets: 1,
+                        render: function(data, type, full, meta) {
+                            return `
+                          <div class="d-flex justify-content-start align-items-center user-name">
+                            <div class="d-flex flex-column">
+                              <span class="emp_name text-truncate">${data}</span>
+                              <small class="emp_post text-truncate text-muted">
+                                ${moment(full.tgl_pengajuan).format('LL')}
+                              </small>
+                            </div>
+                          </div>
+                          `;
+                        }
+                    },
+                    {
                         targets: 3,
                         render: function(data, type, full, meta) {
                             let html = '';
                             full.work_order_details.forEach((wo, index) => {
                                 html += `
-                                  <span class="badge rounded-pill bg-label-primary">${wo.keperluan}</span>
+                                  <li>
+                                    <span class="text-capitalize" style="font-size: 14px">${wo.keperluan}</span>
+                                  </li>
                                 `;
                             });
 
                             return `
-                            <div class="d-flex gap-2 flex-column text-capitalize">
+                            <ul>
                               ${html}
-                            </div>
+                            </ul>
                           `;
                         }
                     },
                     {
-                        targets: 4,
+                        targets: [4, 5],
                         render: function(data, type, full, meta) {
-                            return moment(data).format('LL');
+                            return data.toLocaleString('id-ID', {
+                                style: 'currency',
+                                currency: 'IDR',
+                                minimumFractionDigits: 0
+                            })
                         }
                     },
                     {
-                        targets: 5,
+                        targets: 6,
                         render: function(data, type, full, meta) {
                             switch (data) {
                                 case 'ready_to_work':
-                                    return 'Siap Dikerjaan';
+                                    return '<span class="badge bg-label-success">Siap Dikerjakan</span>';
                                     break;
                                     break;
                                 case 'draft':
-                                    return 'Draft';
+                                    return '<span class="badge bg-label-warning">Draft</span>';
                                     break;
                                 default:
                                     break;
@@ -150,7 +172,7 @@
                     },
                     {
 
-                        targets: 6,
+                        targets: 7,
                         title: 'Aksi',
                         orderable: false,
                         searchable: false,
@@ -214,9 +236,18 @@
                         data: "nama"
                     },
                     {
-                        data: "tgl_pengajuan"
+                        "orderable": false,
+                        "searchable": false,
+                        data: "sum_harga" // nominal
                     },
                     {
+                        "orderable": false,
+                        "searchable": false,
+                        data: "sum_payable" // terbayar
+                    },
+                    {
+                        "orderable": false,
+                        "searchable": false,
                         data: "status_wo"
                     },
                     {

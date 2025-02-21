@@ -67,9 +67,22 @@ class RequestWorkOrderController extends Controller
     });
     $totals = $query->count();
 
-    $query = WorkOrder::select(
+    $query = WorkOrder::query();
+    $query->select(
       'work_orders.*',
       'clients.nama',
+      DB::raw(
+        "(
+          SELECT SUM(harga)
+          FROM work_order_details
+          WHERE work_order_details.work_order_id = work_orders.id
+        ) AS sum_harga"
+      ),
+      DB::raw("COALESCE((
+        SELECT SUM(nominal)
+        FROM work_order_payments
+        WHERE work_order_payments.work_order_id = work_orders.id
+      ), 0) AS sum_payable"),
     );
     $query->with('work_order_details');
     $query->leftJoin('clients', 'clients.id', '=', 'work_orders.client_id');
