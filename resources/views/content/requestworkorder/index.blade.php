@@ -156,14 +156,15 @@
                     },
                     {
                         targets: 6,
+                        // className: "text-center",
                         render: function(data, type, full, meta) {
                             switch (data) {
                                 case 'ready_to_work':
-                                    return '<span class="badge bg-label-success">Siap Dikerjakan</span>';
+                                    return '<span class="badge rounded-pill bg-label-success">Siap Dikerjakan</span>';
                                     break;
                                     break;
                                 case 'draft':
-                                    return '<span class="badge bg-label-warning">Draft</span>';
+                                    return '<span class="badge rounded-pill bg-label-warning">Draft</span>';
                                     break;
                                 default:
                                     break;
