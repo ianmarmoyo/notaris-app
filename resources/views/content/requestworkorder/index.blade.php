@@ -55,7 +55,7 @@
                 </div>
             </div>
             <div class="card-datatable table-responsive">
-                <table class="table nowrap datatable">
+                <table class="table datatable">
                     <thead>
                         <tr>
                             <th width="10">#</th>

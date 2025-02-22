@@ -109,7 +109,7 @@ class DashboardController extends Controller
   {
     $months = [];
     $currentMonth = date('m');
-    $currentYear = date('Y');
+    $currentYear = $request->tahun ?? date('Y');
     $status_penugasan = $request->status_penugasan;
     $monthNames = [
       "Januari",

@@ -60,7 +60,7 @@
                             <th>Klien</th>
                             <th>layanan</th>
                             <th>Penugasan</th>
-                            <th>Status Penugasan</th>
+                            <th>Status</th>
                             <th width="40">Aksi</th>
                         </tr>
                     </thead>

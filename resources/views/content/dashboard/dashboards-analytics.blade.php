@@ -29,10 +29,10 @@
             <div class="card">
                 <div class="card-body">
                     <div class="badge p-2 bg-label-danger mb-2 rounded"><i class="ti ti-users ti-md"></i></div>
-                    <h5 class="card-title mb-1 pt-2">Total Pelanggan</h5>
+                    <h5 class="card-title mb-1 pt-2">{{ number_format($total_pelanggan, 0, '.', ',') }}</h5>
                     <small class="text-muted">Bulan Ini</small>
                     <p class="mb-2 mt-1">
-                        {{ number_format($total_pelanggan, 0, '.', ',') }}
+                        Total Pelanggan
                     </p>
                 </div>
             </div>
@@ -43,10 +43,10 @@
             <div class="card">
                 <div class="card-body">
                     <div class="badge p-2 bg-label-danger mb-2 rounded"><i class="ti ti-devices-check ti-md"></i></div>
-                    <h5 class="card-title mb-1 pt-2">Total Layanan</h5>
+                    <h5 class="card-title mb-1 pt-2">{{ number_format($total_layanan, 0, '.', ',') }}</h5>
                     <small class="text-muted">Bulan Ini</small>
                     <p class="mb-2 mt-1">
-                        {{ number_format($total_layanan, 0, '.', ',') }}
+                        Total Layanan
                     </p>
                 </div>
             </div>
@@ -57,10 +57,12 @@
             <div class="card">
                 <div class="card-body">
                     <div class="badge p-2 bg-label-danger mb-2 rounded"><i class="ti ti-devices-check ti-md"></i></div>
-                    <h5 class="card-title mb-1 pt-2">Total Proses</h5>
-                    <small class="text-muted">Bulan Ini</small>
-                    <p class="mb-2 mt-1">
+                    <h5 class="card-title mb-1 pt-2">
                         {{ number_format($total_wo_proses, 0, '.', ',') }}
+                    </h5>
+                    <small class="text-muted">Bulan Ini</small>
+                    <p class="mb-2 mt-1">
+                        Total Proses
                     </p>
                 </div>
             </div>
@@ -71,10 +73,10 @@
             <div class="card">
                 <div class="card-body">
                     <div class="badge p-2 bg-label-danger mb-2 rounded"><i class="ti ti-devices-check ti-md"></i></div>
-                    <h5 class="card-title mb-1 pt-2">Total Selesai</h5>
+                    <h5 class="card-title mb-1 pt-2">{{ number_format($total_wo_selesai, 0, '.', ',') }}</h5>
                     <small class="text-muted">Bulan Ini</small>
                     <p class="mb-2 mt-1">
-                        {{ number_format($total_wo_selesai, 0, '.', ',') }}
+                        Total Selesai
                     </p>
                 </div>
             </div>
@@ -85,10 +87,12 @@
             <div class="card">
                 <div class="card-body">
                     <div class="badge p-2 bg-label-info mb-2 rounded"><i class="ti ti-devices-check ti-md"></i></div>
-                    <h5 class="card-title mb-1 pt-2">Total Tagihan Invoice</h5>
+                    <h5 class="card-title mb-1 pt-2">
+                        {{ number_format($total_tagihan_invoice, 0, '.', ',') }}
+                    </h5>
                     <small class="text-muted">Bulan Ini</small>
                     <p class="mb-2 mt-1">
-                        {{ number_format($total_tagihan_invoice, 0, '.', ',') }}
+                        Total Tagihan Invoice
                     </p>
                 </div>
             </div>
@@ -99,10 +103,12 @@
             <div class="card">
                 <div class="card-body">
                     <div class="badge p-2 bg-label-info mb-2 rounded"><i class="ti ti-devices-check ti-md"></i></div>
-                    <h5 class="card-title mb-1 pt-2">Total Pembayaran</h5>
+                    <h5 class="card-title mb-1 pt-2">
+                        {{ number_format($total_pembayaran, 0, '.', ',') }}
+                    </h5>
                     <small class="text-muted">Bulan Ini</small>
                     <p class="mb-2 mt-1">
-                        {{ number_format($total_pembayaran, 0, '.', ',') }}
+                        Total Pembayaran
                     </p>
                 </div>
             </div>
@@ -110,78 +116,34 @@
     </div>
 
     <div class="row mb-3">
-        <div class="col-7">
-            <div class="card">
+        <div class="col-12">
+            <div class="card" id="chart-layanan-proses">
                 <div class="card-header header-elements">
                     <h5 class="card-title mb-0">Grafik Layanan Proses Bulanan</h5>
-                    {{-- <div class="card-action-element ms-auto py-0">
-                        <div class="dropdown">
-                            <button type="button" class="btn dropdown-toggle px-0" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="ti ti-calendar"></i></button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Today</a>
-                                </li>
-                                <li><a href="javascript:void(0);"
-                                        class="dropdown-item d-flex align-items-center">Yesterday</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Last 7
-                                        Days</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Last 30
-                                        Days</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Current
-                                        Month</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Last
-                                        Month</a></li>
-                            </ul>
-                        </div>
-                    </div> --}}
                 </div>
                 <div class="card-body">
-                    <canvas id="chartLayananProsesBulanan" class="chartjs" data-height="400"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-5">
-            <div class="card">
-                <div class="card-header header-elements">
-                    <h5 class="card-title mb-0">Grafik Layanan Proses 5 Tahun Terakhir</h5>
-                    {{-- <div class="card-action-element ms-auto py-0">
-                        <div class="dropdown">
-                            <button type="button" class="btn dropdown-toggle px-0" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="ti ti-calendar"></i></button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a href="javascript:void(0);"
-                                        class="dropdown-item d-flex align-items-center">Today</a>
-                                </li>
-                                <li><a href="javascript:void(0);"
-                                        class="dropdown-item d-flex align-items-center">Yesterday</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Last 7
-                                        Days</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Last 30
-                                        Days</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Current
-                                        Month</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Last
-                                        Month</a></li>
-                            </ul>
+                    <div class="row mb-3">
+                        <div class="col-xl-3">
+                            <select name="year" id="" class="form-select select2">
+                                @foreach (years() as $year)
+                                    <option value="{{ $year }}"
+                                        @if ($year == date('Y')) @selected(true) @endif>
+                                        {{ $year }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </div> --}}
-                </div>
-                <div class="card-body">
-                    <canvas id="chartLayananProsesTahunan" class="chartjs" data-height="400"></canvas>
+                    </div>
+                    <div class="row">
+                        <canvas id="chartLayananProsesBulanan" class="chartjs" data-height="400"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-7">
-            <div class="card">
+        <div class="col-12">
+            <div class="card" id="chart-layanan-selesai">
                 <div class="card-header header-elements">
                     <h5 class="card-title mb-0">Grafik Layanan Selesai Bulanan</h5>
                     {{-- <div class="card-action-element ms-auto py-0">
@@ -209,41 +171,20 @@
                     </div> --}}
                 </div>
                 <div class="card-body">
-                    <canvas id="chartLayananSelesaiBulanan" class="chartjs" data-height="400"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-5">
-            <div class="card">
-                <div class="card-header header-elements">
-                    <h5 class="card-title mb-0">Grafik Layanan Selesai 5 Tahun Terakhir</h5>
-                    {{-- <div class="card-action-element ms-auto py-0">
-                        <div class="dropdown">
-                            <button type="button" class="btn dropdown-toggle px-0" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="ti ti-calendar"></i></button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a href="javascript:void(0);"
-                                        class="dropdown-item d-flex align-items-center">Today</a>
-                                </li>
-                                <li><a href="javascript:void(0);"
-                                        class="dropdown-item d-flex align-items-center">Yesterday</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Last 7
-                                        Days</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Last 30
-                                        Days</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Current
-                                        Month</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Last
-                                        Month</a></li>
-                            </ul>
+                    <div class="row mb-3">
+                        <div class="col-xl-3">
+                            <select name="year" id="" class="form-select select2">
+                                @foreach (years() as $year)
+                                    <option value="{{ $year }}"
+                                        @if ($year == date('Y')) @selected(true) @endif>
+                                        {{ $year }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    </div> --}}
-                </div>
-                <div class="card-body">
-                    <canvas id="chartLayananSelesaiTahunan" class="chartjs" data-height="400"></canvas>
+                    </div>
+                    <div class="row">
+                        <canvas id="chartLayananSelesaiBulanan" class="chartjs" data-height="400"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -353,68 +294,6 @@
                 }
             });
 
-            chartLayananProsesTahunan = new Chart(document.getElementById('chartLayananProsesTahunan'), {
-                type: 'bar',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        data: [],
-                        backgroundColor: '#28dac6',
-                        borderColor: 'transparent',
-                        maxBarThickness: 15,
-                        borderRadius: {
-                            topRight: 15,
-                            topLeft: 15
-                        }
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: {
-                        duration: 500
-                    },
-                    plugins: {
-                        tooltip: {
-                            rtl: isRtl,
-                            backgroundColor: cardColor,
-                            titleColor: headingColor,
-                            bodyColor: legendColor,
-                            borderWidth: 1,
-                            borderColor: borderColor
-                        },
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                color: borderColor,
-                                drawBorder: false,
-                                borderColor: borderColor
-                            },
-                            ticks: {
-                                color: labelColor
-                            }
-                        },
-                        y: {
-                            min: 0,
-                            // max: ,
-                            grid: {
-                                color: borderColor,
-                                drawBorder: false,
-                                borderColor: borderColor
-                            },
-                            ticks: {
-                                stepSize: 100,
-                                color: labelColor
-                            }
-                        }
-                    }
-                }
-            });
-
             chartLayananSelesaiBulanan = new Chart(document.getElementById('chartLayananSelesaiBulanan'), {
                 type: 'bar',
                 data: {
@@ -480,82 +359,27 @@
                 }
             });
 
-            chartLayananSelesaiTahunan = new Chart(document.getElementById('chartLayananSelesaiTahunan'), {
-                type: 'bar',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        data: [],
-                        backgroundColor: '#836AF9',
-                        borderColor: 'transparent',
-                        maxBarThickness: 15,
-                        borderRadius: {
-                            topRight: 15,
-                            topLeft: 15
-                        }
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: {
-                        duration: 500
-                    },
-                    plugins: {
-                        tooltip: {
-                            rtl: isRtl,
-                            backgroundColor: cardColor,
-                            titleColor: headingColor,
-                            bodyColor: legendColor,
-                            borderWidth: 1,
-                            borderColor: borderColor
-                        },
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                color: borderColor,
-                                drawBorder: false,
-                                borderColor: borderColor
-                            },
-                            ticks: {
-                                color: labelColor
-                            }
-                        },
-                        y: {
-                            min: 0,
-                            // max: ,
-                            grid: {
-                                color: borderColor,
-                                drawBorder: false,
-                                borderColor: borderColor
-                            },
-                            ticks: {
-                                stepSize: 100,
-                                color: labelColor
-                            }
-                        }
-                    }
-                }
-            });
-
             updateChartLayananProsesBulanan();
-            updateChartLayananProsesTahunan();
-
             updateChartLayananSelesaiBulanan();
-            updateChartLayananSelesaiTahunan();
+        });
+
+        $('#chart-layanan-proses select[name=year]').on('change', function() {
+            updateChartLayananProsesBulanan();
+        });
+
+        $('#chart-layanan-selesai select[name=year]').on('change', function() {
+            updateChartLayananSelesaiBulanan();
         });
 
         function updateChartLayananProsesBulanan() {
+            let year = $('#chart-layanan-proses select[name=year]').val();
             $.ajax({
                 url: "{{ route('admin-dashboard-dataChartLayananBulanan') }}",
                 method: 'get',
                 dataType: 'json',
                 data: {
-                    status_penugasan: 'Dalam Proses'
+                    status_penugasan: 'Dalam Proses',
+                    tahun: year
                 },
                 beforeSend: function() {
 
@@ -568,32 +392,15 @@
             });
         }
 
-        function updateChartLayananProsesTahunan() {
-            $.ajax({
-                url: "{{ route('admin-dashboard-dataChartLayananTahunan') }}",
-                method: 'get',
-                dataType: 'json',
-                data: {
-                    status_penugasan: 'Dalam Proses'
-                },
-                beforeSend: function() {
-
-                },
-                success: function(response) {
-                    chartLayananProsesTahunan.data.labels = response.labels;
-                    chartLayananProsesTahunan.data.datasets[0].data = response.data;
-                    chartLayananProsesTahunan.update();
-                }
-            });
-        }
-
         function updateChartLayananSelesaiBulanan() {
+            let year = $('#chart-layanan-selesai select[name=year]').val();
             $.ajax({
                 url: "{{ route('admin-dashboard-dataChartLayananBulanan') }}",
                 method: 'get',
                 dataType: 'json',
                 data: {
-                    status_penugasan: 'Selesai'
+                    status_penugasan: 'Selesai',
+                    tahun: year
                 },
                 beforeSend: function() {
 
@@ -606,23 +413,5 @@
             });
         }
 
-        function updateChartLayananSelesaiTahunan() {
-            $.ajax({
-                url: "{{ route('admin-dashboard-dataChartLayananTahunan') }}",
-                method: 'get',
-                dataType: 'json',
-                data: {
-                  status_penugasan: 'Selesai'
-                },
-                beforeSend: function() {
-                    status_penugasan: 'Selesai'
-                },
-                success: function(response) {
-                    chartLayananSelesaiTahunan.data.labels = response.labels;
-                    chartLayananSelesaiTahunan.data.datasets[0].data = response.data;
-                    chartLayananSelesaiTahunan.update();
-                }
-            });
-        }
     </script>
 @endsection
