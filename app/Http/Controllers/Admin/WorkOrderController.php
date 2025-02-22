@@ -30,7 +30,7 @@ class WorkOrderController extends Controller
   public function index()
   {
     $title = "Daftar Penugasan";
-    return view('content.workorder.index', compact('title'));
+    return view('content.work_order.index', compact('title'));
   }
 
   public function data(Request $request)
