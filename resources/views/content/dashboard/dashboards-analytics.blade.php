@@ -117,7 +117,7 @@
 
     <div class="row mb-3">
         <div class="col-12">
-            <div class="card" id="chart-layanan-proses">
+            <div class="card" id="chart-layanan">
                 <div class="card-header header-elements">
                     <h5 class="card-title mb-0">Grafik Layanan Proses Bulanan</h5>
                 </div>
@@ -134,56 +134,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <canvas id="chartLayananProsesBulanan" class="chartjs" data-height="400"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card" id="chart-layanan-selesai">
-                <div class="card-header header-elements">
-                    <h5 class="card-title mb-0">Grafik Layanan Selesai Bulanan</h5>
-                    {{-- <div class="card-action-element ms-auto py-0">
-                        <div class="dropdown">
-                            <button type="button" class="btn dropdown-toggle px-0" data-bs-toggle="dropdown"
-                                aria-expanded="false"><i class="ti ti-calendar"></i></button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Today</a>
-                                </li>
-                                <li><a href="javascript:void(0);"
-                                        class="dropdown-item d-flex align-items-center">Yesterday</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Last 7
-                                        Days</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Last 30
-                                        Days</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Current
-                                        Month</a></li>
-                                <li><a href="javascript:void(0);" class="dropdown-item d-flex align-items-center">Last
-                                        Month</a></li>
-                            </ul>
+                        <div class="col-12">
+                            <canvas id="chartLayananProsesBulanan" class="chartjs" data-height="400"></canvas>
                         </div>
-                    </div> --}}
-                </div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-xl-3">
-                            <select name="year" id="" class="form-select select2">
-                                @foreach (years() as $year)
-                                    <option value="{{ $year }}"
-                                        @if ($year == date('Y')) @selected(true) @endif>
-                                        {{ $year }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <canvas id="chartLayananSelesaiBulanan" class="chartjs" data-height="400"></canvas>
                     </div>
                 </div>
             </div>
@@ -198,8 +151,6 @@
     <script>
         let chartLayananProsesTahunan;
         let chartLayananProsesBulanan;
-        let chartLayananSelesaiTahunan;
-        let chartLayananSelesaiBulanan;
 
         $(() => {
             const purpleColor = '#836AF9',
@@ -237,15 +188,29 @@
                         'Dec'
                     ],
                     datasets: [{
-                        data: [],
-                        backgroundColor: '#28dac6',
-                        borderColor: 'transparent',
-                        maxBarThickness: 15,
-                        borderRadius: {
-                            topRight: 15,
-                            topLeft: 15
+                            label: 'Layanan Proses',
+                            data: [],
+                            backgroundColor: '#836AF9',
+                            borderColor: 'transparent',
+                            maxBarThickness: 20,
+                            borderRadius: {
+                                topRight: 15,
+                                topLeft: 15
+                            }
+                        },
+                        {
+                            label: 'Layanan Selesai',
+                            data: [],
+                            backgroundColor: '#28dac6',
+                            borderColor: 'transparent',
+                            borderWidth: 1,
+                            maxBarThickness: 20,
+                            borderRadius: {
+                                topRight: 15,
+                                topLeft: 15
+                            }
                         }
-                    }]
+                    ]
                 },
                 options: {
                     responsive: true,
@@ -279,72 +244,7 @@
                         },
                         y: {
                             min: 0,
-                            // max: 400,
-                            grid: {
-                                color: borderColor,
-                                drawBorder: false,
-                                borderColor: borderColor
-                            },
-                            ticks: {
-                                stepSize: 100,
-                                color: labelColor
-                            }
-                        }
-                    }
-                }
-            });
-
-            chartLayananSelesaiBulanan = new Chart(document.getElementById('chartLayananSelesaiBulanan'), {
-                type: 'bar',
-                data: {
-                    labels: [
-                        'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov',
-                        'Dec'
-                    ],
-                    datasets: [{
-                        data: [],
-                        backgroundColor: '#836AF9',
-                        borderColor: 'transparent',
-                        maxBarThickness: 15,
-                        borderRadius: {
-                            topRight: 15,
-                            topLeft: 15
-                        }
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: {
-                        duration: 500
-                    },
-                    plugins: {
-                        tooltip: {
-                            rtl: isRtl,
-                            backgroundColor: cardColor,
-                            titleColor: headingColor,
-                            bodyColor: legendColor,
-                            borderWidth: 1,
-                            borderColor: borderColor
-                        },
-                        legend: {
-                            display: false
-                        }
-                    },
-                    scales: {
-                        x: {
-                            grid: {
-                                color: borderColor,
-                                drawBorder: false,
-                                borderColor: borderColor
-                            },
-                            ticks: {
-                                color: labelColor
-                            }
-                        },
-                        y: {
-                            min: 0,
-                            // max: 400,
+                            beginAtZero: true,
                             grid: {
                                 color: borderColor,
                                 drawBorder: false,
@@ -360,21 +260,16 @@
             });
 
             updateChartLayananProsesBulanan();
-            updateChartLayananSelesaiBulanan();
         });
 
-        $('#chart-layanan-proses select[name=year]').on('change', function() {
+        $('#chart-layanan select[name=year]').on('change', function() {
             updateChartLayananProsesBulanan();
-        });
-
-        $('#chart-layanan-selesai select[name=year]').on('change', function() {
-            updateChartLayananSelesaiBulanan();
         });
 
         function updateChartLayananProsesBulanan() {
-            let year = $('#chart-layanan-proses select[name=year]').val();
+            let year = $('#chart-layanan select[name=year]').val();
             $.ajax({
-                url: "{{ route('admin-dashboard-dataChartLayananBulanan') }}",
+                url: "{{ route('admin-dashboard-dataChartLayanan') }}",
                 method: 'get',
                 dataType: 'json',
                 data: {
@@ -386,32 +281,11 @@
                 },
                 success: function(response) {
                     chartLayananProsesBulanan.data.labels = response.labels;
-                    chartLayananProsesBulanan.data.datasets[0].data = response.data;
+                    chartLayananProsesBulanan.data.datasets[0].data = response.data.dalam_proses;
+                    chartLayananProsesBulanan.data.datasets[1].data = response.data.selesai;
                     chartLayananProsesBulanan.update();
                 }
             });
         }
-
-        function updateChartLayananSelesaiBulanan() {
-            let year = $('#chart-layanan-selesai select[name=year]').val();
-            $.ajax({
-                url: "{{ route('admin-dashboard-dataChartLayananBulanan') }}",
-                method: 'get',
-                dataType: 'json',
-                data: {
-                    status_penugasan: 'Selesai',
-                    tahun: year
-                },
-                beforeSend: function() {
-
-                },
-                success: function(response) {
-                    chartLayananSelesaiBulanan.data.labels = response.labels;
-                    chartLayananSelesaiBulanan.data.datasets[0].data = response.data;
-                    chartLayananSelesaiBulanan.update();
-                }
-            });
-        }
-
     </script>
 @endsection

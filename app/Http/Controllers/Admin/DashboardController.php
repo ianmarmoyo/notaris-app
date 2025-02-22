@@ -105,12 +105,11 @@ class DashboardController extends Controller
     return $data;
   }
 
-  public function dataChartLayananBulanan(Request $request)
+  public function dataChartLayanan(Request $request)
   {
     $months = [];
     $currentMonth = date('m');
     $currentYear = $request->tahun ?? date('Y');
-    $status_penugasan = $request->status_penugasan;
     $monthNames = [
       "Januari",
       "Februari",
@@ -127,46 +126,32 @@ class DashboardController extends Controller
     ];
 
     $months = [];
-    $data = [];
+    $data = [
+      'dalam_proses' => [],
+      'selesai' => []
+    ];
 
     for ($i = 1; $i <= 12; $i++) {
       $month = date("m", mktime(0, 0, 0, $i, 1));
       $months[] = $monthNames[$i - 1];
 
-      $result = WorkOrderAssignment::whereMonth('tgl_penugasan', $month)
-        ->whereYear('tgl_penugasan', $currentYear)
-        ->where('status_penugasan', $status_penugasan)
-        ->count() ?? 0;
+      $query = WorkOrderAssignment::whereMonth('tgl_penugasan', $month);
+      $query->whereYear('tgl_penugasan', $currentYear);
 
-      $data[] = $result;
+      $wo_selesai = $query->clone();
+      $wo_selesai->where('status_penugasan', 'Selesai');
+      $selesai = $wo_selesai->count() ?? 0;
+
+      $data['selesai'][] = $selesai;
+
+      $query->where('status_penugasan', 'Dalam Proses');
+      $dalam_proses = $query->count() ?? 0;
+
+      $data['dalam_proses'][] = $dalam_proses;
     }
 
     $labels = $months;
 
-    return compact('labels', 'data');
-  }
-
-  public function dataChartLayananTahunan(Request $request)
-  {
-    $years = [];
-    $currentYear = date('Y');
-    $status_penugasan = $request->status_penugasan;
-
-    for ($i = 4; $i >= 0; $i--) {
-      $years[] = $currentYear - $i;
-    }
-
-    $data = [];
-    foreach ($years as $year) {
-
-      $result = WorkOrderAssignment::whereYear('tgl_penugasan', $year)
-        ->where('status_penugasan', $status_penugasan)
-        ->count();
-
-      $data[] = $result;
-    }
-
-    $labels = $years;
     return compact('labels', 'data');
   }
 }

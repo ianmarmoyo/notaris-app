@@ -76,7 +76,7 @@
 
 @section('page-script')
     <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
-    {{-- <script src="{{ asset('assets/js/tables-datatables-basic.js') }}"></script> --}}
+    <script src="{{ asset('assets/vendor/libs/accounting/accounting.min.js') }}"></script>
     <script>
         function modalFilter() {
             $('#modalFilter').modal('show');
@@ -147,11 +147,7 @@
                     {
                         targets: [4, 5],
                         render: function(data, type, full, meta) {
-                            return data.toLocaleString('id-ID', {
-                                style: 'currency',
-                                currency: 'IDR',
-                                minimumFractionDigits: 0
-                            })
+                          return accounting.formatMoney(data, "", 0, ".", ",");
                         }
                     },
                     {

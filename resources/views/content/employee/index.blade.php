@@ -45,7 +45,7 @@
     <div class="">
         <div class="card">
             <div class="card-header header-elements">
-                <span class=" me-2">{{ $title }}</span>
+                <h4 class=" me-2">{{ $title }}</h4>
 
                 <div class="card-header-elements ms-auto">
                     <a href="{{ route('admin-employee-create') }}" class="btn btn-primary"><span
@@ -59,6 +59,7 @@
                             <th width="10">#</th>
                             <th width="400">Nama</th>
                             <th width="300">No Telepon</th>
+                            <th width="">Alamat</th>
                             <th width="40">Aksi</th>
                         </tr>
                     </thead>
@@ -152,7 +153,7 @@
                     },
                     {
 
-                        targets: 3,
+                        targets: 4,
                         title: 'Aksi',
                         orderable: false,
                         searchable: false,
@@ -186,6 +187,9 @@
                     },
                     {
                         data: "no_telp"
+                    },
+                    {
+                        data: "alamat"
                     },
                     {
                         data: "id"
