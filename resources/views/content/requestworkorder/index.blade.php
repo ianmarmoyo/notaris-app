@@ -60,7 +60,7 @@
                         <tr>
                             <th width="10">#</th>
                             <th>Invoice</th>
-                            <th width="300">Klien</th>
+                            <th>Klien</th>
                             <th width="400">Layanan</th>
                             <th>Nominal</th>
                             <th>terbayar</th>
