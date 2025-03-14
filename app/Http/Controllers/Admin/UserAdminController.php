@@ -194,13 +194,20 @@ class UserAdminController extends Controller
     DB::beginTransaction();
     $user = Admin::find($id);
 
-    $dto = $request->except('_token');
-    if ($request->password === $user->password) {
-      data_set($dto, 'password', Hash::make($request->password));
+    if ($request->password) {
+      $dataUpdate = [
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password)
+      ];
+    } else {
+      $dataUpdate = [
+        'name' => $request->name,
+        'email' => $request->email,
+      ];
     }
-    data_set($dto, 'password', $user->password);
 
-    $user->update($dto);
+    $user->update($dataUpdate);
     if (!$user) {
       DB::rollBack();
       return response()->json([
