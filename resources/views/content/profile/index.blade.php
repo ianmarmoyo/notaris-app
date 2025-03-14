@@ -71,13 +71,16 @@
             <div class="card">
                 <div class="card-header pt-2">
                     <ul class="nav nav-tabs card-header-tabs" role="tablist">
-                        <li class="nav-item">
-                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-personal"
-                                role="tab" aria-selected="true" onclick="tabNav(this)">Data Diri</button>
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link waves-effect active" role="tab"
+                                data-bs-toggle="tab" data-bs-target="#form-tabs-personal"
+                                aria-controls="form-tabs-personal" aria-selected="true">Data
+                                Pegawai</button>
                         </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-pengguna"
-                                role="tab" aria-selected="true" onclick="tabNav(this)">Pengguna</button>
+                        <li class="nav-item" role="presentation">
+                            <button type="button" class="nav-link waves-effect" role="tab" data-bs-toggle="tab"
+                                data-bs-target="#form-tabs-pengguna" aria-controls="form-tabs-pengguna"
+                                aria-selected="false" tabindex="-1">Pengguna</button>
                         </li>
                     </ul>
                 </div>
@@ -92,41 +95,28 @@
                         </div>
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label" for="nama">Nama Guru</label>
+                                <label class="form-label" for="nama">Nama</label>
                                 <input type="text" id="nama" name="nama" class="form-control test"
-                                    placeholder="Masukan Nama Guru..." value="{{ @$guru->nama }}" disabled />
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label" for="institution_id">Lembaga <b style="color:red;">*</b></label>
-                                <input type="text" value="{{ @$guru->institution->name }}" class="form-control"
-                                    disabled>
+                                    placeholder="Masukan Nama Guru..." value="{{ @$user->employee->nama }}" disabled />
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label" for="date_birth">Tanggal Lahir</label>
                                 <input type="text" class="form-control" placeholder="YYYY-MM-DD"
-                                    value="{{ @$guru->tgl_lahir }}" disabled />
+                                    value="{{ @$user->employee->tgl_lahir }}" disabled />
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label" for="place_of_birth">Tempat Lahir</label>
                                 <input type="text" id="place_of_birth" name="place_of_birth" class="form-control"
-                                    placeholder="Tempat Lahir..." value="{{ @$guru->tempat_lahir }}" disabled />
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label" for="jabatan">Jabatan</label>
-                                <select name="jabatan" id="" class="select2 form-select" disabled>
-                                    <option value=""></option>
-                                    @foreach (config('enums.title') as $key => $value)
-                                        <option value="{{ $key }}"
-                                            {{ $key == @$guru->jabatan ? 'selected' : '' }}>{{ $value }}</option>
-                                    @endforeach
-                                </select>
+                                    placeholder="Tempat Lahir..." value="{{ @$user->employee->tempat_lahir }}"
+                                    disabled />
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label" for="gender">Jenis Kelamin</label>
                                 <select name="gender" id="" class="select2 form-select" disabled>
                                     <option value=""></option>
                                     @foreach (config('enums.gender') as $key => $value)
-                                        <option value="{{ $key }}" {{ $key == @$guru->jk ? 'selected' : '' }}>
+                                        <option value="{{ $key }}"
+                                            {{ $key == @$user->employee->jk ? 'selected' : '' }}>
                                             {{ $value }}</option>
                                     @endforeach
                                 </select>
@@ -138,7 +128,7 @@
                                     <option value=""></option>
                                     @foreach (config('enums.regligions') as $key => $value)
                                         <option value="{{ $key }}"
-                                            {{ $key == @$guru->agama ? 'selected' : '' }}>
+                                            {{ $key == @$user->employee->agama ? 'selected' : '' }}>
                                             {{ $value }}</option>
                                     @endforeach
                                 </select>
@@ -146,17 +136,12 @@
                             <div class="col-md-6">
                                 <label class="form-label" for="phone">No WA/Telepon</label>
                                 <input type="text" id="phone" name="phone" class="form-control"
-                                    placeholder="658 799 8941" value="{{ @$guru->no_telp }}" disabled />
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label" for="phone">Wali Dari Kelas</label>
-                                <input type="text" id="phone" name="phone" class="form-control"
-                                    placeholder="658 799 8941" value="{{ @$guru->kelas->nama }}" disabled />
+                                    placeholder="658 799 8941" value="{{ @$user->employee->no_telp }}" disabled />
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label" for="address">Alamat Lengkap</b></label>
                                 <textarea name="address" id="" cols="30" rows="3" class="form-control"
-                                    placeholder="Perumahan, Blok A01" disabled>{{ @$guru->alamat }}</textarea>
+                                    placeholder="Perumahan, Blok A01" disabled>{{ @$user->employee->alamat }}</textarea>
                             </div>
                         </div>
                         <div class="content-header mb-3 mt-3">
@@ -168,27 +153,13 @@
                                 <label class="form-label" for="photo">Foto Diri</label>
                                 <div class="upload-container" id="image-login">
                                     <div class="upload-img">
-                                        <img src="{{ @$guru->view_foto }}" alt = "">
+                                        <img src="{{ @$user->employee->view_foto }}" alt = "">
                                     </div>
                                 </div>
                                 <div>
 
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                @isset($guru->kelases)
-                                    <label for="" class="form-label">Mengajar Untuk Kelas</label>
-                                    <table class="table table-bordered">
-                                        <tbody>
-                                            @foreach ($guru->kelases as $key => $value)
-                                                <tr>
-                                                    <td>{{ $value->nama }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            @endisset
                         </div>
                         <div class="pt-4">
                         </div>
@@ -261,62 +232,6 @@
 
             </div>
         </div>
-        @if ($guru)
-            <div class="col-lg-12" id="card-mapels">
-                <div class="card">
-                    <div class="card-header header-elements">
-                        <h5 class=" me-2">{{ __('Mata Pelajaran') }}</h5>
-                        <div class="card-header-elements ms-auto">
-
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                        </div>
-                    </div>
-                    <div class="card-datatable table-responsive">
-                        <table class="table table-bordered list-mapel-guru">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Mata Pelajaran</th>
-                                    <th>Kelas</th>
-                                    <th>Semester</th>
-                                    <th>Tahun Ajaran</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12" id="card-ekskuls">
-                <div class="card">
-                    <div class="card-header header-elements">
-                        <h5 class=" me-2">{{ __('Ekstrakurikuler') }}</h5>
-                        <div class="card-header-elements ms-auto">
-
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                        </div>
-                    </div>
-                    <div class="card-datatable table-responsive">
-                        <table class="table table-bordered text-capitalize list-guru-ekskul">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Nama Ekstrakurikuler</th>
-                                    <th>Kelas</th>
-                                    <th>Semester</th>
-                                    <th>Tahun Ajaran</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        @endif
     </div>
 @endsection
 @section('page-script')
@@ -339,133 +254,7 @@
             }
         })
 
-        function modal_add_mapel() {
-            $('#modalAddMapel').modal('show')
-        }
-
-        function modal_add_ekskul() {
-            $('#modalAddEkskul').modal('show')
-        }
-
-        let kelases = [];
-        @isset($guru->kelases)
-          kelases = @json($guru->kelases->pluck('id'));
-        @endisset
         $(document).ready(function() {
-
-            list_mapel_guru = $('.list-mapel-guru').DataTable({
-                stateSave: true,
-                processing: true,
-                serverSide: true,
-                filter: true,
-                info: false,
-                lengthChange: true,
-                responsive: true,
-                order: [
-                    [1, "desc"]
-                ],
-                ajax: {
-                    url: "{{ route('admin-guru-readmapelguru') }}",
-                    type: "GET",
-                    data: function(data) {
-                        data.kelas_id = kelases;
-                        data.guru_id = "{{ @$guru->id }}";
-                    }
-                },
-                language: {
-                    url: "{{ asset('assets/vendor/libs/datatables-bs5/lang_id.json') }}"
-                },
-                "drawCallback": function(settings) {
-                    $('[data-toggle="tooltip"]').tooltip()
-                },
-                columnDefs: [{
-                        "orderable": false,
-                        "searchable": false,
-                        targets: [0, 2]
-                    },
-                    {
-                        targets: [2],
-                        className: 'dt-center'
-                    }
-                ],
-                columns: [{
-                        data: null,
-                        className: "dt-center",
-                        "render": function(data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
-                    },
-                    {
-                        data: "nama_mapel"
-                    },
-                    {
-                        data: "nama_kelas"
-                    },
-                    {
-                        data: "nama_semester"
-                    },
-                    {
-                        data: "tahun_akademik"
-                    }
-                ]
-            });
-
-            list_ekskul_guru = $('.list-guru-ekskul').DataTable({
-                stateSave: true,
-                processing: true,
-                serverSide: true,
-                filter: true,
-                info: false,
-                lengthChange: true,
-                responsive: true,
-                order: [
-                    [1, "desc"]
-                ],
-                ajax: {
-                    url: "{{ route('admin-guru-readekskulguru') }}",
-                    type: "GET",
-                    data: function(data) {
-                        data.kelas_id = kelases;
-                        data.guru_id = "{{ @$guru->id }}";
-                    }
-                },
-                language: {
-                    url: "{{ asset('assets/vendor/libs/datatables-bs5/lang_id.json') }}"
-                },
-                "drawCallback": function(settings) {
-                    $('[data-toggle="tooltip"]').tooltip()
-                },
-                columnDefs: [{
-                        "orderable": false,
-                        "searchable": false,
-                        targets: [0, 2]
-                    },
-                    {
-                        targets: [2],
-                        className: 'dt-center'
-                    }
-                ],
-                columns: [{
-                        data: null,
-                        className: "dt-center",
-                        "render": function(data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
-                    },
-                    {
-                        data: "nama_ekskul"
-                    },
-                    {
-                        data: "nama_kelas"
-                    },
-                    {
-                        data: "nama_semester"
-                    },
-                    {
-                        data: "tahun_akademik"
-                    }
-                ]
-            });
 
             // Form Submit
             const form = document.getElementById('form');
@@ -553,281 +342,6 @@
                     $('.custom-loading').addClass('d-none');
                     toastr.warning(message, 'Warning', 1000);
                 })
-            });
-        });
-
-        function tabNav(e) {
-            let data_target = $(e).attr('data-bs-target');
-            let card_mapels = $('#card-mapels');
-            let card_ekskuls = $('#card-ekskuls');
-
-            if (data_target == '#form-tabs-pengguna') {
-                card_mapels.addClass('d-none');
-                card_ekskuls.addClass('d-none');
-            } else {
-                card_mapels.removeClass('d-none');
-                card_ekskuls.removeClass('d-none');
-            }
-        }
-
-        function pickMapel(e) {
-            let mapel_id = $(e).data('mapel_id');
-            let kelas_id = $(e).data('kelas_id');
-            $.ajax({
-                url: "{{ route('admin-guru-pilihmapel') }}",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    id: this.value,
-                    mapel_id: mapel_id,
-                    kelas_id: kelas_id,
-                    guru_id: "{{ @$guru->id }}"
-                },
-                type: 'POST',
-                dataType: 'json',
-                beforeSend: function() {
-                    sectionBlock();
-                }
-            }).done(function(response) {
-                sectionUnBlock();
-                if (response.status) {
-                    dataTable.draw();
-                    list_mapel_guru.draw();
-                    $('#modalAddMapel').modal('hide');
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil !',
-                        text: response.message,
-                        customClass: {
-                            confirmButton: 'btn btn-success'
-                        }
-                    });
-                } else {
-                    Swal.fire({
-                        title: "Error!",
-                        text: response.message,
-                        icon: "error",
-                        customClass: {
-                            confirmButton: 'btn btn-success'
-                        }
-                    })
-                }
-                return;
-
-            }).fail(function(response) {
-                var response = response.responseJSON;
-                sectionUnBlock();
-                Swal.fire({
-                    title: "Error!",
-                    text: response.message,
-                    icon: "error",
-                    customClass: {
-                        confirmButton: 'btn btn-success'
-                    }
-                })
-            })
-        }
-
-        function pickEkskul(e) {
-            let ekskul_id = $(e).data('ekskul_id');
-            let kelas_id = $(e).data('kelas_id');
-            $.ajax({
-                url: "{{ route('admin-guru-pilihekskul') }}",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    id: this.value,
-                    ekskul_id: ekskul_id,
-                    kelas_id: kelas_id,
-                    guru_id: "{{ @$guru->id }}"
-                },
-                type: 'POST',
-                dataType: 'json',
-                beforeSend: function() {
-                    sectionBlock();
-                }
-            }).done(function(response) {
-                sectionUnBlock();
-                if (response.status) {
-                    dt_ekskul.draw();
-                    list_ekskul_guru.draw();
-                    $('#modalAddEkskul').modal('hide');
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Berhasil !',
-                        text: response.message,
-                        customClass: {
-                            confirmButton: 'btn btn-success'
-                        }
-                    });
-                } else {
-                    Swal.fire({
-                        title: "Error!",
-                        text: response.message,
-                        icon: "error",
-                        customClass: {
-                            confirmButton: 'btn btn-success'
-                        }
-                    })
-                }
-                return;
-
-            }).fail(function(response) {
-                var response = response.responseJSON;
-                sectionUnBlock();
-                Swal.fire({
-                    title: "Error!",
-                    text: response.message,
-                    icon: "error",
-                    customClass: {
-                        confirmButton: 'btn btn-success'
-                    }
-                })
-            })
-        }
-
-        $('select#guru_kelases').on('change', function() {
-            var selectedValues = $(this).val();
-            dataTable.draw();
-        });
-
-        $(document).on('click', '.delete-record', function() {
-            let id = $(this).data('id');
-
-            Swal.fire({
-                title: 'Apa Kamu Yakin?',
-                text: "Data ini akan di hapus!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Ya hapus!',
-                cancelButtonText: 'Tidak!',
-                customClass: {
-                    confirmButton: 'btn btn-primary me-3',
-                    cancelButton: 'btn btn-label-secondary'
-                },
-                buttonsStyling: false
-            }).then(function(result) {
-                if (result.value) {
-                    $.ajax({
-                        url: "{{ url('/admin/guru/deletegurumapelkelas') }}/" + id,
-                        method: 'DELETE',
-                        data: {
-                            "_token": "{{ csrf_token() }}",
-                        },
-                        dataType: 'json',
-                        beforeSend: function() {
-                            $('.overlay').removeClass('d-none');
-                        }
-                    }).done(function(response) {
-                        $('.overlay').addClass('d-none');
-                        if (response.status) {
-                            dataTable.draw();
-                            list_mapel_guru.draw();
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil !',
-                                text: 'Data telah di hapus.',
-                                customClass: {
-                                    confirmButton: 'btn btn-success'
-                                }
-                            });
-                        } else {
-                            Swal.fire({
-                                title: 'Warning!',
-                                text: response.message,
-                                icon: 'warning',
-                                customClass: {
-                                    confirmButton: 'btn btn-primary'
-                                },
-                                buttonsStyling: false
-                            });
-                        }
-                        return;
-                    }).fail(function(response) {
-                        const {
-                            status,
-                            message
-                        } = response.responseJSON
-                        Swal.fire({
-                            title: 'Warning!',
-                            text: message,
-                            icon: 'warning',
-                            customClass: {
-                                confirmButton: 'btn btn-primary'
-                            },
-                            buttonsStyling: false
-                        });
-                    })
-                }
-            });
-        });
-
-        $(document).on('click', '.delete-guru-ekskul', function() {
-            let id = $(this).data('id');
-
-            Swal.fire({
-                title: 'Apa Kamu Yakin?',
-                text: "Data ini akan di hapus!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Ya hapus!',
-                cancelButtonText: 'Tidak!',
-                customClass: {
-                    confirmButton: 'btn btn-primary me-3',
-                    cancelButton: 'btn btn-label-secondary'
-                },
-                buttonsStyling: false
-            }).then(function(result) {
-                if (result.value) {
-                    $.ajax({
-                        url: "{{ url('/admin/guru/deleteguruekskulkelas') }}/" + id,
-                        method: 'DELETE',
-                        data: {
-                            "_token": "{{ csrf_token() }}",
-                        },
-                        dataType: 'json',
-                        beforeSend: function() {
-                            $('.overlay').removeClass('d-none');
-                        }
-                    }).done(function(response) {
-                        $('.overlay').addClass('d-none');
-                        if (response.status) {
-                            dt_ekskul.draw();
-                            list_ekskul_guru.draw();
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil !',
-                                text: 'Data telah di hapus.',
-                                customClass: {
-                                    confirmButton: 'btn btn-success'
-                                }
-                            });
-                        } else {
-                            Swal.fire({
-                                title: 'Warning!',
-                                text: response.message,
-                                icon: 'warning',
-                                customClass: {
-                                    confirmButton: 'btn btn-primary'
-                                },
-                                buttonsStyling: false
-                            });
-                        }
-                        return;
-                    }).fail(function(response) {
-                        const {
-                            status,
-                            message
-                        } = response.responseJSON
-                        Swal.fire({
-                            title: 'Warning!',
-                            text: message,
-                            icon: 'warning',
-                            customClass: {
-                                confirmButton: 'btn btn-primary'
-                            },
-                            buttonsStyling: false
-                        });
-                    })
-                }
             });
         });
 

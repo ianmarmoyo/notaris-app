@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\ConfigSales;
 use App\Models\Editor;
 use App\Models\Guru;
@@ -26,10 +27,9 @@ class ProfileController extends Controller
 
   public function index()
   {
-    $user = Auth::guard('admin')->user();
-    $guru = Guru::where('admin_id', $user->id)->first();
+    $user = Admin::with('employee')->where('employee_id', Auth::guard('admin')->user()->employee_id)->first();
     $title = __('Profil');
-
-    return view('content.profile.index', compact('title', 'user', 'guru'));
+    // dd($user);
+    return view('content.profile.index', compact('title', 'user'));
   }
 }
