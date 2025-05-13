@@ -54,6 +54,19 @@
                     @endcan
                 </div>
             </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="input-group">
+                            <select name="filter" id="filter" class="form-control select2">
+                              <option value="">Semua</option>
+                              <option value="already_to_work">Layanan Yang Sudah Dikerjakan</option>
+                              <option value="not_to_work">Layanan Yang Belum Dikerjakan</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="card-datatable table-responsive">
                 <table class="table datatable">
                     <thead>
@@ -83,7 +96,8 @@
         }
 
         $(document).ready(function() {
-            moment.locale('id')
+            moment.locale('id');
+            $('.select2').select2();
             dataTable = $('.datatable').DataTable({
                 stateSave: true,
                 processing: true,
@@ -99,7 +113,7 @@
                     url: "{{ route('admin-requestworkorder-data') }}",
                     type: "GET",
                     data: function(data) {
-
+                      data.filter = $('#filter').val();
                     }
                 },
                 columnDefs: [{
@@ -132,7 +146,7 @@
                             full.work_order_details.forEach((wo, index) => {
                                 html += `
                                   <li>
-                                    <span class="text-capitalize" style="font-size: 14px">${wo.keperluan}</span>
+                                    <span class="text-capitalize ${wo.work_order_assignment ? 'text-success' : ''}" style="font-size: 14px">${wo.keperluan}</span>
                                   </li>
                                 `;
                             });
@@ -147,7 +161,7 @@
                     {
                         targets: [4, 5],
                         render: function(data, type, full, meta) {
-                          return accounting.formatMoney(data, "", 0, ".", ",");
+                            return accounting.formatMoney(data, "", 0, ".", ",");
                         }
                     },
                     {
@@ -328,6 +342,10 @@
             e.preventDefault();
             dataTable.draw();
             $('#modalFilter').modal('hide');
+        });
+
+        $('select#filter').on('change', function() {
+            dataTable.draw();
         });
     </script>
 @endsection

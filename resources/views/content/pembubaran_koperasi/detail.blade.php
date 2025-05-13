@@ -205,6 +205,10 @@
                                 <div class="value no_pembayaran">{{ $work_order_assignment->tgl_penugasan }}</div>
                             </div>
                             <div class="form-group">
+                              <div class="label">Tanggal Batas Waktu</div>
+                              <div class="value no_pembayaran">{{ $work_order_assignment->tgl_jatuh_tempo }}</div>
+                            </div>
+                            <div class="form-group">
                                 <div class="label">Keperluan</div>
                                 <div class="value no_pembayaran">
                                     {{ $work_order_assignment->work_order_detail->keperluan }}

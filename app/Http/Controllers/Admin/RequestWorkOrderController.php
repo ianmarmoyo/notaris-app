@@ -52,6 +52,7 @@ class RequestWorkOrderController extends Controller
     $dir = $request->order[0]['dir'];
     $search = $request->search['value'];
     $client_id = $request->client_id;
+    $filter = $request->filter;
 
     $query = WorkOrder::select('id');
     $query->leftJoin('clients', 'clients.id', '=', 'work_orders.client_id');
@@ -62,6 +63,31 @@ class RequestWorkOrderController extends Controller
           UPPER(clients.no_telp) like '%" . $search . "%'
       )");
     });
+    if ($filter == 'already_to_work') {
+      $query->whereDoesntHave('work_order_details', function ($q) {
+        $q->doesntHave('work_order_assignment');
+      })->with([
+        'work_order_details' => function ($q) {
+          $q->has('work_order_assignment'); // pastikan hanya yang punya assignment
+        },
+        'work_order_details.work_order_assignment'
+      ]);
+    }
+
+    if ($filter == 'not_to_work') {
+      $query->whereHas('work_order_details', function ($q) {
+        $q->doesntHave('work_order_assignment');
+      })->with([
+        'work_order_details' => function ($q) {
+          $q->doesntHave('work_order_assignment'); // pastikan hanya yang punya assignment
+        },
+        'work_order_details.work_order_assignment'
+      ]);
+    }
+
+    if (!$filter) {
+      $query->with('work_order_details.work_order_assignment');
+    }
     $query->when($client_id, function ($q) use ($client_id) {
       $q->where('clients.id', $client_id);
     });
@@ -84,7 +110,33 @@ class RequestWorkOrderController extends Controller
         WHERE work_order_payments.work_order_id = work_orders.id
       ), 0) AS sum_payable"),
     );
-    $query->with('work_order_details');
+
+    if ($filter == 'already_to_work') {
+      $query->whereDoesntHave('work_order_details', function ($q) {
+        $q->doesntHave('work_order_assignment');
+      })->with([
+        'work_order_details' => function ($q) {
+          $q->has('work_order_assignment'); // pastikan hanya yang punya assignment
+        },
+        'work_order_details.work_order_assignment'
+      ]);
+    }
+
+    if ($filter == 'not_to_work') {
+      $query->whereHas('work_order_details', function ($q) {
+        $q->doesntHave('work_order_assignment');
+      })->with([
+        'work_order_details' => function ($q) {
+          $q->doesntHave('work_order_assignment'); // pastikan hanya yang punya assignment
+        },
+        'work_order_details.work_order_assignment'
+      ]);
+    }
+
+    if (!$filter) {
+      $query->with('work_order_details.work_order_assignment');
+    }
+
     $query->leftJoin('clients', 'clients.id', '=', 'work_orders.client_id');
     $query->when($search, function ($q) use ($search) {
       $q->whereRaw("(
@@ -99,13 +151,13 @@ class RequestWorkOrderController extends Controller
     $query->offset($start);
     $query->limit($length);
     $query->orderBy($sort, $dir);
-    $users = $query->get();
+    $workOrders = $query->get();
 
     return response()->json([
       'draw' => $request->draw,
       'recordsTotal' => $totals,
       'recordsFiltered' => $totals,
-      'data' => $users
+      'data' => $workOrders
     ], 200);
   }
 

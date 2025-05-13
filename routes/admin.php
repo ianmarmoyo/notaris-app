@@ -39,6 +39,7 @@ use App\Http\Controllers\Admin\UserAdminController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WarmarkingController;
 use App\Http\Controllers\Admin\WorkOrderController;
+use App\Http\Controllers\Admin\WorkOrderDeadlineController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
@@ -480,5 +481,13 @@ Route::middleware(
     Route::post('/store', [PembubaranKoperasiController::class, 'store'])->name('store');
     Route::get('/work-order-assignment/{work_order_assignment_id}', [PembubaranKoperasiController::class, 'detail']);
     Route::get('/work-order-assignment/{work_order_assignment_id}/form', [PembubaranKoperasiController::class, 'form']);
+  });
+
+  /**
+   * Work Order Deadline
+   */
+  Route::group(['prefix' => 'workorderdeadline', 'as' => 'workorderdeadline-'], function () {
+    Route::get('/', [WorkOrderDeadlineController::class, 'index'])->name('index');
+    Route::post('/store', [WorkOrderDeadlineController::class, 'store'])->name('store');
   });
 });

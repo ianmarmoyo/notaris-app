@@ -140,7 +140,8 @@ class InsertWorkOrderProcedureAction
     foreach ($procedures as $syarat) {
       $results[] = BalikNamaWaris::create([
         'work_order_assignment_id' => $work_order_assignment_id,
-        'proses' => $syarat
+        'proses' => $syarat,
+        'deadline' => null
       ]);
     }
 

@@ -60,6 +60,7 @@
                             <th>Klien</th>
                             <th>layanan</th>
                             <th>Penugasan</th>
+                            <th>Deadline</th>
                             <th>Status</th>
                             <th width="40">Aksi</th>
                         </tr>
@@ -152,7 +153,13 @@
                         }
                     },
                     {
-                        targets: 5,
+                      targets: 5,
+                      render: function(data, type, full, meta) {
+                        return `${data ? moment(data).format('LL') : ''}`;
+                      }
+                    },
+                    {
+                        targets: 6,
                         // className: "text-center",
                         render: function(data, type, full, meta) {
                             let $status = `<span class="badge rounded-pill bg-label-warning">Belum Selesai</span>`;
@@ -165,7 +172,7 @@
                     },
                     {
 
-                        targets: 6,
+                        targets: 7,
                         title: 'Aksi',
                         orderable: false,
                         searchable: false,
@@ -213,7 +220,10 @@
                         data: "keperluan"
                     },
                     {
-                        data: "nama_admin"
+                        data: "tgl_penugasan"
+                    },
+                    {
+                        data: "tgl_jatuh_tempo"
                     },
                     {
                         "orderable": false,

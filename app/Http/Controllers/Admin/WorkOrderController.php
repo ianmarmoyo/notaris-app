@@ -6,8 +6,10 @@ use App\Actions\InsertWorkOrderProcedureAction;
 use App\Enums\StatusAssignmentEnum;
 use App\Helpers\RouteMappingWorkOrderHelper;
 use App\Http\Controllers\Controller;
+use App\Models\MasterWorkOrder;
 use App\Models\WorkOrderAssignment;
 use App\Models\WorkOrderDetail;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -149,6 +151,12 @@ class WorkOrderController extends Controller
     $work_order_detail_id = $request->work_order_detail_id;
     $user_admin_id = $request->user_admin_id;
 
+    $get_day_deadline = MasterWorkOrder::find(WorkOrderDetail::find($work_order_detail_id)->master_work_order_id);
+    $due_date = null;
+    if ($get_day_deadline->day_deadline != null) {
+      $due_date = Carbon::now()->addDays(($get_day_deadline->day_deadline - 1))->format('Y-m-d');
+    }
+
     try {
       DB::beginTransaction();
       $wo_assignment = WorkOrderAssignment::create([
@@ -156,11 +164,12 @@ class WorkOrderController extends Controller
         'work_order_detail_id' => $work_order_detail_id,
         'user_admin_id' => $user_admin_id,
         'tgl_penugasan' => now(),
+        'tgl_jatuh_tempo' => $due_date,
         'status_penugasan' => StatusAssignmentEnum::ON_PROCESS
       ]);
 
       $action = new InsertWorkOrderProcedureAction();
-      $result = $action->execute($wo_assignment);
+      $result = $action->execute($wo_assignment,);
 
       if (!$result) {
         DB::rollBack();
