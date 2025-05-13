@@ -153,18 +153,41 @@
                         }
                     },
                     {
-                      targets: 5,
-                      render: function(data, type, full, meta) {
-                        return `${data ? moment(data).format('LL') : ''}`;
-                      }
+                        targets: 5,
+                        render: function(data, type, full, meta) {
+                            if (data) {
+                                return `
+                                  <div class="d-flex justify-content-start align-items-center user-name">
+                                    <div class="d-flex flex-column">
+                                      <span class="emp_name text-truncate">${full.work_order_late}</span>
+                                      <small class="emp_post text-truncate text-muted">
+                                        ${data ? moment(data).format('LL') : ''}
+                                      </small>
+                                    </div>
+                                  </div>
+                                `;
+                            } else {
+                              return ``;
+                            }
+                        }
                     },
                     {
                         targets: 6,
-                        // className: "text-center",
+                        className: "text-center",
                         render: function(data, type, full, meta) {
-                            let $status = `<span class="badge rounded-pill bg-label-warning">Belum Selesai</span>`;
+                            let $status =
+                                `<span class="badge rounded-pill bg-label-warning">Belum Selesai</span>`;
                             if (full.status_penugasan == 'Selesai') {
-                                $status = `<span class="badge rounded-pill bg-label-success">Selesai</span>`;
+                                $status = `
+                                  <div class="d-flex justify-content-center align-items-center user-name">
+                                    <div class="d-flex flex-column">
+                                      <span class="badge rounded-pill bg-label-success">Selesai</span>
+                                      <small class="emp_post text-truncate text-dark">
+                                        ${full.tgl_selesai ? moment(full.tgl_selesai).format('LL') : ''}
+                                      </small>
+                                    </div>
+                                  </div>
+                                `;
                             }
 
                             return $status;

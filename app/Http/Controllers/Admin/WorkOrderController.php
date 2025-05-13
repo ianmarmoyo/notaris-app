@@ -203,6 +203,7 @@ class WorkOrderController extends Controller
     $wo_assignment_id = $request->wo_assignment_id;
     $wo_assignment = WorkOrderAssignment::find($wo_assignment_id);
     $wo_assignment->status_penugasan = StatusAssignmentEnum::DONE;
+    $wo_assignment->tgl_selesai = now();
     $wo_assignment->save();
 
     $wo_assignment->work_order_detail->update(['status' => 'selesai']);
