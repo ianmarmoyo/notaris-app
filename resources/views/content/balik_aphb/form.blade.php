@@ -94,6 +94,11 @@
                     data-bs-target="#navs-wo-attachment" aria-controls="navs-wo-attachment" aria-selected="false">Berkas
                     Persyaratan</button>
             </li>
+            <li class="nav-item">
+              <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+                  data-bs-target="#navs-another-cost" aria-controls="navs-another-cost" aria-selected="false">Biaya
+                  Lain-lain</button>
+            </li>
         </ul>
     </div>
 
@@ -322,6 +327,36 @@
             </div>
         </div>
     </div>
+    <div class="fade" id="navs-another-cost">
+      <div class="row">
+          <div class="col-12">
+              <div class="card">
+                  <h5 class="card-header">Biaya Tambahan</h5>
+                  <div class="card-body">
+                      <form action="" id="form-another-cost">
+                          @csrf
+                          <input type="hidden" name="work_order_assignment_id"
+                              value="{{ $work_order_assignment_id }}">
+                          <div class="repeater-list">
+
+                          </div>
+                          <div class="mb-0">
+                              <button class="btn btn-primary" type="button" onclick="addRepeaterItem(this)">
+                                  <i class="ti ti-plus me-1"></i>
+                                  <span class="align-middle">Tambah Biaya</span>
+                              </button>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+              <div class="d-flex justify-content-end mt-4">
+                  <button type="submit" form="form-another-cost" class="btn btn-success waves-effect waves-light">
+                      Simpan
+                  </button>
+              </div>
+          </div>
+      </div>
+  </div>
 @endsection
 @section('page-script')
     <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
@@ -331,6 +366,7 @@
     <script src="{{ asset('assets/vendor/libs/@form-validation/umd/plugin-bootstrap5/index.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/cleavejs/cleave.js') }}"></script>
 
     <script>
         $(document).ready(function() {
@@ -340,6 +376,7 @@
             $('input[name=tgl_pembayaran]').flatpickr({
                 monthSelectorType: 'static'
             });
+            getAnotherExpense();
         });
 
         $('button[data-bs-toggle="tab"]').on('click', function(e) {
@@ -347,13 +384,16 @@
             switch (target) {
                 case '#navs-prodecure':
                     $('#navs-prodecure').show('fade');
-                    // $('#navs-wo-attachment').addClass('d-none');
                     $('#navs-wo-attachment').hide('fade');
                     break;
                 case '#navs-wo-attachment':
                     $('#navs-prodecure').hide('fade');
-                    // $('#navs-wo-attachment').removeClass('d-none');
                     $('#navs-wo-attachment').show('fade');
+                    break;
+                case '#navs-another-cost':
+                    $('#navs-prodecure').hide('fade');
+                    $('#navs-wo-attachment').hide('fade');
+                    $('#navs-another-cost').show('fade');
                     break;
                 default:
                     break;
@@ -494,5 +534,162 @@
         function sectionUnBlock(element) {
             $(`#${element}`).unblock();
         }
+
+        function addRepeaterItem(el) {
+            let target = $(el).data('target');
+            let index = $(el).data('index');
+            let ini_index = 1;
+            let last_repeater = $('.repeater-item').last() || 0;
+            if (last_repeater.length > 0) {
+                ini_index = parseInt(last_repeater.data('index')) + 1;
+            }
+
+            let repeater_item = `
+            <div class="repeater-item" data-index="${ini_index}">
+                <div class="row">
+                    <div class="mb-3 col-lg-6 col-xl-3 col-12 mb-0">
+                        <label class="form-label" for="form-repeater-1-1">Nama Biaya</label>
+                        <input type="text" id="form-repeater-1-1" placeholder="Nama Biaya..." name="nama_biaya[]" class="form-control" required/>
+                    </div>
+                    <div class="mb-3 col-lg-6 col-xl-3 col-12 mb-0">
+                        <label class="form-label" for="form-repeater-1-2">Nominal</label>
+                        <input type="text" id="nominal_${ini_index}" name="nominal[]" class="form-control"
+                            placeholder="Nominal..." required/>
+                    </div>
+                    <div class="mb-3 col-lg-6 col-xl-4 col-12 mb-0">
+                      <label class="form-label" for="form-repeater-1-1">Catatan</label>
+                      <textarea name="catatan[]" class="form-control" id="" cols="30" rows="2"></textarea>
+                    </div>
+                    <div class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
+                        <button class="btn btn-label-danger mt-4" type="button" onclick="deleteRepeaterItem(this)">
+                            <i class="ti ti-trash ti-xs me-1"></i>
+                            <span class="align-middle">Hapus</span>
+                        </button>
+                    </div>
+                </div>
+                <hr>
+            </div>
+            `;
+            let repeater_list = $('.repeater-list');
+            repeater_list.append(repeater_item);
+            let input_nominal = document.querySelector(`input#nominal_${ini_index}`);
+            if (input_nominal) {
+                var cleaveNumeral = new Cleave(input_nominal, {
+                    numeral: true,
+                    numeralThousandsGroupStyle: 'thousand'
+                });
+            }
+        }
+
+        function getAnotherExpense() {
+            let work_order_assignment_id = "{{ $work_order_assignment_id }}";
+            $.ajax({
+                url: "{{ url('/admin/workorderanotherexpense/get') }}/" + work_order_assignment_id,
+                method: 'GET',
+                dataType: 'json',
+                beforeSend: function() {
+
+                }
+            }).done(function(response) {
+                if (response.status) {
+                    response.data.map(function(item) {
+                        let ini_index = 1;
+                        let last_repeater = $('.repeater-item').last() || 0;
+                        if (last_repeater.length > 0) {
+                            ini_index = parseInt(last_repeater.data('index')) + 1;
+                        }
+                        let repeater_item = `
+                        <div class="repeater-item" data-index="${ini_index}">
+                            <div class="row">
+                                <div class="mb-3 col-lg-6 col-xl-3 col-12 mb-0">
+                                    <label class="form-label" for="form-repeater-1-1">Nama Biaya</label>
+                                    <input type="text" id="form-repeater-1-1" name="nama_biaya[]" value="${item.nama}" placeholder="Nama Biaya..." class="form-control" required/>
+                                </div>
+                                <div class="mb-3 col-lg-6 col-xl-3 col-12 mb-0">
+                                    <label class="form-label" for="">Nominal</label>
+                                    <input type="text" id="nominal_${ini_index}" name="nominal[]" value="${item.nominal}" class="form-control"
+                                        placeholder="Nominal..." required/>
+                                </div>
+                                <div class="mb-3 col-lg-6 col-xl-4 col-12 mb-0">
+                                  <label class="form-label" for="form-repeater-1-1">Catatan</label>
+                                  <textarea name="catatan[]" class="form-control" id="" cols="30" rows="2">${item.catatan}</textarea>
+                                </div>
+                                <div class="mb-3 col-lg-12 col-xl-2 col-12 d-flex align-items-center mb-0">
+                                    <button class="btn btn-label-danger mt-4" type="button" onclick="deleteRepeaterItem(this)">
+                                        <i class="ti ti-trash ti-xs me-1"></i>
+                                        <span class="align-middle">Hapus</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                      `;
+                        let repeater_list = $('.repeater-list');
+                        repeater_list.append(repeater_item);
+
+                        let input_nominal = document.querySelector(`input#nominal_${ini_index}`);
+                        if (input_nominal) {
+                            var cleaveNumeral = new Cleave(input_nominal, {
+                                numeral: true,
+                                numeralThousandsGroupStyle: 'thousand'
+                            });
+                        }
+                    })
+                }
+                return;
+            }).fail(function(response) {
+                const {
+                    status,
+                    message
+                } = response.responseJSON
+                toastr.warning(message, 'Warning', 1000);
+            });
+        }
+
+        function deleteRepeaterItem(el) {
+            $(el).closest('.repeater-item').remove();
+        }
+
+        $('form#form-another-cost').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{{ route('admin-workorderanotherexpense-store') }}",
+                method: 'POST',
+                data: new FormData(this),
+                contentType: false,
+                cache: false,
+                processData: false,
+                dataType: 'json',
+                beforeSend: function() {
+                    $.blockUI({
+                        message: '<div class="sk-wave mx-auto"><div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div> <div class="sk-rect sk-wave-rect"></div></div>',
+                        css: {
+                            backgroundColor: 'transparent',
+                            border: '0'
+                        },
+                        overlayCSS: {
+                            opacity: 0.5
+                        }
+                    });
+                },
+                success: function(response) {
+                    $.unblockUI();
+                    if (response.status) {
+                        toastr.success(response.message, 'Success', 1000);
+                        window.location.reload();
+                    } else {
+                        toastr.warning(response.message, 'Warning', 1000);
+                    }
+                },
+                error: function(response) {
+                    $.unblockUI();
+                    const {
+                        status,
+                        message
+                    } = response.responseJSON
+                    toastr.warning(message, 'Warning', 1000);
+                }
+            });
+        });
     </script>
 @endsection
