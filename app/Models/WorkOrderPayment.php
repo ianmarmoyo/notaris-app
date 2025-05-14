@@ -8,11 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class WorkOrderPayment extends Model
 {
   use HasFactory;
   protected $guarded = [];
+  protected $appends = [
+    "view_image",
+  ];
 
   protected static function boot(): void
   {
@@ -52,5 +56,14 @@ class WorkOrderPayment extends Model
   public function work_order(): BelongsTo
   {
     return $this->belongsTo(WorkOrder::class, 'work_order_id');
+  }
+
+  public function getViewImageAttribute()
+  {
+    $image = isset($this->attributes['image']) ? $this->attributes['image'] : false;
+    if ($image) {
+      return Storage::exists($image) ? url('storage/' . $image) : asset('assets/img/general/no-image.jpg');
+    }
+    return asset('assets/img/general/no-image.jpg');
   }
 }

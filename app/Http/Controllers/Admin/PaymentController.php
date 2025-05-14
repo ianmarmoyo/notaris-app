@@ -10,10 +10,13 @@ use App\Models\WorkOrderPayment;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Str;
 
 class PaymentController extends Controller
 {
+  const PATH_IMAGE = "images/work-order-payment/";
   function __construct()
   {
     $menu = menu_active("payment");
@@ -129,7 +132,8 @@ class PaymentController extends Controller
         'nominal' => $data['amount'],
         'tgl_bayar' => $data['tgl_pembayaran'],
         'metode_pembayaran' => $data['metode_pembayaran'],
-        'status_pembayaran' => '1'
+        'status_pembayaran' => '1',
+        'catatan' => $data['catatan']
       ]);
 
       $getTagihan = WorkOrderDetail::where('work_order_id', $data['work_order_id'])->sum('harga');
@@ -137,6 +141,20 @@ class PaymentController extends Controller
         $wo_pay->work_order->update([
           'status_pembayaran' => 'lunas'
         ]);
+      }
+
+      if ($request->hasFile('image')) {
+        $file = $request->file('image');
+        $path = self::PATH_IMAGE . $wo_pay->id;
+
+        $storageImage = Storage::putFileAs(
+          $path,
+          $file,
+          str_replace(' ', '-', Str::random(20) . '.' . $file->getClientOriginalExtension())
+        );
+
+        $wo_pay->image = $storageImage;
+        $wo_pay->save();
       }
 
       DB::commit();

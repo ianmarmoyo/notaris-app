@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class WorkOrderDetail extends Model
 {
-    use HasFactory;
-    protected $guarded = [];
+  use HasFactory;
+  protected $guarded = [];
 
   public function setHargaAttribute($value)
   {
@@ -26,7 +26,7 @@ class WorkOrderDetail extends Model
    */
   public function master_work_order(): BelongsTo
   {
-      return $this->belongsTo(MasterWorkOrder::class, 'master_work_order_id');
+    return $this->belongsTo(MasterWorkOrder::class, 'master_work_order_id');
   }
 
   /**
@@ -36,7 +36,7 @@ class WorkOrderDetail extends Model
    */
   public function work_order_attachments(): HasMany
   {
-      return $this->hasMany(WorkOrderAttachment::class);
+    return $this->hasMany(WorkOrderAttachment::class);
   }
 
   /**
@@ -46,7 +46,7 @@ class WorkOrderDetail extends Model
    */
   public function work_order(): BelongsTo
   {
-      return $this->belongsTo(WorkOrder::class);
+    return $this->belongsTo(WorkOrder::class);
   }
 
   /**

@@ -189,6 +189,17 @@
                                     <input type="text" value="{{ $payment->metode_pembayaran }}" class="form-control"
                                         @disabled(true)>
                                 </div>
+                                <div class="col-md-12 mt-3">
+                                    <label class="form-label" for="tgl_pembayaran">Catatan</label>
+                                    <input type="text" value="{{ $payment->catatan }}" class="form-control"
+                                        @disabled(true)>
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                    <button type="button" onclick="viewImage()"
+                                        class="mt-2 btn btn-sm btn-primary waves-effect waves-light">
+                                        Lihat Gambar
+                                    </button>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="client-card" id="detail_pembayaran">
@@ -199,7 +210,7 @@
                                             <div class="value no_pembayaran">{{ $row->no_pembayaran }}</div>
                                         </div>
 
-                                          <div class="form-group-payment">
+                                        <div class="form-group-payment">
                                             <div class="label">Tgl. Pembayaran</div>
                                             <div class="value no_pembayaran">{{ tglIndo($row->tgl_bayar) }}</div>
                                         </div>
@@ -235,5 +246,19 @@
         $(document).ready(function() {
 
         });
+
+        function viewImage() {
+            Swal.fire({
+                title: '',
+                text: '',
+                imageUrl: "{{ $payment->view_image }}",
+                imageWidth: 400,
+                imageAlt: 'Custom image',
+                customClass: {
+                    confirmButton: 'btn btn-primary',
+                },
+                buttonsStyling: false
+            });
+        }
     </script>
 @endsection

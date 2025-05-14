@@ -175,6 +175,14 @@
                                         <option value="transfer">Transfer</option>
                                     </select>
                                 </div>
+                                <div class="col-md-12 mt-3">
+                                  <label class="form-label" for="image">Bukti Pembayaran/Kwitansi</label>
+                                  <input type="file" id="image" name="image" class="form-control" />
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                  <label class="form-label" for="tgl_pembayaran">Catatan</label>
+                                  <textarea name="catatan" class="form-control" id="" cols="30" rows="3" placeholder="Masukan Catatan..."></textarea>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="client-card" id="detail_pembayaran">
