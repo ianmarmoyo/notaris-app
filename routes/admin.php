@@ -38,6 +38,7 @@ use App\Http\Controllers\Admin\SertifikatPermohonanHakController;
 use App\Http\Controllers\Admin\UserAdminController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WarmarkingController;
+use App\Http\Controllers\Admin\WorkOrderAnotherExpenseController;
 use App\Http\Controllers\Admin\WorkOrderController;
 use App\Http\Controllers\Admin\WorkOrderDeadlineController;
 use Illuminate\Support\Facades\Route;
@@ -489,5 +490,13 @@ Route::middleware(
   Route::group(['prefix' => 'workorderdeadline', 'as' => 'workorderdeadline-'], function () {
     Route::get('/', [WorkOrderDeadlineController::class, 'index'])->name('index');
     Route::post('/store', [WorkOrderDeadlineController::class, 'store'])->name('store');
+  });
+
+  /**
+   * Work Order Another Expense
+   */
+  Route::group(['prefix' => 'workorderanotherexpense', 'as' => 'workorderanotherexpense-'], function () {
+    Route::get('/get/{work_order_assignment_id}', [WorkOrderAnotherExpenseController::class, 'get'])->name('get');
+    Route::post('/store', [WorkOrderAnotherExpenseController::class, 'store'])->name('store');
   });
 });

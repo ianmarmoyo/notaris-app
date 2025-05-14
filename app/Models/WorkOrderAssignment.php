@@ -11,7 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class WorkOrderAssignment extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+  protected $guarded = [];
+  protected $with = ['work_order_another_expenses'];
   protected $appends = [
     'work_order_late',
   ];
@@ -64,5 +65,10 @@ class WorkOrderAssignment extends Model
         return '';
       }
     }
+  }
+
+  public function work_order_another_expenses()
+  {
+    return $this->hasMany(WorkOrderAnotherExpense::class, 'work_order_assignment_id');
   }
 }
