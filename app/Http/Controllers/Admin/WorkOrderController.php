@@ -46,6 +46,7 @@ class WorkOrderController extends Controller
     $user_admin_id = in_array('notaris', rolesUser()->toArray()) ? auth()->user()->id : false;
     $client_id = $request->client_id;
     $employee_admin_id = $request->employee_admin_id;
+    $filter = $request->filter;
 
 
     $query = WorkOrderAssignment::select('id');
@@ -85,6 +86,21 @@ class WorkOrderController extends Controller
     $query->when($employee_admin_id, function ($q) use ($employee_admin_id) {
       $q->where('work_order_assignments.user_admin_id', $employee_admin_id);
     });
+    if ($filter == 'on_going') {
+      $query->where(function ($q) {
+        $q->where('work_order_assignments.status_penugasan', StatusAssignmentEnum::ON_PROCESS);
+      });
+    } elseif ($filter == 'on_going_late') {
+      $query->where(function ($q) {
+        $q->where('work_order_assignments.status_penugasan', StatusAssignmentEnum::ON_PROCESS);
+        $q->where('work_order_assignments.tgl_jatuh_tempo', '<', Carbon::now()->format('Y-m-d'));
+      });
+    } elseif ($filter == 'done') {
+      $query->where(function ($q) {
+        $q->where('work_order_assignments.status_penugasan', StatusAssignmentEnum::DONE);
+      });
+    } else {
+    }
     $totals = $query->count();
 
     $query = WorkOrderAssignment::select(
@@ -132,6 +148,23 @@ class WorkOrderController extends Controller
     $query->when($user_admin_id, function ($q) use ($user_admin_id) {
       $q->where('work_order_assignments.user_admin_id', $user_admin_id);
     });
+
+    if ($filter == 'on_going') {
+      $query->where(function ($q) {
+        $q->where('work_order_assignments.status_penugasan', StatusAssignmentEnum::ON_PROCESS);
+      });
+    } elseif ($filter == 'on_going_late') {
+      $query->where(function ($q) {
+        $q->where('work_order_assignments.status_penugasan', StatusAssignmentEnum::ON_PROCESS);
+        $q->where('work_order_assignments.tgl_jatuh_tempo', '<', Carbon::now()->format('Y-m-d'));
+      });
+    } elseif ($filter == 'done') {
+      $query->where(function ($q) {
+        $q->where('work_order_assignments.status_penugasan', StatusAssignmentEnum::DONE);
+      });
+    } else {
+    }
+
     $query->offset($start);
     $query->limit($length);
     $query->orderBy($sort, $dir);

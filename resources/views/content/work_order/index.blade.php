@@ -51,6 +51,20 @@
                     {{-- Button --}}
                 </div>
             </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="input-group">
+                            <select name="filter" id="filter" class="form-control select2">
+                                <option value="">Semua</option>
+                                <option value="on_going">Layanan Dalam Pengerjaan</option>
+                                <option value="on_going_late">Layanan Dalam Pengerjaan Namun Terlambat</option>
+                                <option value="done">Layanan Sudah Selesai</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="card-datatable table-responsive">
                 <table class="table datatable">
                     <thead>
@@ -80,7 +94,8 @@
         }
 
         $(document).ready(function() {
-            moment.locale('id')
+            moment.locale('id');
+            $('.select2').select2();
             dataTable = $('.datatable').DataTable({
                 stateSave: true,
                 processing: true,
@@ -96,7 +111,7 @@
                     url: "{{ route('admin-workorder-data') }}",
                     type: "GET",
                     data: function(data) {
-
+                      data.filter = $('#filter').val();
                     }
                 },
                 columnDefs: [{
@@ -167,7 +182,7 @@
                                   </div>
                                 `;
                             } else {
-                              return ``;
+                                return ``;
                             }
                         }
                     },
@@ -336,6 +351,10 @@
             e.preventDefault();
             dataTable.draw();
             $('#modalFilter').modal('hide');
+        });
+
+        $('select#filter').on('change', function() {
+            dataTable.draw();
         });
     </script>
 @endsection
