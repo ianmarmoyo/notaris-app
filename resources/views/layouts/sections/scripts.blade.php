@@ -9,6 +9,7 @@
 <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
 <script src="{{ asset('assets/vendor/libs/toastr/toastr.js') }}"></script>
 <script src="{{ asset('assets/js/ui-toasts.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/cleavejs/cleave.js') }}"></script>
 @yield('vendor-script')
 <!-- END: Page Vendor JS-->
 <!-- BEGIN: Theme JS-->
