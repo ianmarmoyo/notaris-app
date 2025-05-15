@@ -7,6 +7,7 @@ use App\Enums\StatusAssignmentEnum;
 use App\Helpers\RouteMappingWorkOrderHelper;
 use App\Http\Controllers\Controller;
 use App\Models\MasterWorkOrder;
+use App\Models\User;
 use App\Models\WorkOrderAssignment;
 use App\Models\WorkOrderDetail;
 use Carbon\Carbon;
@@ -32,6 +33,7 @@ class WorkOrderController extends Controller
   public function index()
   {
     $title = "Daftar Penugasan";
+
     return view('content.work_order.index', compact('title'));
   }
 
@@ -43,12 +45,14 @@ class WorkOrderController extends Controller
     $sort = $request->columns[$request->order[0]['column']]['data'];
     $dir = $request->order[0]['dir'];
     $search = $request->search['value'];
-    $user_admin_id = in_array('notaris', rolesUser()->toArray()) ? auth()->user()->id : false;
+    $user_admin_id = in_array('notaris', rolesUser()->toArray()) ? auth()->user()->id : ($request->user_admin_id ?? false);
     $client_id = $request->client_id;
     $employee_admin_id = $request->employee_admin_id;
     $filter = $request->filter;
-
-
+    $master_work_order_id = $request->master_work_order_id;
+    $startDate = $request->start_date;
+    $endDate = $request->end_date;
+    // dd(($filter && 'on_going_late'));
     $query = WorkOrderAssignment::select('id');
     $query->leftJoin(
       'work_orders',
@@ -86,21 +90,29 @@ class WorkOrderController extends Controller
     $query->when($employee_admin_id, function ($q) use ($employee_admin_id) {
       $q->where('work_order_assignments.user_admin_id', $employee_admin_id);
     });
-    if ($filter == 'on_going') {
-      $query->where(function ($q) {
-        $q->where('work_order_assignments.status_penugasan', StatusAssignmentEnum::ON_PROCESS);
-      });
-    } elseif ($filter == 'on_going_late') {
+    $query->when(($filter == 'on_going' ? true : false), function ($q) {
+      $q->where('work_order_assignments.status_penugasan', StatusAssignmentEnum::ON_PROCESS);
+    });
+    $query->when(($filter == 'on_going_late' ? true : false), function ($query) {
       $query->where(function ($q) {
         $q->where('work_order_assignments.status_penugasan', StatusAssignmentEnum::ON_PROCESS);
         $q->where('work_order_assignments.tgl_jatuh_tempo', '<', Carbon::now()->format('Y-m-d'));
       });
-    } elseif ($filter == 'done') {
+    });
+    $query->when(($filter == 'done' ? true : false), function ($query) {
       $query->where(function ($q) {
         $q->where('work_order_assignments.status_penugasan', StatusAssignmentEnum::DONE);
       });
-    } else {
-    }
+    });
+    $query->when(($startDate && $endDate), function ($query) use ($startDate, $endDate) {
+      $query->whereBetween('work_orders.tgl_pengajuan', [$startDate, $endDate]);
+    });
+    $query->when($master_work_order_id, function ($q) use ($master_work_order_id) {
+      $q->where('work_order_details.master_work_order_id', $master_work_order_id);
+    });
+    $query->when(($startDate && $endDate), function ($query) use ($startDate, $endDate) {
+      $query->whereBetween('work_orders.tgl_pengajuan', [$startDate, $endDate]);
+    });
     $totals = $query->count();
 
     $query = WorkOrderAssignment::select(
@@ -148,23 +160,26 @@ class WorkOrderController extends Controller
     $query->when($user_admin_id, function ($q) use ($user_admin_id) {
       $q->where('work_order_assignments.user_admin_id', $user_admin_id);
     });
-
-    if ($filter == 'on_going') {
-      $query->where(function ($q) {
-        $q->where('work_order_assignments.status_penugasan', StatusAssignmentEnum::ON_PROCESS);
-      });
-    } elseif ($filter == 'on_going_late') {
+    $query->when(($filter == 'on_going' ? true : false), function ($q) {
+      $q->where('work_order_assignments.status_penugasan', StatusAssignmentEnum::ON_PROCESS);
+    });
+    $query->when(($filter == 'on_going_late' ? true : false), function ($query) {
       $query->where(function ($q) {
         $q->where('work_order_assignments.status_penugasan', StatusAssignmentEnum::ON_PROCESS);
         $q->where('work_order_assignments.tgl_jatuh_tempo', '<', Carbon::now()->format('Y-m-d'));
       });
-    } elseif ($filter == 'done') {
+    });
+    $query->when(($filter == 'done' ? true : false), function ($query) {
       $query->where(function ($q) {
         $q->where('work_order_assignments.status_penugasan', StatusAssignmentEnum::DONE);
       });
-    } else {
-    }
-
+    });
+    $query->when($master_work_order_id, function ($q) use ($master_work_order_id) {
+      $q->where('work_order_details.master_work_order_id', $master_work_order_id);
+    });
+    $query->when(($startDate && $endDate), function ($query) use ($startDate, $endDate) {
+      $query->whereBetween('work_orders.tgl_pengajuan', [$startDate, $endDate]);
+    });
     $query->offset($start);
     $query->limit($length);
     $query->orderBy($sort, $dir);

@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/@form-validation/umd/styles/index.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
+    <link rel="stylesheet" <link rel="stylesheet"
+        href="{{ asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css') }}" />
+    <link rel="stylesheet"
+        href="{{ asset('assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css') }}" />
 @endsection
 
 @section('page-style')
@@ -53,16 +57,31 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-4">
-                        <div class="input-group">
-                            <select name="filter" id="filter" class="form-control select2">
-                                <option value="">Semua</option>
-                                <option value="on_going">Layanan Dalam Pengerjaan</option>
-                                <option value="on_going_late">Layanan Dalam Pengerjaan Namun Terlambat</option>
-                                <option value="done">Layanan Sudah Selesai</option>
+                    <div class="col-4 mb-3">
+                        <label class="form-label" for="basic-default-fullname">Status</label>
+                        <select name="filter" id="filter" class="form-control select2">
+                            <option value="">Semua</option>
+                            <option value="on_going">Layanan Dalam Pengerjaan</option>
+                            <option value="on_going_late">Layanan Dalam Pengerjaan Namun Terlambat</option>
+                            <option value="done">Layanan Sudah Selesai</option>
+                        </select>
+                    </div>
+                    <div class="col-4 mb-3">
+                        <label class="form-label" for="basic-default-fullname">Tanggal</label>
+                        <input type="text" name="date_range" id="date-range" class="form-control" id="">
+                    </div>
+                    <div class="col-4 mb-3">
+                        <label class="form-label" for="basic-default-fullname">Layanan</label>
+                        <select name="master_work_order_id" id="work_order" class="form-control select2"
+                            id=""></select>
+                    </div>
+                    @if (in_array('superadmin', rolesUser()->toArray()))
+                        <div class="col-4 mb-3">
+                            <label class="form-label" for="basic-default-fullname">Penugasan</label>
+                            <select name="user_id" id="user_admin" class="form-control select2" id="">
                             </select>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
             <div class="card-datatable table-responsive">
@@ -87,15 +106,107 @@
 
 @section('page-script')
     <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/jquery-timepicker/jquery-timepicker.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/pickr/pickr.js') }}"></script>
     {{-- <script src="{{ asset('assets/js/tables-datatables-basic.js') }}"></script> --}}
     <script>
         function modalFilter() {
             $('#modalFilter').modal('show');
         }
 
+
+        let start_date = moment()
+            .startOf('month'),
+            end_date = moment()
+            .endOf('month');
+
         $(document).ready(function() {
             moment.locale('id');
             $('.select2').select2();
+
+            $('select#user_admin').select2({
+                allowClear: true,
+                placeholder: 'Pilih Penugasan...',
+                escapeMarkup: function(markup) {
+                    return markup;
+                },
+                ajax: {
+                    url: "{{ route('admin-useradmin-select') }}",
+                    type: 'get',
+                    dataType: 'json',
+                    data: function(params) {
+                        return {
+                            name: params.term,
+                            page: params.page,
+                            limit: 30,
+                        };
+                    },
+                    processResults: function(data, params) {
+                        var option = [];
+                        params.page = params.page || 1;
+                        $.each(data.results, function(index, item) {
+                            option.push({
+                                id: item.id,
+                                text: item.name,
+                            });
+                        });
+                        return {
+                            results: option,
+                            pagination: {
+                                more: (params.page * 30) < data.recorsTotal
+                            }
+                        };
+                    },
+                },
+            });
+
+            $('select#work_order').select2({
+                allowClear: true,
+                placeholder: 'Pilih Keperluan...',
+                escapeMarkup: function(markup) {
+                    return markup;
+                },
+                templateResult: function(data) {
+                    var $result = $(`
+                    <div class="text-capitalize">
+                      <span>${data.text}</span>
+                    </div>
+                  `);
+                    return $result;
+                },
+                ajax: {
+                    url: "{{ route('admin-workorder-select') }}",
+                    type: 'get',
+                    dataType: 'json',
+                    data: function(params) {
+                        return {
+                            name: params.term,
+                            page: params.page,
+                            limit: 30,
+                        };
+                    },
+                    processResults: function(data, params) {
+                        var option = [];
+                        params.page = params.page || 1;
+                        $.each(data.results, function(index, item) {
+                            option.push({
+                                id: item.id,
+                                text: item.nama,
+                                nama: item.nama
+                            });
+                        });
+                        return {
+                            results: option,
+                            pagination: {
+                                more: (params.page * 30) < data.recorsTotal
+                            }
+                        };
+                    },
+                },
+            });
+
             dataTable = $('.datatable').DataTable({
                 stateSave: true,
                 processing: true,
@@ -111,7 +222,18 @@
                     url: "{{ route('admin-workorder-data') }}",
                     type: "GET",
                     data: function(data) {
-                      data.filter = $('#filter').val();
+                        data.filter = $('#filter').val();
+                        data.master_work_order_id = $('#work_order').val();
+                        data.user_admin_id = $('select#user_admin').val();
+
+                        data.start_date = $("#date-range")
+                            .data('daterangepicker') ? $("#date-range")
+                            .data('daterangepicker')
+                            .startDate.format('YYYY-MM-DD') : start_date.format('YYYY-MM-DD');
+                        data.end_date = $("#date-range")
+                            .data('daterangepicker') ? $("#date-range")
+                            .data('daterangepicker')
+                            .endDate.format('YYYY-MM-DD') : end_date.format('YYYY-MM-DD');
                     }
                 },
                 columnDefs: [{
@@ -275,6 +397,30 @@
                     }
                 ]
             });
+
+            $('input#date-range').daterangepicker({
+                timePicker: true,
+                timePickerIncrement: 30,
+                startDate: moment().startOf('month'),
+                endDate: moment().endOf('month'),
+                ranges: {
+                    Today: [moment(), moment()],
+                    Yesterday: [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
+                        'month').endOf('month')]
+                },
+                locale: {
+                    format: 'DD/MM/YYYY'
+                },
+                opens: 'left'
+            }).on('apply.daterangepicker', function(ev, picker) {
+                var start = picker.startDate.format('YYYY-MM-DD');
+                var end = picker.endDate.format('YYYY-MM-DD');
+                $(this).val(start + ' - ' + end);
+            });
         });
 
         $(document).on('click', '.delete-record', function() {
@@ -353,7 +499,11 @@
             $('#modalFilter').modal('hide');
         });
 
-        $('select#filter').on('change', function() {
+        $('select#filter, select#work_order, select#user_admin').on('change', function() {
+            dataTable.draw();
+        });
+
+        $(document).on('change', '#date-range', function() {
             dataTable.draw();
         });
     </script>
