@@ -193,9 +193,13 @@ if (!function_exists('urlSegmentAfterAdmin')) {
 if (!function_exists('dateFormatID')) {
   function dateFormatID($date, $format = 'dddd, D MMMM Y H:s')
   {
-    setlocale(LC_ALL, 'IND');
-    $tanggal = Carbon::parse($date)->isoFormat($format);
+    // Set locale ke Indonesia
+    Carbon::setLocale('id');
 
-    return $tanggal;
+    // Pastikan waktu default juga di-set jika perlu
+    setlocale(LC_TIME, 'id_ID.UTF-8');
+
+    // Format menggunakan isoFormat
+    return Carbon::parse($date)->isoFormat($format);
   }
 }

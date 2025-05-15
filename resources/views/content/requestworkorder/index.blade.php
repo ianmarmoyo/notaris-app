@@ -59,9 +59,9 @@
                     <div class="col-4">
                         <div class="input-group">
                             <select name="filter" id="filter" class="form-control select2">
-                              <option value="">Semua</option>
-                              <option value="already_to_work">Layanan Yang Sudah Dikerjakan</option>
-                              <option value="not_to_work">Layanan Yang Belum Dikerjakan</option>
+                                <option value="">Semua</option>
+                                <option value="already_to_work">Layanan Yang Sudah Dikerjakan</option>
+                                <option value="not_to_work">Layanan Yang Belum Dikerjakan</option>
                             </select>
                         </div>
                     </div>
@@ -84,6 +84,27 @@
                 </table>
             </div>
         </div>
+    </div>
+
+    <div id="modalPrint" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen" id="section-print">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Cetak Kwitansi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <iframe id="bodyReplace" scrolling="no" allowtransparency="true"
+                            style="width: 100%; border-width: 0px; position: relative; margin: 0 auto; display: block;"
+                            onload="this.style.height=(this.contentDocument.body.scrollHeight+45) + 'px';"></iframe>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div><!-- /.modal-dialog -->
     </div>
 @endsection
 
@@ -113,7 +134,7 @@
                     url: "{{ route('admin-requestworkorder-data') }}",
                     type: "GET",
                     data: function(data) {
-                      data.filter = $('#filter').val();
+                        data.filter = $('#filter').val();
                     }
                 },
                 columnDefs: [{
@@ -203,10 +224,16 @@
                                 <a href="javascript:;" class="dropdown-item text-danger delete-record" data-id="${data}"><i class="ti ti-trash me-1"></i>Hapus</a>
                               @endcan
                             `;
+                            let btn_cetak_kwitansi = ``;
 
                             if (full.status_wo == 'ready_to_work') {
                                 btn_edit = '';
                                 btn_delete = '';
+                                btn_cetak_kwitansi = `
+                                  <a href="javascript:;" class="dropdown-item text-info" data-id="${data}" onclick="cetakKwitansi(this)">
+                                    <i class="ti ti-receipt me-1"></i>Cetak Kwitansi
+                                  </a>
+                                `;
                             } else {
                                 btn_detail = '';
                             }
@@ -220,6 +247,7 @@
                                         ${btn_detail}
                                         ${btn_edit}
                                         ${btn_delete}
+                                        ${btn_cetak_kwitansi}
                                     </div>
                                 </div>
                             `);
@@ -347,5 +375,24 @@
         $('select#filter').on('change', function() {
             dataTable.draw();
         });
+
+        function cetakKwitansi(el) {
+            let work_order_id = $(el).data('id');
+            $.ajax({
+                url: "{{ route('admin-requestworkorder-cetakkwitansi') }}",
+                method: 'GET',
+                data: {
+                    work_order_id: work_order_id
+                },
+                success: function(response) {
+                    var iframe = document.getElementById('bodyReplace');
+                    iframe = iframe.contentWindow || (iframe.contentDocument.document || iframe
+                        .contentDocument);
+                    iframe.document.open();
+                    iframe.document.write(response);
+                    iframe.document.close();
+                }
+            });
+        }
     </script>
 @endsection

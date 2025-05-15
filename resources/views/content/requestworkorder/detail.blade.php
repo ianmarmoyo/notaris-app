@@ -92,9 +92,12 @@
                         <p class="mb-1">Dibuat oleh. <span class="fw-medium"> {{ $work_order->admin->name }} </span></p>
                     </div>
                     <div class="d-flex align-items-center">
-                        {{-- <span class="badge bg-label-danger">UI/UX</span>
-                        <i class='ti ti-share ti-sm mx-4'></i>
-                        <i class='ti ti-bookmarks ti-sm'></i> --}}
+                        @if ($work_order->status_wo == 'ready_to_work')
+                            <button type="button" class="btn btn-sm bg-label-info" onclick="cetakKwitansi()">
+                                <i class='ti ti-receipt ti-sm'></i>
+                                Cetak Kwitansi
+                            </button>
+                        @endif
                     </div>
                 </div>
                 <div class="card academy-content shadow-none border">
@@ -143,11 +146,11 @@
                                             </div>
                                         @else
                                             <div>
-                                              <span class="badge bg-label-primary">Dalam Proses</span>
-                                              <a href="{{ url('admin/work-order/detail/' . $detail->work_order_assignment->id) }}"
-                                                  target="_blank">
-                                                  <span class="badge bg-info bg-glow">Lihat</span>
-                                              </a>
+                                                <span class="badge bg-label-primary">Dalam Proses</span>
+                                                <a href="{{ url('admin/work-order/detail/' . $detail->work_order_assignment->id) }}"
+                                                    target="_blank">
+                                                    <span class="badge bg-info bg-glow">Lihat</span>
+                                                </a>
                                             </div>
                                         @endif
                                     </div>
@@ -270,6 +273,27 @@
                 </div>
             </form>
         </div>
+    </div>
+
+    <div id="modalPrint" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen" id="section-print">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="myModalLabel">Cetak Kwitansi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <iframe id="bodyReplace" scrolling="no" allowtransparency="true"
+                            style="width: 100%; border-width: 0px; position: relative; margin: 0 auto; display: block;"
+                            onload="this.style.height=(this.contentDocument.body.scrollHeight+45) + 'px';"></iframe>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div><!-- /.modal-dialog -->
     </div>
 @endsection
 @section('page-script')
@@ -468,6 +492,25 @@
 
         function sectionUnBlock(element) {
             $(`${element}`).unblock();
+        }
+
+        function cetakKwitansi() {
+            let work_order_id = "{{ $work_order->id }}";
+            $.ajax({
+                url: "{{ route('admin-requestworkorder-cetakkwitansi') }}",
+                method: 'GET',
+                data: {
+                    work_order_id: work_order_id
+                },
+                success: function(response) {
+                    var iframe = document.getElementById('bodyReplace');
+                    iframe = iframe.contentWindow || (iframe.contentDocument.document || iframe
+                        .contentDocument);
+                    iframe.document.open();
+                    iframe.document.write(response);
+                    iframe.document.close();
+                }
+            });
         }
     </script>
 @endsection

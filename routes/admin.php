@@ -203,6 +203,7 @@ Route::middleware(
     Route::get('/create', [RequestWorkOrderController::class, 'create'])->name('create');
     Route::get('/data', [RequestWorkOrderController::class, 'data'])->name('data');
     Route::get('/select', [RequestWorkOrderController::class, 'select'])->name('select');
+    Route::get('/cektak-kwintansi', [RequestWorkOrderController::class, 'cetakKwintansi'])->name('cetakkwitansi');
     Route::post('/store', [RequestWorkOrderController::class, 'store'])->name('store');
     Route::get('/edit/{id}', [RequestWorkOrderController::class, 'edit'])->name('edit');
     Route::get('/detail/{id}', [RequestWorkOrderController::class, 'detail'])->name('detail');

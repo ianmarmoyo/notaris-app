@@ -409,4 +409,33 @@ class RequestWorkOrderController extends Controller
       ], 400);
     }
   }
+
+  public function cetakKwintansi(Request $request)
+  {
+    $work_order = WorkOrder::with([
+      'work_order_details.work_order_assignment.work_order_another_expenses',
+      'work_order_payments',
+    ])->find($request->work_order_id);
+
+    if (!$work_order) {
+      return abort(404);
+    }
+
+    $work_order_another_expenses = collect($work_order->work_order_details)
+      ->filter(fn ($detail) => $detail->work_order_assignment && $detail->work_order_assignment->work_order_another_expenses)
+      ->flatMap(function ($detail) {
+        return collect($detail->work_order_assignment->work_order_another_expenses)->map(function ($expense) use ($detail) {
+          $expense['keperluan'] = $detail->keperluan;
+          return $expense;
+        });
+      })
+      ->values()
+      ->all();
+
+    // dd($work_order->work_order_payments);
+    return view('content.requestworkorder.cetak_kwintansi', compact(
+      'work_order',
+      'work_order_another_expenses'
+    ));
+  }
 }

@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class WorkOrderAnotherExpense extends Model
 {
-    use HasFactory;
-    protected $guarded = [];
+  use HasFactory;
+  protected $guarded = [];
 
   public function setNominalAttribute($value)
   {

@@ -75,6 +75,9 @@ class BalikNamaWarisController extends Controller
   {
     $title = "Penugasan Balik Nama Waris";
     $procedures = BalikNamaWaris::with('work_order_assignment')->where('work_order_assignment_id', $work_order_assignment_id)->get();
+    if (count($procedures) == 0) {
+      return abort(404);
+    }
     $work_order_detail_id = $procedures[0]->work_order_assignment->work_order_detail_id;
     $wo_attachment = WorkOrderAttachment::where('work_order_detail_id', $work_order_detail_id)->get();
     $catatan_pesyaratan = WorkOrderDetail::find($work_order_detail_id)->catatan_persyaratan;
