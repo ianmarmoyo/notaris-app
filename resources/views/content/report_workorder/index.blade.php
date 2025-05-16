@@ -55,12 +55,14 @@
                 <table class="table datatable">
                     <thead>
                         <tr>
-                            <th width="10">#</th>
-                            <th width="400">Invoice</th>
-                            <th width="300">Nama</th>
-                            <th width="300">Tanggal Pengajuan</th>
-                            <th width="300">Status Keperluan</th>
-                            <th width="40">Aksi</th>
+                            <th>#</th>
+                            <th>Invoice</th>
+                            <th>Nama</th>
+                            <th>Tanggal Pengajuan</th>
+                            <th>Tanggal Selesai</th>
+                            <th>Status</th>
+                            <th>Petugas</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                 </table>
@@ -79,6 +81,7 @@
 
         $(document).ready(function() {
             moment.locale('id')
+
             dataTable = $('.datatable').DataTable({
                 stateSave: true,
                 processing: true,
@@ -88,7 +91,7 @@
                 lengthChange: true,
                 responsive: true,
                 order: [
-                    [1, "desc"]
+                    [4, "desc"]
                 ],
                 ajax: {
                     url: "{{ route('admin-reportworkorder-data') }}",
@@ -106,55 +109,63 @@
                         targets: [0]
                     },
                     {
-                      targets: 3,
-                      render: function(data, type, full, meta) {
-                        return moment(data).format('LL');
-                      }
+                        targets: 1,
+                        render: function(data, type, full, meta) {
+                            return `
+                          <div class="d-flex justify-content-start align-items-center user-name">
+                            <div class="d-flex flex-column">
+                              <span class="emp_name text-truncate">${data}</span>
+                              <small class="emp_post text-truncate text-muted">
+                                ${moment(full.tgl_pengajuan).format('LL')}
+                              </small>
+                            </div>
+                          </div>
+                          `;
+                        }
                     },
                     {
-                      targets: 4,
-                      render: function(data, type, full, meta) {
-                        switch (data) {
-                          case 'ready_to_work':
-                              return 'Siap Dikerjaan';
-                              break;
-                            break;
-                            case 'draft':
-                              return 'Draft';
-                              break;
-                          default:
-                            break;
+                        targets: 2,
+                        render: function(data, type, full, meta) {
+                            return `
+                          <div class="d-flex justify-content-start align-items-center user-name">
+                            <div class="d-flex flex-column">
+                              <span class="emp_name text-truncate">${data}</span>
+                              <small class="emp_post text-truncate text-muted">
+                                ${full.keperluan}
+                              </small>
+                            </div>
+                          </div>
+                          `;
                         }
-                      }
+                    },
+                    {
+                        targets: [3, 4],
+                        render: function(data, type, full, meta) {
+                            return `${data ? moment(data).format('LL') : ''}`
+                        }
+                    },
+                    {
+                        targets: 5,
+                        className: "text-center",
+                        render: function(data, type, full, meta) {
+                            let $status =
+                                `<span class="badge rounded-pill bg-label-success">Selesai</span>`;
+                            return $status;
+                        }
                     },
                     {
 
-                        targets: 5,
+                        targets: 7,
                         title: 'Aksi',
                         orderable: false,
                         searchable: false,
                         render: function(data, type, full, meta) {
-                            let btn_detail = `
-                              @can('detail pengajuan')
-                                <a href="{{ url('admin/request-workorder/detail') }}/${data}" class="dropdown-item"><i class="ti ti-eye me-1"></i>Detail</a>
-                              @endcan
-                            `;
-                            let btn_edit = `
-                              @can('ubah pengajuan')
-                                <a href="{{ url('admin/request-workorder/edit') }}/${data}" class="dropdown-item item-edit"><i class="ti ti-pencil me-1"></i>Edit</a>
-                              @endcan
-                            `;
-                            let btn_delete = `
-                              @can('hapus pengajuan')
-                                <a href="javascript:;" class="dropdown-item text-danger delete-record" data-id="${data}"><i class="ti ti-trash me-1"></i>Hapus</a>
-                              @endcan
-                            `;
 
-                            if (full.status_wo == 'ready_to_work') {
-                              btn_edit = '';
-                              btn_delete = '';
-                            } else {
-                              btn_detail = '';
+                            let btn_edit = `
+                            <a href="{{ url('admin/work-order/form') }}/${data}" class="dropdown-item"><i class="ti ti-edit me-1"></i>Edit</a>
+                          `;
+                            if (full.status_penugasan == 'Selesai') {
+                                btn_edit = ``;
                             }
 
                             return (`
@@ -163,7 +174,8 @@
                                         <i class="text-primary ti ti-dots-vertical"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end m-0">
-                                        ${btn_detail}
+                                        <a href="{{ url('admin/work-order/detail') }}/${data}" class="dropdown-item"><i class="ti ti-eye me-1"></i>Detail</a>
+                                        ${btn_edit}
                                     </div>
                                 </div>
                             `);
@@ -180,18 +192,32 @@
                         }
                     },
                     {
+                        "orderable": false,
+                        "searchable": false,
                         data: "no_wo"
                     },
                     {
-                        data: "nama"
+                        data: "nama_klien"
                     },
                     {
-                        data: "tgl_pengajuan"
+                        data: "tgl_penugasan"
                     },
                     {
-                        data: "status_wo"
+                        data: "tgl_selesai"
                     },
                     {
+                        "orderable": false,
+                        "searchable": false,
+                        data: "id"
+                    },
+                    {
+                        "orderable": false,
+                        "searchable": false,
+                        data: "nama_admin"
+                    },
+                    {
+                        "orderable": false,
+                        "searchable": false,
                         data: "id"
                     }
                 ]
