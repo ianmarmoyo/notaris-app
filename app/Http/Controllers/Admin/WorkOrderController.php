@@ -52,7 +52,7 @@ class WorkOrderController extends Controller
     $master_work_order_id = $request->master_work_order_id;
     $startDate = $request->start_date;
     $endDate = $request->end_date;
-    // dd(($filter && 'on_going_late'));
+
     $query = WorkOrderAssignment::select('id');
     $query->leftJoin(
       'work_orders',

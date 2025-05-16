@@ -235,7 +235,7 @@
                     url: "{{ route('admin-workorder-data') }}",
                     type: "GET",
                     data: function(data) {
-                      data.employee_admin_id = "{{ $employee->admin->id }}";
+                      data.employee_admin_id = @json(@$employee->admin->id) ?? '-1';
                     }
                 },
                 columnDefs: [{
