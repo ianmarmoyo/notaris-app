@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Anggota')
+@section('title', $title)
 
 @section('vendor-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}">
@@ -61,9 +61,9 @@
                         <label class="form-label" for="basic-default-fullname">Status</label>
                         <select name="filter" id="filter" class="form-control select2">
                             <option value="">Semua</option>
-                            <option value="on_going">Layanan Dalam Pengerjaan</option>
-                            <option value="on_going_late">Layanan Dalam Pengerjaan Namun Terlambat</option>
-                            <option value="done">Layanan Sudah Selesai</option>
+                            <option value="on_going">Proses</option>
+                            <option value="on_going_late">Terlambat</option>
+                            <option value="done">Selesai</option>
                         </select>
                     </div>
                     <div class="col-4 mb-3">
@@ -409,8 +409,9 @@
                     'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                     'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                     'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1,
-                        'month').endOf('month')]
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                    'This Year': [moment().startOf('year'), moment().endOf('year')],
+
                 },
                 locale: {
                     format: 'DD/MM/YYYY'

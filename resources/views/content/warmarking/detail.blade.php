@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Academy Course Details - Apps')
+@section('title', $title)
 
 @section('vendor-style')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/plyr/plyr.css') }}" />
