@@ -57,7 +57,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-4 mb-3">
+                    <div class="col-3 mb-3">
                         <label class="form-label" for="basic-default-fullname">Status</label>
                         <select name="filter" id="filter" class="form-control select2">
                             <option value="">Semua</option>
@@ -66,17 +66,17 @@
                             <option value="done">Selesai</option>
                         </select>
                     </div>
-                    <div class="col-4 mb-3">
+                    <div class="col-3 mb-3">
                         <label class="form-label" for="basic-default-fullname">Tanggal</label>
                         <input type="text" name="date_range" id="date-range" class="form-control" id="">
                     </div>
-                    <div class="col-4 mb-3">
+                    <div class="col-3 mb-3">
                         <label class="form-label" for="basic-default-fullname">Layanan</label>
                         <select name="master_work_order_id" id="work_order" class="form-control select2"
                             id=""></select>
                     </div>
                     @if (in_array('superadmin', rolesUser()->toArray()))
-                        <div class="col-4 mb-3">
+                        <div class="col-3 mb-3">
                             <label class="form-label" for="basic-default-fullname">Penugasan</label>
                             <select name="user_id" id="user_admin" class="form-control select2" id="">
                             </select>
